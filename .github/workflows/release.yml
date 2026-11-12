@@ -47,7 +47,7 @@ jobs:
           cargo build --release --locked --target ${{ matrix.target }}
           mkdir -p dist
           cp "target/${{ matrix.target }}/release/skadi${{ matrix.ext }}" "dist/skadi-${{ matrix.target }}${{ matrix.ext }}"
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: skadi-${{ matrix.target }}
           path: dist/*
@@ -85,7 +85,7 @@ jobs:
           mkdir -p dist
           find crates -name '*.cdx.json' -exec cp {} dist/ \;
           ls dist
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: sbom
           path: dist/*
