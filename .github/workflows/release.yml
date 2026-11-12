@@ -31,7 +31,7 @@ jobs:
           - { target: aarch64-apple-darwin, os: macos-latest, ext: "" }
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           persist-credentials: false
       - name: Toolchain
@@ -58,7 +58,7 @@ jobs:
   reproducible:
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           persist-credentials: false
       - name: Build twice from scratch and compare
@@ -75,7 +75,7 @@ jobs:
   sbom:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           persist-credentials: false
       - name: CycloneDX SBOM

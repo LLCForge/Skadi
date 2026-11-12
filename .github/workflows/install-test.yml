@@ -35,7 +35,7 @@ jobs:
       apps: ${{ steps.plan.outputs.apps }}
       run: ${{ steps.plan.outputs.run }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         if: github.event_name == 'pull_request'
         with:
           persist-credentials: false
@@ -83,7 +83,7 @@ jobs:
       # Passed through the environment, never interpolated into a script (script injection).
       APPS: ${{ needs.plan.outputs.apps }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           persist-credentials: false
 
