@@ -1,0 +1,18 @@
+# Community notes: short, sourced facts about an app that help people decide. Every note needs an
+# official source (vendor docs, privacy policy or the project's own repository). Add notes through
+# a pull request; see CONTRIBUTING.md.
+
+[[note]]
+app = "1password"
+text = { en = "Telemetry is off for individual and family accounts, but on by default for Teams and Business accounts.", tr = "Telemetri bireysel ve aile hesaplarında kapalıdır; Teams ve Business hesaplarında varsayılan olarak açıktır." }
+source = "https://support.1password.com/telemetry"
+
+[[note]]
+app = "imhex"
+text = { en = "Asks on first launch whether to send usage statistics and crash reports.", tr = "İlk açılışta kullanım istatistikleri ve çökme raporları gönderilip gönderilmeyeceğini sorar." }
+source = "https://github.com/WerWolv/ImHex/blob/master/PRIVACY.md"
+
+[[note]]
+app = "vscodium"
+text = { en = "A build of VS Code's open-source code without Microsoft's telemetry and branding.", tr = "VS Code'un açık kaynak kodunun Microsoft telemetrisi ve markası olmadan derlenmiş hâli." }
+source = "https://vscodium.com/"

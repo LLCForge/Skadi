@@ -1,0 +1,1581 @@
+# Windows tweaks.
+#
+# Registry and service data adapted from WinUtil (https://github.com/ChrisTitusTech/winutil),
+# MIT License, Copyright (c) 2022 CT Tech Group LLC. See NOTICE.
+# Toggles were converted to the debloat direction; script-based WinUtil tweaks were not imported.
+#
+# Action types: registry | service | scheduled-task | appx
+
+[[tweak]]
+id = "win-telemetry"
+category = "privacy"
+risk = "safe"
+name = { en = "Disable telemetry", tr = "Telemetriyi kapat" }
+description = { en = "Turns off Windows diagnostic data, advertising ID, tailored experiences, inking and typing collection, feedback prompts and the telemetry services.", tr = "Windows tanılama verilerini, reklam kimliğini, kişiselleştirilmiş deneyimleri, mürekkep ve yazma verisi toplamayı, geri bildirim isteklerini ve telemetri servislerini kapatır." }
+source = "https://learn.microsoft.com/en-us/windows/privacy/manage-connections-from-windows-operating-system-components-to-microsoft-services"
+
+[[tweak.action]]
+type = "registry"
+key = "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\AdvertisingInfo"
+name = "Enabled"
+kind = "dword"
+data = "0"
+
+[[tweak.action]]
+type = "registry"
+key = "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Privacy"
+name = "TailoredExperiencesWithDiagnosticDataEnabled"
+kind = "dword"
+data = "0"
+
+[[tweak.action]]
+type = "registry"
+key = "HKCU\\Software\\Microsoft\\Speech_OneCore\\Settings\\OnlineSpeechPrivacy"
+name = "HasAccepted"
+kind = "dword"
+data = "0"
+
+[[tweak.action]]
+type = "registry"
+key = "HKCU\\Software\\Microsoft\\Input\\TIPC"
+name = "Enabled"
+kind = "dword"
+data = "0"
+
+[[tweak.action]]
+type = "registry"
+key = "HKCU\\Software\\Microsoft\\InputPersonalization"
+name = "RestrictImplicitInkCollection"
+kind = "dword"
+data = "1"
+
+[[tweak.action]]
+type = "registry"
+key = "HKCU\\Software\\Microsoft\\InputPersonalization"
+name = "RestrictImplicitTextCollection"
+kind = "dword"
+data = "1"
+
+[[tweak.action]]
+type = "registry"
+key = "HKCU\\Software\\Microsoft\\InputPersonalization\\TrainedDataStore"
+name = "HarvestContacts"
+kind = "dword"
+data = "0"
+
+[[tweak.action]]
+type = "registry"
+key = "HKCU\\Software\\Microsoft\\Personalization\\Settings"
+name = "AcceptedPrivacyPolicy"
+kind = "dword"
+data = "0"
+
+[[tweak.action]]
+type = "registry"
+key = "HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\DataCollection"
+name = "AllowTelemetry"
+kind = "dword"
+data = "0"
+
+[[tweak.action]]
+type = "registry"
+key = "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced"
+name = "Start_TrackProgs"
+kind = "dword"
+data = "0"
+
+[[tweak.action]]
+type = "registry"
+key = "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\System"
+name = "PublishUserActivities"
+kind = "dword"
+data = "0"
+
+[[tweak.action]]
+type = "registry"
+key = "HKCU\\Software\\Microsoft\\Siuf\\Rules"
+name = "NumberOfSIUFInPeriod"
+kind = "dword"
+data = "0"
+
+[[tweak.action]]
+type = "service"
+name = "DiagTrack"
+start = "disabled"
+
+[[tweak.action]]
+type = "service"
+name = "WerSvc"
+start = "disabled"
+
+[[tweak.action]]
+type = "scheduled-task"
+task = "\\Microsoft\\Windows\\Customer Experience Improvement Program\\Consolidator"
+
+[[tweak.action]]
+type = "scheduled-task"
+task = "\\Microsoft\\Windows\\Customer Experience Improvement Program\\UsbCeip"
+
+[[tweak.action]]
+type = "scheduled-task"
+task = "\\Microsoft\\Windows\\Feedback\\Siuf\\DmClient"
+
+[[tweak.action]]
+type = "scheduled-task"
+task = "\\Microsoft\\Windows\\Feedback\\Siuf\\DmClientOnScenarioDownload"
+
+[[tweak]]
+id = "win-activity-history"
+category = "privacy"
+risk = "safe"
+name = { en = "Disable activity history", tr = "Etkinlik geçmişini kapat" }
+description = { en = "Stops Windows from publishing or uploading your activity history. Clipboard history keeps working.", tr = "Windows'un etkinlik geçmişinizi yayınlamasını ve yüklemesini durdurur. Pano geçmişi çalışmaya devam eder." }
+source = "https://learn.microsoft.com/en-us/windows/client-management/mdm/policy-csp-privacy"
+
+[[tweak.action]]
+type = "registry"
+key = "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\System"
+name = "EnableActivityFeed"
+kind = "dword"
+data = "1"
+
+[[tweak.action]]
+type = "registry"
+key = "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\System"
+name = "PublishUserActivities"
+kind = "dword"
+data = "0"
+
+[[tweak.action]]
+type = "registry"
+key = "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\System"
+name = "UploadUserActivities"
+kind = "dword"
+data = "0"
+
+[[tweak]]
+id = "win-location"
+category = "privacy"
+risk = "moderate"
+name = { en = "Disable location tracking", tr = "Konum takibini kapat" }
+description = { en = "Denies location access to apps, turns off the location sensor and the geolocation service, and stops automatic map updates.", tr = "Uygulamaların konum erişimini engeller, konum sensörünü ve konum servisini kapatır, haritaların otomatik güncellenmesini durdurur." }
+source = "https://learn.microsoft.com/en-us/windows/privacy/manage-connections-from-windows-operating-system-components-to-microsoft-services"
+
+[[tweak.action]]
+type = "registry"
+key = "HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\CapabilityAccessManager\\ConsentStore\\location"
+name = "Value"
+kind = "string"
+data = "Deny"
+
+[[tweak.action]]
+type = "registry"
+key = "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Sensor\\Overrides\\{BFA794E4-F964-4FDB-90F6-51056BFE4B44}"
+name = "SensorPermissionState"
+kind = "dword"
+data = "0"
+
+[[tweak.action]]
+type = "registry"
+key = "HKLM\\SYSTEM\\Maps"
+name = "AutoUpdateEnabled"
+kind = "dword"
+data = "0"
+
+[[tweak.action]]
+type = "service"
+name = "lfsvc"
+start = "disabled"
+
+[[tweak]]
+id = "win-consumer-features"
+category = "bloat"
+risk = "safe"
+name = { en = "Disable consumer features", tr = "Tüketici özelliklerini kapat" }
+description = { en = "Stops Windows from silently installing promoted apps and reduces app suggestions.", tr = "Windows'un tanıtılan uygulamaları sessizce kurmasını engeller ve uygulama önerilerini azaltır." }
+source = "https://learn.microsoft.com/en-us/windows/client-management/mdm/policy-csp-experience"
+
+[[tweak.action]]
+type = "registry"
+key = "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\CloudContent"
+name = "DisableWindowsConsumerFeatures"
+kind = "dword"
+data = "1"
+
+[[tweak]]
+id = "win-delivery-optimization"
+category = "system"
+risk = "safe"
+name = { en = "Disable Delivery Optimization", tr = "Teslim İyileştirme'yi kapat" }
+description = { en = "Stops Windows from using your bandwidth to upload updates to other PCs.", tr = "Windows'un bant genişliğinizi diğer bilgisayarlara güncelleme yüklemek için kullanmasını durdurur." }
+source = "https://learn.microsoft.com/en-us/windows/deployment/do/waas-delivery-optimization-reference"
+
+[[tweak.action]]
+type = "registry"
+key = "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\DeliveryOptimization"
+name = "DODownloadMode"
+kind = "dword"
+data = "0"
+
+[[tweak]]
+id = "win-wpbt"
+category = "system"
+risk = "safe"
+name = { en = "Disable WPBT", tr = "WPBT'yi kapat" }
+description = { en = "Prevents the PC vendor from running programs from firmware at boot (Windows Platform Binary Table).", tr = "Bilgisayar üreticisinin açılışta donanım yazılımından program çalıştırmasını engeller (Windows Platform Binary Table)." }
+source = "https://winutil.christitus.com/code-reference/tweaks/essential-tweaks/wpbt/"
+
+[[tweak.action]]
+type = "registry"
+key = "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager"
+name = "DisableWpbtExecution"
+kind = "dword"
+data = "1"
+
+[[tweak]]
+id = "win-device-metadata"
+category = "bloat"
+risk = "safe"
+name = { en = "Block device companion apps", tr = "Cihaz eşlik uygulamalarını engelle" }
+description = { en = "Prevents extra software and ads from being downloaded when you plug in a device.", tr = "Bir cihaz taktığınızda ek yazılım ve reklam indirilmesini engeller." }
+source = "https://learn.microsoft.com/en-us/windows/client-management/mdm/policy-csp-deviceinstallation"
+
+[[tweak.action]]
+type = "registry"
+key = "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\Device Metadata"
+name = "PreventDeviceMetadataFromNetwork"
+kind = "dword"
+data = "1"
+
+[[tweak]]
+id = "win-background-apps"
+category = "system"
+risk = "moderate"
+name = { en = "Disable background apps", tr = "Arka plan uygulamalarını kapat" }
+description = { en = "Stops Microsoft Store apps from running in the background. Some apps may stop sending notifications.", tr = "Microsoft Store uygulamalarının arka planda çalışmasını durdurur. Bazı uygulamalar bildirim göndermeyi bırakabilir." }
+source = "https://learn.microsoft.com/en-us/windows/client-management/mdm/policy-csp-privacy"
+
+[[tweak.action]]
+type = "registry"
+key = "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\BackgroundAccessApplications"
+name = "GlobalUserDisabled"
+kind = "dword"
+data = "1"
+
+[[tweak]]
+id = "win-storage-sense"
+category = "system"
+risk = "moderate"
+name = { en = "Disable Storage Sense", tr = "Depolama Algısı'nı kapat" }
+description = { en = "Stops Windows from automatically deleting temporary files and Recycle Bin contents.", tr = "Windows'un geçici dosyaları ve Geri Dönüşüm Kutusu içeriğini otomatik silmesini durdurur." }
+source = "https://learn.microsoft.com/en-us/windows/client-management/mdm/policy-csp-storage"
+
+[[tweak.action]]
+type = "registry"
+key = "HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\StorageSense\\Parameters\\StoragePolicy"
+name = "01"
+kind = "dword"
+data = "0"
+
+[[tweak]]
+id = "win-services-manual"
+category = "system"
+risk = "advanced"
+name = { en = "Trim background services", tr = "Arka plan servislerini azalt" }
+description = { en = "Disables Offline Files, Connected User Experiences (telemetry) and Internet Connection Sharing, and sets the maps and storage services to manual.", tr = "Çevrimdışı Dosyalar, Bağlı Kullanıcı Deneyimleri (telemetri) ve İnternet Bağlantısı Paylaşımı servislerini kapatır; harita ve depolama servislerini elle başlatmaya alır." }
+source = "https://learn.microsoft.com/en-us/windows-server/security/windows-services/security-guidelines-for-disabling-system-services-in-windows-server"
+
+[[tweak.action]]
+type = "service"
+name = "CscService"
+start = "disabled"
+
+[[tweak.action]]
+type = "service"
+name = "DiagTrack"
+start = "disabled"
+
+[[tweak.action]]
+type = "service"
+name = "MapsBroker"
+start = "manual"
+
+[[tweak.action]]
+type = "service"
+name = "StorSvc"
+start = "manual"
+
+[[tweak.action]]
+type = "service"
+name = "SharedAccess"
+start = "disabled"
+
+[[tweak]]
+id = "win-end-task"
+category = "interface"
+risk = "safe"
+name = { en = "Add End Task to the taskbar", tr = "Görev çubuğuna Görevi Sonlandır ekle" }
+description = { en = "Adds an End Task option when you right-click an app on the taskbar.", tr = "Görev çubuğunda bir uygulamaya sağ tıkladığınızda Görevi Sonlandır seçeneği ekler." }
+source = "https://winutil.christitus.com/code-reference/tweaks/essential-tweaks/endtaskontaskbar/"
+
+windows_min_build = 22631
+[[tweak.action]]
+type = "registry"
+key = "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced\\TaskbarDeveloperSettings"
+name = "TaskbarEndTask"
+kind = "dword"
+data = "1"
+
+[[tweak]]
+id = "win-explorer-home-gallery"
+category = "interface"
+risk = "safe"
+name = { en = "Remove Home and Gallery from Explorer", tr = "Gezgin'den Giriş ve Galeri'yi kaldır" }
+description = { en = "Hides Home and Gallery in File Explorer and opens This PC by default.", tr = "Dosya Gezgini'nde Giriş ve Galeri'yi gizler, varsayılan olarak Bu Bilgisayar'ı açar." }
+source = "https://winutil.christitus.com/code-reference/tweaks/z--advanced-tweaks---caution/removehomeandgallery/"
+
+windows_min_build = 22621
+[[tweak.action]]
+type = "registry"
+key = "HKCU\\Software\\Classes\\CLSID\\{f874310e-b6b7-47dc-bc84-b9e6b38f5903}"
+name = "System.IsPinnedToNameSpaceTree"
+kind = "dword"
+data = "0"
+
+[[tweak.action]]
+type = "registry"
+key = "HKCU\\Software\\Classes\\CLSID\\{e88865ea-0e1c-4e20-9aa6-edcd0212c87c}"
+name = "System.IsPinnedToNameSpaceTree"
+kind = "dword"
+data = "0"
+
+[[tweak.action]]
+type = "registry"
+key = "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced"
+name = "LaunchTo"
+kind = "dword"
+data = "1"
+
+[[tweak]]
+id = "win-edge-debloat"
+category = "privacy"
+risk = "safe"
+name = { en = "Debloat Microsoft Edge", tr = "Microsoft Edge'i sadeleştir" }
+description = { en = "Turns off Edge telemetry, shopping, rewards, recommendations, first-run prompts and other annoyances via policies.", tr = "İlkeler aracılığıyla Edge telemetrisini, alışveriş, ödül ve öneri özelliklerini, ilk çalıştırma ekranlarını ve diğer rahatsız edici öğeleri kapatır." }
+source = "https://learn.microsoft.com/en-us/deployedge/microsoft-edge-policies"
+
+[[tweak.action]]
+type = "registry"
+key = "HKLM\\SOFTWARE\\Policies\\Microsoft\\EdgeUpdate"
+name = "CreateDesktopShortcutDefault"
+kind = "dword"
+data = "0"
+
+[[tweak.action]]
+type = "registry"
+key = "HKLM\\SOFTWARE\\Policies\\Microsoft\\Edge"
+name = "PersonalizationReportingEnabled"
+kind = "dword"
+data = "0"
+
+[[tweak.action]]
+type = "registry"
+key = "HKLM\\SOFTWARE\\Policies\\Microsoft\\Edge\\ExtensionInstallBlocklist"
+name = "1"
+kind = "string"
+data = "ofefcgjbeghpigppfmkologfjadafddi"
+
+[[tweak.action]]
+type = "registry"
+key = "HKLM\\SOFTWARE\\Policies\\Microsoft\\Edge"
+name = "ShowRecommendationsEnabled"
+kind = "dword"
+data = "0"
+
+[[tweak.action]]
+type = "registry"
+key = "HKLM\\SOFTWARE\\Policies\\Microsoft\\Edge"
+name = "HideFirstRunExperience"
+kind = "dword"
+data = "1"
+
+[[tweak.action]]
+type = "registry"
+key = "HKLM\\SOFTWARE\\Policies\\Microsoft\\Edge"
+name = "UserFeedbackAllowed"
+kind = "dword"
+data = "0"
+
+[[tweak.action]]
+type = "registry"
+key = "HKLM\\SOFTWARE\\Policies\\Microsoft\\Edge"
+name = "ConfigureDoNotTrack"
+kind = "dword"
+data = "1"
+
+[[tweak.action]]
+type = "registry"
+key = "HKLM\\SOFTWARE\\Policies\\Microsoft\\Edge"
+name = "AlternateErrorPagesEnabled"
+kind = "dword"
+data = "0"
+
+[[tweak.action]]
+type = "registry"
+key = "HKLM\\SOFTWARE\\Policies\\Microsoft\\Edge"
+name = "EdgeCollectionsEnabled"
+kind = "dword"
+data = "0"
+
+[[tweak.action]]
+type = "registry"
+key = "HKLM\\SOFTWARE\\Policies\\Microsoft\\Edge"
+name = "EdgeShoppingAssistantEnabled"
+kind = "dword"
+data = "0"
+
+[[tweak.action]]
+type = "registry"
+key = "HKLM\\SOFTWARE\\Policies\\Microsoft\\Edge"
+name = "MicrosoftEdgeInsiderPromotionEnabled"
+kind = "dword"
+data = "0"
+
+[[tweak.action]]
+type = "registry"
+key = "HKLM\\SOFTWARE\\Policies\\Microsoft\\Edge"
+name = "ShowMicrosoftRewards"
+kind = "dword"
+data = "0"
+
+[[tweak.action]]
+type = "registry"
+key = "HKLM\\SOFTWARE\\Policies\\Microsoft\\Edge"
+name = "WebWidgetAllowed"
+kind = "dword"
+data = "0"
+
+[[tweak.action]]
+type = "registry"
+key = "HKLM\\SOFTWARE\\Policies\\Microsoft\\Edge"
+name = "DiagnosticData"
+kind = "dword"
+data = "0"
+
+[[tweak.action]]
+type = "registry"
+key = "HKLM\\SOFTWARE\\Policies\\Microsoft\\Edge"
+name = "EdgeAssetDeliveryServiceEnabled"
+kind = "dword"
+data = "0"
+
+[[tweak.action]]
+type = "registry"
+key = "HKLM\\SOFTWARE\\Policies\\Microsoft\\Edge"
+name = "WalletDonationEnabled"
+kind = "dword"
+data = "0"
+
+[[tweak.action]]
+type = "registry"
+key = "HKLM\\SOFTWARE\\Policies\\Microsoft\\Edge"
+name = "DefaultBrowserSettingsCampaignEnabled"
+kind = "dword"
+data = "0"
+
+[[tweak]]
+id = "win-brave-debloat"
+category = "privacy"
+risk = "safe"
+name = { en = "Debloat Brave", tr = "Brave'i sadeleştir" }
+description = { en = "Turns off Brave Rewards, Wallet, VPN, Leo AI, News, Talk, usage pings and metrics via policies.", tr = "İlkeler aracılığıyla Brave Rewards, Cüzdan, VPN, Leo AI, Haberler, Talk, kullanım bildirimleri ve ölçümleri kapatır." }
+source = "https://github.com/brave/brave-core/tree/master/components/policy/resources/templates/policy_definitions/BraveSoftware"
+
+[[tweak.action]]
+type = "registry"
+key = "HKLM\\SOFTWARE\\Policies\\BraveSoftware\\Brave"
+name = "BraveRewardsDisabled"
+kind = "dword"
+data = "1"
+
+[[tweak.action]]
+type = "registry"
+key = "HKLM\\SOFTWARE\\Policies\\BraveSoftware\\Brave"
+name = "BraveWalletDisabled"
+kind = "dword"
+data = "1"
+
+[[tweak.action]]
+type = "registry"
+key = "HKLM\\SOFTWARE\\Policies\\BraveSoftware\\Brave"
+name = "BraveVPNDisabled"
+kind = "dword"
+data = "1"
+
+[[tweak.action]]
+type = "registry"
+key = "HKLM\\SOFTWARE\\Policies\\BraveSoftware\\Brave"
+name = "BraveAIChatEnabled"
+kind = "dword"
+data = "0"
+
+[[tweak.action]]
+type = "registry"
+key = "HKLM\\SOFTWARE\\Policies\\BraveSoftware\\Brave"
+name = "BraveStatsPingEnabled"
+kind = "dword"
+data = "0"
+
+[[tweak.action]]
+type = "registry"
+key = "HKLM\\SOFTWARE\\Policies\\BraveSoftware\\Brave"
+name = "BraveNewsDisabled"
+kind = "dword"
+data = "1"
+
+[[tweak.action]]
+type = "registry"
+key = "HKLM\\SOFTWARE\\Policies\\BraveSoftware\\Brave"
+name = "BraveTalkDisabled"
+kind = "dword"
+data = "1"
+
+[[tweak.action]]
+type = "registry"
+key = "HKLM\\SOFTWARE\\Policies\\BraveSoftware\\Brave"
+name = "TorDisabled"
+kind = "dword"
+data = "1"
+
+[[tweak.action]]
+type = "registry"
+key = "HKLM\\SOFTWARE\\Policies\\BraveSoftware\\Brave"
+name = "BraveP3AEnabled"
+kind = "dword"
+data = "0"
+
+[[tweak.action]]
+type = "registry"
+key = "HKLM\\SOFTWARE\\Policies\\BraveSoftware\\Brave"
+name = "UrlKeyedAnonymizedDataCollectionEnabled"
+kind = "dword"
+data = "0"
+
+[[tweak.action]]
+type = "registry"
+key = "HKLM\\SOFTWARE\\Policies\\BraveSoftware\\Brave"
+name = "SafeBrowsingExtendedReportingEnabled"
+kind = "dword"
+data = "0"
+
+[[tweak.action]]
+type = "registry"
+key = "HKLM\\SOFTWARE\\Policies\\BraveSoftware\\Brave"
+name = "MetricsReportingEnabled"
+kind = "dword"
+data = "0"
+
+[[tweak]]
+id = "win-ai"
+category = "privacy"
+risk = "moderate"
+name = { en = "Disable Windows AI features", tr = "Windows yapay zekâ özelliklerini kapat" }
+description = { en = "Turns off Copilot, Recall snapshots and Notepad AI features via policies, and hides the AI settings page.", tr = "İlkeler aracılığıyla Copilot'u, Recall anlık görüntülerini ve Not Defteri yapay zekâ özelliklerini kapatır, yapay zekâ ayarlar sayfasını gizler." }
+source = "https://learn.microsoft.com/en-us/windows/client-management/mdm/policy-csp-windowsai"
+
+[[tweak.action]]
+type = "registry"
+key = "HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer"
+name = "SettingsPageVisibility"
+kind = "string"
+data = "hide:aicomponents"
+
+[[tweak.action]]
+type = "registry"
+key = "HKLM\\SOFTWARE\\Policies\\WindowsNotepad"
+name = "DisableAIFeatures"
+kind = "dword"
+data = "1"
+
+[[tweak.action]]
+type = "registry"
+key = "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsAI"
+name = "DisableAIDataAnalysis"
+kind = "dword"
+data = "1"
+
+[[tweak.action]]
+type = "registry"
+key = "HKCU\\Software\\Policies\\Microsoft\\Windows\\WindowsAI"
+name = "DisableAIDataAnalysis"
+kind = "dword"
+data = "1"
+
+[[tweak.action]]
+type = "registry"
+key = "HKCU\\Software\\Policies\\Microsoft\\Windows\\WindowsCopilot"
+name = "TurnOffWindowsCopilot"
+kind = "dword"
+data = "1"
+
+[[tweak]]
+id = "win-driver-autoinstall"
+category = "system"
+risk = "advanced"
+name = { en = "Block automatic vendor software installs", tr = "Otomatik üretici yazılımı kurulumunu engelle" }
+description = { en = "Stops Windows from downloading drivers and companion software (e.g. Razer, Logitech) automatically. You install drivers yourself.", tr = "Windows'un sürücüleri ve eşlik yazılımlarını (ör. Razer, Logitech) otomatik indirmesini durdurur. Sürücüleri kendiniz kurarsınız." }
+source = "https://learn.microsoft.com/en-us/windows/client-management/mdm/policy-csp-admx-devicesetup"
+
+[[tweak.action]]
+type = "registry"
+key = "HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\DriverSearching"
+name = "SearchOrderConfig"
+kind = "dword"
+data = "0"
+
+[[tweak.action]]
+type = "registry"
+key = "HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Device Installer"
+name = "DisableCoInstallers"
+kind = "dword"
+data = "1"
+
+[[tweak]]
+id = "win-bing-search"
+category = "privacy"
+risk = "safe"
+name = { en = "Disable Bing in Start search", tr = "Başlat aramasında Bing'i kapat" }
+description = { en = "Keeps Start menu searches on your PC instead of sending them to Bing.", tr = "Başlat menüsü aramalarının Bing'e gönderilmesini engeller; arama yalnızca bilgisayarınızda yapılır." }
+source = "https://winutil.christitus.com/code-reference/tweaks/customize-preferences/bingsearch/"
+
+[[tweak.action]]
+type = "registry"
+key = "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Search"
+name = "BingSearchEnabled"
+kind = "dword"
+data = "0"
+
+[[tweak]]
+id = "win-start-recommendations"
+category = "interface"
+risk = "moderate"
+name = { en = "Hide Start menu recommendations", tr = "Başlat menüsü önerilerini gizle" }
+description = { en = "Hides the Recommended section in the Start menu. Side effect: Windows Spotlight on the lock screen is turned off.", tr = "Başlat menüsündeki Önerilenler bölümünü gizler. Yan etki: kilit ekranındaki Windows Spotlight kapanır." }
+source = "https://learn.microsoft.com/en-us/windows/client-management/mdm/policy-csp-start"
+
+windows_min_build = 22000
+[[tweak.action]]
+type = "registry"
+key = "HKLM\\SOFTWARE\\Microsoft\\PolicyManager\\current\\device\\Start"
+name = "HideRecommendedSection"
+kind = "dword"
+data = "1"
+
+[[tweak.action]]
+type = "registry"
+key = "HKLM\\SOFTWARE\\Microsoft\\PolicyManager\\current\\device\\Education"
+name = "IsEducationEnvironment"
+kind = "dword"
+data = "1"
+
+[[tweak.action]]
+type = "registry"
+key = "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\Explorer"
+name = "HideRecommendedSection"
+kind = "dword"
+data = "1"
+
+[[tweak]]
+id = "win-show-extensions"
+category = "interface"
+risk = "safe"
+name = { en = "Show file extensions", tr = "Dosya uzantılarını göster" }
+description = { en = "Shows file extensions in File Explorer, which makes disguised files (e.g. photo.jpg.exe) easy to spot.", tr = "Dosya Gezgini'nde dosya uzantılarını gösterir; kılık değiştirmiş dosyaları (ör. foto.jpg.exe) fark etmeyi kolaylaştırır." }
+source = "https://support.microsoft.com/en-us/windows/common-file-name-extensions-in-windows-da4a4430-8e76-89c5-59f7-1cdbbc75cb01"
+
+[[tweak.action]]
+type = "registry"
+key = "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced"
+name = "HideFileExt"
+kind = "dword"
+data = "0"
+
+[[tweak]]
+id = "win-show-hidden"
+category = "interface"
+risk = "safe"
+name = { en = "Show hidden files", tr = "Gizli dosyaları göster" }
+description = { en = "Shows hidden files and folders in File Explorer.", tr = "Dosya Gezgini'nde gizli dosya ve klasörleri gösterir." }
+source = "https://support.microsoft.com/en-us/windows/view-hidden-files-and-folders-in-windows-97fbc472-c603-9d90-91d0-1166d1d9f4b5"
+
+[[tweak.action]]
+type = "registry"
+key = "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced"
+name = "Hidden"
+kind = "dword"
+data = "1"
+
+[[tweak]]
+id = "win-dark-mode"
+category = "interface"
+risk = "safe"
+name = { en = "Use dark theme", tr = "Koyu temayı kullan" }
+description = { en = "Switches Windows and apps to the dark theme.", tr = "Windows'u ve uygulamaları koyu temaya geçirir." }
+source = "https://support.microsoft.com/en-us/windows/change-colors-in-windows-d26ef4d6-819a-581c-1581-493cfcc005fe"
+
+[[tweak.action]]
+type = "registry"
+key = "HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize"
+name = "AppsUseLightTheme"
+kind = "dword"
+data = "0"
+
+[[tweak.action]]
+type = "registry"
+key = "HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize"
+name = "SystemUsesLightTheme"
+kind = "dword"
+data = "0"
+
+[[tweak]]
+id = "win-hide-taskbar-search"
+category = "interface"
+risk = "safe"
+name = { en = "Hide taskbar search", tr = "Görev çubuğu aramasını gizle" }
+description = { en = "Removes the search box or button from the taskbar.", tr = "Görev çubuğundaki arama kutusunu veya düğmesini kaldırır." }
+source = "https://learn.microsoft.com/en-us/windows/client-management/mdm/policy-csp-search"
+
+[[tweak.action]]
+type = "registry"
+key = "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Search"
+name = "SearchboxTaskbarMode"
+kind = "dword"
+data = "0"
+
+[[tweak]]
+id = "win-hide-task-view"
+category = "interface"
+risk = "safe"
+name = { en = "Hide Task View button", tr = "Görev Görünümü düğmesini gizle" }
+description = { en = "Removes the Task View button from the taskbar.", tr = "Görev çubuğundaki Görev Görünümü düğmesini kaldırır." }
+source = "https://learn.microsoft.com/en-us/windows/client-management/mdm/policy-csp-start"
+
+[[tweak.action]]
+type = "registry"
+key = "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced"
+name = "ShowTaskViewButton"
+kind = "dword"
+data = "0"
+
+[[tweak]]
+id = "win-long-paths"
+category = "system"
+risk = "safe"
+name = { en = "Enable long paths", tr = "Uzun dosya yollarını etkinleştir" }
+description = { en = "Allows file paths longer than 260 characters.", tr = "260 karakterden uzun dosya yollarına izin verir." }
+source = "https://learn.microsoft.com/en-us/windows/win32/fileio/maximum-file-path-limitation"
+
+[[tweak.action]]
+type = "registry"
+key = "HKLM\\SYSTEM\\CurrentControlSet\\Control\\FileSystem"
+name = "LongPathsEnabled"
+kind = "dword"
+data = "1"
+
+[[tweak]]
+id = "win-disable-lockscreen"
+category = "interface"
+risk = "moderate"
+name = { en = "Skip the lock screen", tr = "Kilit ekranını atla" }
+description = { en = "Goes straight to the sign-in screen on boot and wake. Your password is still required.", tr = "Açılışta ve uykudan uyanınca doğrudan oturum açma ekranına geçer. Parolanız yine sorulur." }
+source = "https://learn.microsoft.com/en-us/windows/client-management/mdm/policy-csp-admx-controlpaneldisplay"
+
+[[tweak.action]]
+type = "registry"
+key = "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\Personalization"
+name = "NoLockScreen"
+kind = "dword"
+data = "1"
+
+[[tweak]]
+id = "win-mouse-acceleration"
+category = "interface"
+risk = "safe"
+name = { en = "Disable mouse acceleration", tr = "Fare ivmesini kapat" }
+description = { en = "Makes the cursor move the same distance regardless of how fast you move the mouse.", tr = "İmlecin, fareyi ne kadar hızlı hareket ettirdiğinizden bağımsız olarak aynı mesafeyi gitmesini sağlar." }
+source = "https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-systemparametersinfoa"
+
+[[tweak.action]]
+type = "registry"
+key = "HKCU\\Control Panel\\Mouse"
+name = "MouseSpeed"
+kind = "string"
+data = "0"
+
+[[tweak.action]]
+type = "registry"
+key = "HKCU\\Control Panel\\Mouse"
+name = "MouseThreshold1"
+kind = "string"
+data = "0"
+
+[[tweak.action]]
+type = "registry"
+key = "HKCU\\Control Panel\\Mouse"
+name = "MouseThreshold2"
+kind = "string"
+data = "0"
+
+[[tweak]]
+id = "win-verbose-bsod"
+category = "system"
+risk = "safe"
+name = { en = "Detailed blue screen", tr = "Ayrıntılı mavi ekran" }
+description = { en = "Shows technical details instead of the sad face when Windows crashes.", tr = "Windows çöktüğünde üzgün surat yerine teknik ayrıntıları gösterir." }
+source = "https://winutil.christitus.com/code-reference/tweaks/customize-preferences/detailedbsod/"
+
+[[tweak.action]]
+type = "registry"
+key = "HKLM\\SYSTEM\\CurrentControlSet\\Control\\CrashControl"
+name = "DisplayParameters"
+kind = "dword"
+data = "1"
+
+[[tweak.action]]
+type = "registry"
+key = "HKLM\\SYSTEM\\CurrentControlSet\\Control\\CrashControl"
+name = "DisableEmoticon"
+kind = "dword"
+data = "1"
+
+[[tweak]]
+id = "win-remove-bing-copilot"
+category = "bloat"
+risk = "moderate"
+name = { en = "Remove Bing and Copilot apps", tr = "Bing ve Copilot uygulamalarını kaldır" }
+description = { en = "Removes the News, Weather, Bing Search, Start Experiences and Copilot apps. Cannot be undone; reinstall from the Microsoft Store if needed.", tr = "Haberler, Hava Durumu, Bing Arama, Start Experiences ve Copilot uygulamalarını kaldırır. Geri alınamaz; gerekirse Microsoft Store'dan yeniden kurulabilir." }
+source = "https://learn.microsoft.com/en-us/windows/client-management/manage-windows-copilot"
+
+[[tweak.action]]
+type = "appx"
+package = "Microsoft.BingNews"
+
+[[tweak.action]]
+type = "appx"
+package = "Microsoft.BingWeather"
+
+[[tweak.action]]
+type = "appx"
+package = "Microsoft.BingSearch"
+
+[[tweak.action]]
+type = "appx"
+package = "Microsoft.StartExperiencesApp"
+
+[[tweak.action]]
+type = "appx"
+package = "Microsoft.Copilot"
+
+[[tweak]]
+id = "win-remove-promo-apps"
+category = "bloat"
+risk = "moderate"
+name = { en = "Remove preinstalled Microsoft apps", tr = "Önceden yüklü Microsoft uygulamalarını kaldır" }
+description = { en = "Removes Feedback Hub, Get Help, Microsoft 365 hub, Clipchamp, To Do, Power Automate, Dev Home, Solitaire, Movies & TV, the new Outlook and Teams. Cannot be undone.", tr = "Geri Bildirim Merkezi, Yardım Al, Microsoft 365, Clipchamp, To Do, Power Automate, Dev Home, Solitaire, Filmler ve TV, yeni Outlook ve Teams uygulamalarını kaldırır. Geri alınamaz." }
+source = "https://learn.microsoft.com/en-us/windows/application-management/remove-provisioned-apps-during-update"
+
+[[tweak.action]]
+type = "appx"
+package = "Microsoft.WindowsFeedbackHub"
+
+[[tweak.action]]
+type = "appx"
+package = "Microsoft.GetHelp"
+
+[[tweak.action]]
+type = "appx"
+package = "Microsoft.MicrosoftOfficeHub"
+
+[[tweak.action]]
+type = "appx"
+package = "Clipchamp.Clipchamp"
+
+[[tweak.action]]
+type = "appx"
+package = "Microsoft.Todos"
+
+[[tweak.action]]
+type = "appx"
+package = "Microsoft.PowerAutomateDesktop"
+
+[[tweak.action]]
+type = "appx"
+package = "Microsoft.Windows.DevHome"
+
+[[tweak.action]]
+type = "appx"
+package = "Microsoft.MicrosoftSolitaireCollection"
+
+[[tweak.action]]
+type = "appx"
+package = "Microsoft.ZuneVideo"
+
+[[tweak.action]]
+type = "appx"
+package = "Microsoft.OutlookForWindows"
+
+[[tweak.action]]
+type = "appx"
+package = "MSTeams"
+
+[[tweak]]
+id = "win-remove-xbox-apps"
+category = "bloat"
+risk = "advanced"
+name = { en = "Remove Xbox apps", tr = "Xbox uygulamalarını kaldır" }
+description = { en = "Removes the Xbox app, Game Bar and Xbox overlays. Some PC Game Pass and Microsoft Store games need them. Cannot be undone.", tr = "Xbox uygulamasını, Game Bar'ı ve Xbox katmanlarını kaldırır. Bazı PC Game Pass ve Microsoft Store oyunları bunlara ihtiyaç duyar. Geri alınamaz." }
+source = "https://learn.microsoft.com/en-us/windows/application-management/remove-provisioned-apps-during-update"
+
+[[tweak.action]]
+type = "appx"
+package = "Microsoft.GamingApp"
+
+[[tweak.action]]
+type = "appx"
+package = "Microsoft.XboxGamingOverlay"
+
+[[tweak.action]]
+type = "appx"
+package = "Microsoft.XboxSpeechToTextOverlay"
+
+[[tweak.action]]
+type = "appx"
+package = "Microsoft.Xbox.TCUI"
+
+[[tweak.action]]
+type = "appx"
+package = "Microsoft.XboxIdentityProvider"
+
+# --- Added by Skadi ---------------------------------------------------------------------------
+
+[[tweak]]
+id = "win-widgets"
+category = "bloat"
+risk = "safe"
+name = { en = "Disable Widgets and News", tr = "Widget'ları ve Haberler'i kapat" }
+description = { en = "Turns off the Widgets board and its news feed through policy.", tr = "Widget panosunu ve haber akışını ilke yoluyla kapatır." }
+source = "https://learn.microsoft.com/en-us/windows/client-management/mdm/policy-csp-newsandinterests"
+
+[[tweak.action]]
+type = "registry"
+key = 'HKLM\SOFTWARE\Policies\Microsoft\Dsh'
+name = "AllowNewsAndInterests"
+kind = "dword"
+data = "0"
+
+[[tweak]]
+id = "win-classic-context-menu"
+category = "interface"
+risk = "safe"
+name = { en = "Classic right-click menu", tr = "Klasik sağ tık menüsü" }
+description = { en = "Restores the full right-click menu without 'Show more options'. Takes effect after Explorer restarts or you sign in again.", tr = "Sağ tık menüsünü 'Daha fazla seçenek göster' olmadan tam haliyle getirir. Gezgin yeniden başlayınca ya da tekrar oturum açınca etkinleşir." }
+source = "https://winutil.christitus.com/code-reference/tweaks/z--advanced-tweaks---caution/rightclickmenu/"
+
+windows_min_build = 22000
+[[tweak.action]]
+type = "registry"
+key = 'HKCU\Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}\InprocServer32'
+name = ""
+kind = "string"
+data = ""
+
+[[tweak]]
+id = "win-onedrive"
+category = "bloat"
+risk = "moderate"
+name = { en = "Disable OneDrive", tr = "OneDrive'ı devre dışı bırak" }
+description = { en = "Stops OneDrive from syncing files through policy. OneDrive stays installed and syncing returns when this is undone.", tr = "OneDrive'ın dosya eşitlemesini ilke yoluyla durdurur. OneDrive kurulu kalır; geri alındığında eşitleme geri gelir." }
+source = "https://learn.microsoft.com/en-us/windows/client-management/mdm/policy-csp-system#disableonedrivefilesync"
+
+[[tweak.action]]
+type = "registry"
+key = 'HKLM\SOFTWARE\Policies\Microsoft\Windows\OneDrive'
+name = "DisableFileSyncNGSC"
+kind = "dword"
+data = "1"
+
+[[tweak]]
+id = "win-update-defer-features"
+category = "system"
+risk = "moderate"
+name = { en = "Defer feature updates by a year", tr = "Özellik güncellemelerini bir yıl ertele" }
+description = { en = "Delays new Windows versions by 365 days while security updates keep arriving. Works on Pro, Enterprise and Education, not Home.", tr = "Güvenlik güncellemeleri gelmeye devam ederken yeni Windows sürümlerini 365 gün geciktirir. Pro, Enterprise ve Education'da çalışır, Home'da çalışmaz." }
+source = "https://learn.microsoft.com/en-us/windows/deployment/update/waas-configure-wufb"
+
+requires_pro = true
+[[tweak.action]]
+type = "registry"
+key = 'HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate'
+name = "DeferFeatureUpdates"
+kind = "dword"
+data = "1"
+
+[[tweak.action]]
+type = "registry"
+key = 'HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate'
+name = "DeferFeatureUpdatesPeriodInDays"
+kind = "dword"
+data = "365"
+
+[[tweak]]
+id = "win-update-no-drivers"
+category = "system"
+risk = "moderate"
+name = { en = "Exclude drivers from Windows Update", tr = "Sürücüleri Windows Update'ten çıkar" }
+description = { en = "Stops Windows Update from replacing drivers you installed yourself. You update drivers manually.", tr = "Windows Update'in kendi kurduğunuz sürücüleri değiştirmesini engeller. Sürücüleri kendiniz güncellersiniz." }
+source = "https://learn.microsoft.com/en-us/windows/deployment/update/waas-configure-wufb"
+
+requires_pro = true
+[[tweak.action]]
+type = "registry"
+key = 'HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate'
+name = "ExcludeWUDriversInQualityUpdate"
+kind = "dword"
+data = "1"
+
+[[tweak]]
+id = "win-ublock-lite"
+category = "privacy"
+risk = "safe"
+name = { en = "Install uBlock Origin Lite in Chrome and Brave", tr = "Chrome ve Brave'e uBlock Origin Lite kur" }
+description = { en = "Installs the uBlock Origin Lite content blocker through browser policy. It cannot be removed from the browser until this is undone.", tr = "uBlock Origin Lite içerik engelleyicisini tarayıcı ilkesiyle kurar. Geri alınana kadar tarayıcıdan kaldırılamaz." }
+source = "https://chromium.googlesource.com/chromium/src/+/main/components/policy/resources/templates/policy_definitions/Extensions/ExtensionInstallForcelist.yaml"
+
+[[tweak.action]]
+type = "registry"
+key = 'HKLM\SOFTWARE\Policies\Google\Chrome\ExtensionInstallForcelist'
+name = "1"
+kind = "string"
+data = "ddkjiahejlhfcafbddmgiahcphecmpfh;https://clients2.google.com/service/update2/crx"
+
+[[tweak.action]]
+type = "registry"
+key = 'HKLM\SOFTWARE\Policies\BraveSoftware\Brave\ExtensionInstallForcelist'
+name = "1"
+kind = "string"
+data = "ddkjiahejlhfcafbddmgiahcphecmpfh;https://clients2.google.com/service/update2/crx"
+
+[[tweak]]
+id = "win-wsl"
+category = "system"
+risk = "safe"
+name = { en = "Enable WSL", tr = "WSL'i etkinleştir" }
+description = { en = "Turns on the Windows Subsystem for Linux and the Virtual Machine Platform. A restart is needed.", tr = "Linux için Windows Alt Sistemi'ni ve Sanal Makine Platformu'nu açar. Yeniden başlatma gerekir." }
+source = "https://learn.microsoft.com/en-us/windows/wsl/install-manual"
+
+[[tweak.action]]
+type = "windows-feature"
+name = "Microsoft-Windows-Subsystem-Linux"
+
+[[tweak.action]]
+type = "windows-feature"
+name = "VirtualMachinePlatform"
+
+[[tweak]]
+id = "win-hyperv"
+category = "system"
+risk = "moderate"
+name = { en = "Enable Hyper-V", tr = "Hyper-V'yi etkinleştir" }
+description = { en = "Turns on Hyper-V. Some other virtualization apps and emulators run slower with it. Not available on Home. A restart is needed.", tr = "Hyper-V'yi açar. Bazı sanallaştırma uygulamaları ve emülatörler onunla daha yavaş çalışır. Home'da yoktur. Yeniden başlatma gerekir." }
+source = "https://learn.microsoft.com/en-us/windows-server/virtualization/hyper-v/get-started/install-hyper-v"
+
+requires_pro = true
+[[tweak.action]]
+type = "windows-feature"
+name = "Microsoft-Hyper-V-All"
+
+[[tweak]]
+id = "win-netfx3"
+category = "system"
+risk = "safe"
+name = { en = "Enable .NET Framework 3.5", tr = ".NET Framework 3.5'i etkinleştir" }
+description = { en = "Turns on .NET Framework 3.5, which some older apps and games need.", tr = "Bazı eski uygulama ve oyunların ihtiyaç duyduğu .NET Framework 3.5'i açar." }
+source = "https://learn.microsoft.com/en-us/dotnet/framework/install/dotnet-35-windows"
+
+[[tweak.action]]
+type = "windows-feature"
+name = "NetFx3"
+
+[[tweak]]
+id = "win-sandbox"
+category = "system"
+risk = "safe"
+name = { en = "Enable Windows Sandbox", tr = "Windows Sandbox'ı etkinleştir" }
+description = { en = "Turns on Windows Sandbox for running untrusted programs in a disposable desktop. Pro and higher. A restart is needed.", tr = "Güvenilmeyen programları tek kullanımlık bir masaüstünde çalıştırmak için Windows Sandbox'ı açar. Pro ve üstü. Yeniden başlatma gerekir." }
+source = "https://learn.microsoft.com/en-us/windows/security/application-security/application-isolation/windows-sandbox/windows-sandbox-install"
+
+requires_pro = true
+[[tweak.action]]
+type = "windows-feature"
+name = "Containers-DisposableClientVM"
+
+# --- Security and privacy (phase 4) ---
+[[tweak]]
+id = "win-clipboard-history"
+category = "privacy"
+risk = "safe"
+name = { en = "Disable clipboard history and sync", tr = "Pano geçmişini ve eşitlemesini kapat" }
+description = { en = "Stops Windows from keeping a clipboard history and syncing it across devices.", tr = "Windows'un pano geçmişi tutmasını ve bunu cihazlar arasında eşitlemesini durdurur." }
+source = "https://learn.microsoft.com/en-us/windows/client-management/mdm/policy-csp-experience#allowclipboardhistory"
+
+[[tweak.action]]
+type = "registry"
+key = 'HKLM\SOFTWARE\Policies\Microsoft\Windows\System'
+name = "AllowClipboardHistory"
+kind = "dword"
+data = "0"
+
+[[tweak.action]]
+type = "registry"
+key = 'HKLM\SOFTWARE\Policies\Microsoft\Windows\System'
+name = "AllowCrossDeviceClipboard"
+kind = "dword"
+data = "0"
+
+[[tweak]]
+id = "win-recent-files"
+category = "privacy"
+risk = "moderate"
+name = { en = "Stop tracking recent files", tr = "Son kullanılan dosyaları izlemeyi durdur" }
+description = { en = "Stops Windows from keeping a list of recently opened documents in Start and File Explorer.", tr = "Windows'un Başlat'ta ve Dosya Gezgini'nde son açılan belgelerin listesini tutmasını durdurur." }
+source = "https://learn.microsoft.com/en-us/windows/configuration/start/policy-settings"
+
+[[tweak.action]]
+type = "registry"
+key = 'HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer'
+name = "NoRecentDocsHistory"
+kind = "dword"
+data = "1"
+
+[[tweak]]
+id = "win-error-reporting"
+category = "privacy"
+risk = "safe"
+name = { en = "Disable Windows Error Reporting", tr = "Windows Hata Raporlama'yı kapat" }
+description = { en = "Stops crash and error reports from being sent to Microsoft.", tr = "Çökme ve hata raporlarının Microsoft'a gönderilmesini durdurur." }
+source = "https://learn.microsoft.com/en-us/windows/win32/wer/wer-settings"
+
+[[tweak.action]]
+type = "registry"
+key = 'HKLM\SOFTWARE\Policies\Microsoft\Windows\Windows Error Reporting'
+name = "Disabled"
+kind = "dword"
+data = "1"
+
+[[tweak]]
+id = "win-llmnr-mdns"
+category = "security"
+risk = "moderate"
+name = { en = "Disable LLMNR and mDNS", tr = "LLMNR ve mDNS'i kapat" }
+description = { en = "Stops local name broadcasts that attackers on the same network can answer to steal credentials. Name resolution of other devices by name on the local network may stop working.", tr = "Aynı ağdaki saldırganların yanıtlayıp kimlik bilgisi çalabildiği yerel ad yayınlarını durdurur. Yerel ağdaki cihazlara adla ulaşmak çalışmayabilir." }
+source = "https://learn.microsoft.com/en-us/windows/client-management/mdm/policy-csp-admx-dnsclient#turn_off_multicast"
+
+[[tweak.action]]
+type = "registry"
+key = 'HKLM\SOFTWARE\Policies\Microsoft\Windows NT\DNSClient'
+name = "EnableMulticast"
+kind = "dword"
+data = "0"
+
+[[tweak.action]]
+type = "registry"
+key = 'HKLM\SYSTEM\CurrentControlSet\Services\Dnscache\Parameters'
+name = "EnableMDNS"
+kind = "dword"
+data = "0"
+
+[[tweak]]
+id = "win-smb1"
+category = "security"
+risk = "safe"
+name = { en = "Disable the SMBv1 server", tr = "SMBv1 sunucusunu kapat" }
+description = { en = "Turns off the outdated SMBv1 file sharing protocol exploited by WannaCry. A restart is needed.", tr = "WannaCry'ın kullandığı eskimiş SMBv1 dosya paylaşım protokolünü kapatır. Yeniden başlatma gerekir." }
+source = "https://learn.microsoft.com/en-us/windows-server/storage/file-server/troubleshoot/detect-enable-and-disable-smbv1-v2-v3"
+
+[[tweak.action]]
+type = "registry"
+key = 'HKLM\SYSTEM\CurrentControlSet\Services\LanmanServer\Parameters'
+name = "SMB1"
+kind = "dword"
+data = "0"
+
+[[tweak]]
+id = "win-old-tls"
+category = "security"
+risk = "advanced"
+name = { en = "Disable TLS 1.0 and 1.1", tr = "TLS 1.0 ve 1.1'i kapat" }
+description = { en = "Turns off outdated TLS versions system-wide. Very old servers and devices may stop connecting. A restart is needed.", tr = "Eskimiş TLS sürümlerini sistem genelinde kapatır. Çok eski sunucu ve cihazlara bağlanılamayabilir. Yeniden başlatma gerekir." }
+source = "https://learn.microsoft.com/en-us/windows-server/security/tls/tls-registry-settings"
+
+[[tweak.action]]
+type = "registry"
+key = 'HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.0\Client'
+name = "Enabled"
+kind = "dword"
+data = "0"
+
+[[tweak.action]]
+type = "registry"
+key = 'HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.0\Server'
+name = "Enabled"
+kind = "dword"
+data = "0"
+
+[[tweak.action]]
+type = "registry"
+key = 'HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.1\Client'
+name = "Enabled"
+kind = "dword"
+data = "0"
+
+[[tweak.action]]
+type = "registry"
+key = 'HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.1\Server'
+name = "Enabled"
+kind = "dword"
+data = "0"
+
+[[tweak]]
+id = "win-powershell-logging"
+category = "security"
+risk = "safe"
+name = { en = "Log PowerShell script blocks", tr = "PowerShell betik bloklarını günlüğe kaydet" }
+description = { en = "Records the PowerShell code that runs in the event log, which helps to detect malicious scripts.", tr = "Çalışan PowerShell kodunu olay günlüğüne kaydeder; kötü amaçlı betikleri fark etmeye yardımcı olur." }
+source = "https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_logging_windows"
+
+[[tweak.action]]
+type = "registry"
+key = 'HKLM\SOFTWARE\Policies\Microsoft\Windows\PowerShell\ScriptBlockLogging'
+name = "EnableScriptBlockLogging"
+kind = "dword"
+data = "1"
+
+[[tweak]]
+id = "win-autorun"
+category = "security"
+risk = "safe"
+name = { en = "Disable AutoRun and AutoPlay", tr = "Otomatik Çalıştır ve Otomatik Kullan'ı kapat" }
+description = { en = "Stops programs from starting automatically when a USB drive, disc or other media is connected.", tr = "USB bellek, disk ya da başka bir ortam takıldığında programların kendiliğinden başlamasını engeller." }
+source = "https://learn.microsoft.com/en-us/windows/win32/shell/autoplay-reg"
+
+[[tweak.action]]
+type = "registry"
+key = 'HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer'
+name = "NoDriveTypeAutoRun"
+kind = "dword"
+data = "255"
+
+[[tweak.action]]
+type = "registry"
+key = 'HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer'
+name = "NoAutorun"
+kind = "dword"
+data = "1"
+
+[[tweak]]
+id = "win-defender-asr"
+category = "security"
+risk = "moderate"
+name = { en = "Turn on Defender attack surface reduction rules", tr = "Defender saldırı yüzeyi azaltma kurallarını aç" }
+description = { en = "Blocks Office apps from creating child processes, scripts from launching downloaded programs, executable email content and credential theft from LSASS. Needs Microsoft Defender as the active antivirus.", tr = "Office uygulamalarının alt süreç başlatmasını, betiklerin indirilen programları çalıştırmasını, e-postadaki yürütülebilir içeriği ve LSASS'tan kimlik bilgisi çalınmasını engeller. Etkin virüsten koruma Microsoft Defender olmalıdır." }
+source = "https://learn.microsoft.com/en-us/defender-endpoint/attack-surface-reduction-rules-reference"
+
+[[tweak.action]]
+type = "registry"
+key = 'HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR'
+name = "ExploitGuard_ASR_Rules"
+kind = "dword"
+data = "1"
+
+[[tweak.action]]
+type = "registry"
+key = 'HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules'
+name = "D4F940AB-401B-4EFC-AADC-AD5F3C50688A"
+kind = "string"
+data = "1"
+
+[[tweak.action]]
+type = "registry"
+key = 'HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules'
+name = "D3E037E1-3EB8-44C8-A917-57927947596D"
+kind = "string"
+data = "1"
+
+[[tweak.action]]
+type = "registry"
+key = 'HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules'
+name = "BE9BA2D9-53EA-4CDC-84E5-9B1EEEE46550"
+kind = "string"
+data = "1"
+
+[[tweak.action]]
+type = "registry"
+key = 'HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules'
+name = "9E6C4E1F-7D60-472F-BA1A-A39EF669E4B2"
+kind = "string"
+data = "1"
+
+[[tweak]]
+id = "win-screen-lock"
+category = "security"
+risk = "safe"
+name = { en = "Lock the screen after 10 minutes", tr = "Ekranı 10 dakika sonra kilitle" }
+description = { en = "Turns on the screen saver after 10 minutes of inactivity and asks for the password when it ends.", tr = "10 dakika hareketsizlikten sonra ekran koruyucuyu açar ve sonunda parola ister." }
+source = "https://learn.microsoft.com/en-us/windows/client-management/mdm/policy-csp-admx-controlpaneldisplay#cpl_personalization_screensaverissecure"
+
+[[tweak.action]]
+type = "registry"
+key = 'HKCU\Control Panel\Desktop'
+name = "ScreenSaveActive"
+kind = "string"
+data = "1"
+
+[[tweak.action]]
+type = "registry"
+key = 'HKCU\Control Panel\Desktop'
+name = "ScreenSaverIsSecure"
+kind = "string"
+data = "1"
+
+[[tweak.action]]
+type = "registry"
+key = 'HKCU\Control Panel\Desktop'
+name = "ScreenSaveTimeOut"
+kind = "string"
+data = "600"
+
+[[tweak]]
+id = "win-office-macros"
+category = "security"
+risk = "safe"
+name = { en = "Block Office macros from the internet", tr = "İnternetten gelen Office makrolarını engelle" }
+description = { en = "Blocks macros in Word, Excel and PowerPoint files downloaded from the internet, a common malware entry point.", tr = "İnternetten indirilen Word, Excel ve PowerPoint dosyalarındaki makroları engeller; bunlar sık kullanılan bir zararlı yazılım giriş yoludur." }
+source = "https://learn.microsoft.com/en-us/microsoft-365-apps/security/internet-macros-blocked"
+
+[[tweak.action]]
+type = "registry"
+key = 'HKCU\Software\Policies\Microsoft\Office\16.0\Word\Security'
+name = "blockcontentexecutionfrominternet"
+kind = "dword"
+data = "1"
+
+[[tweak.action]]
+type = "registry"
+key = 'HKCU\Software\Policies\Microsoft\Office\16.0\Excel\Security'
+name = "blockcontentexecutionfrominternet"
+kind = "dword"
+data = "1"
+
+[[tweak.action]]
+type = "registry"
+key = 'HKCU\Software\Policies\Microsoft\Office\16.0\PowerPoint\Security'
+name = "blockcontentexecutionfrominternet"
+kind = "dword"
+data = "1"
+
+[[tweak]]
+id = "win-teredo"
+category = "security"
+risk = "moderate"
+name = { en = "Disable IPv6 tunnels (Teredo, 6to4, ISATAP)", tr = "IPv6 tünellerini kapat (Teredo, 6to4, ISATAP)" }
+description = { en = "Turns off legacy IPv6 tunnel adapters that can bypass firewalls. Native IPv6 keeps working. A restart is needed.", tr = "Güvenlik duvarlarını atlatabilen eski IPv6 tünel bağdaştırıcılarını kapatır. Doğrudan IPv6 çalışmaya devam eder. Yeniden başlatma gerekir." }
+source = "https://learn.microsoft.com/en-us/troubleshoot/windows-server/networking/configure-ipv6-in-windows"
+
+[[tweak.action]]
+type = "registry"
+key = 'HKLM\SYSTEM\CurrentControlSet\Services\Tcpip6\Parameters'
+name = "DisabledComponents"
+kind = "dword"
+data = "1"
+
+[[tweak]]
+id = "win-chrome-privacy"
+category = "privacy"
+risk = "safe"
+name = { en = "Reduce Chrome data collection", tr = "Chrome veri toplamasını azalt" }
+description = { en = "Turns off Chrome usage statistics, search suggestions sent while typing, URL-keyed data collection and extended Safe Browsing reports via policy.", tr = "İlkeler aracılığıyla Chrome kullanım istatistiklerini, yazarken gönderilen arama önerilerini, adrese bağlı veri toplamayı ve genişletilmiş Güvenli Tarama raporlarını kapatır." }
+source = "https://chromium.googlesource.com/chromium/src/+/main/components/policy/resources/templates/policy_definitions/Miscellaneous/MetricsReportingEnabled.yaml"
+
+[[tweak.action]]
+type = "registry"
+key = 'HKLM\SOFTWARE\Policies\Google\Chrome'
+name = "MetricsReportingEnabled"
+kind = "dword"
+data = "0"
+
+[[tweak.action]]
+type = "registry"
+key = 'HKLM\SOFTWARE\Policies\Google\Chrome'
+name = "SearchSuggestEnabled"
+kind = "dword"
+data = "0"
+
+[[tweak.action]]
+type = "registry"
+key = 'HKLM\SOFTWARE\Policies\Google\Chrome'
+name = "UrlKeyedAnonymizedDataCollectionEnabled"
+kind = "dword"
+data = "0"
+
+[[tweak.action]]
+type = "registry"
+key = 'HKLM\SOFTWARE\Policies\Google\Chrome'
+name = "SafeBrowsingExtendedReportingEnabled"
+kind = "dword"
+data = "0"
+
+[[tweak]]
+id = "win-firewall-on"
+category = "security"
+risk = "safe"
+name = { en = "Keep Windows Firewall on", tr = "Windows Güvenlik Duvarı'nı açık tut" }
+description = { en = "Enforces Windows Firewall on domain, private and public networks through policy so it cannot be switched off by accident.", tr = "Windows Güvenlik Duvarı'nı etki alanı, özel ve genel ağlarda ilkeyle zorunlu kılar; yanlışlıkla kapatılamaz." }
+source = "https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-gpfas/2100c552-7f37-4a7f-9fa0-2a864ab87212"
+
+[[tweak.action]]
+type = "registry"
+key = 'HKLM\SOFTWARE\Policies\Microsoft\WindowsFirewall\DomainProfile'
+name = "EnableFirewall"
+kind = "dword"
+data = "1"
+
+[[tweak.action]]
+type = "registry"
+key = 'HKLM\SOFTWARE\Policies\Microsoft\WindowsFirewall\PrivateProfile'
+name = "EnableFirewall"
+kind = "dword"
+data = "1"
+
+[[tweak.action]]
+type = "registry"
+key = 'HKLM\SOFTWARE\Policies\Microsoft\WindowsFirewall\PublicProfile'
+name = "EnableFirewall"
+kind = "dword"
+data = "1"
+
+[[tweak]]
+id = "win-ntp-cloudflare"
+category = "system"
+risk = "safe"
+name = { en = "Sync time with Cloudflare", tr = "Saati Cloudflare ile eşitle" }
+description = { en = "Uses time.cloudflare.com instead of time.windows.com. Applies after the Windows Time service restarts.", tr = "time.windows.com yerine time.cloudflare.com kullanır. Windows Saati servisi yeniden başlayınca etkinleşir." }
+source = "https://learn.microsoft.com/en-us/windows-server/networking/windows-time-service/windows-time-service-tools-and-settings"
+
+[[tweak.action]]
+type = "registry"
+key = 'HKLM\SYSTEM\CurrentControlSet\Services\W32Time\Parameters'
+name = "NtpServer"
+kind = "string"
+data = "time.cloudflare.com,0x9"
+
+[[tweak.action]]
+type = "registry"
+key = 'HKLM\SYSTEM\CurrentControlSet\Services\W32Time\Parameters'
+name = "Type"
+kind = "string"
+data = "NTP"
+
+[[tweak]]
+id = "win-game-mode"
+category = "system"
+risk = "safe"
+name = { en = "Turn on Game Mode", tr = "Oyun Modunu aç" }
+description = { en = "Lets Windows prioritise the game you are playing and pause background work such as update installs.", tr = "Windows'un oynadığınız oyuna öncelik vermesini ve güncelleme kurulumu gibi arka plan işlerini bekletmesini sağlar." }
+source = "https://www.microsoft.com/en-us/windows/windows-11-pc-gaming"
+
+[[tweak.action]]
+type = "registry"
+key = "HKCU\\Software\\Microsoft\\GameBar"
+name = "AutoGameModeEnabled"
+kind = "dword"
+data = "1"
+
+[[tweak]]
+id = "win-gpu-scheduling"
+category = "system"
+risk = "moderate"
+name = { en = "Hardware-accelerated GPU scheduling", tr = "Donanım hızlandırmalı GPU zamanlaması" }
+description = { en = "Lets the graphics card manage its own memory, which can lower latency in games. Needs a supported GPU driver and a restart.", tr = "Ekran kartının belleğini kendisinin yönetmesini sağlar; oyunlarda gecikmeyi azaltabilir. Destekleyen bir sürücü ve yeniden başlatma gerekir." }
+source = "https://www.microsoft.com/en-us/windows/windows-11-pc-gaming"
+windows_min_build = 19041
+
+[[tweak.action]]
+type = "registry"
+key = "HKLM\\SYSTEM\\CurrentControlSet\\Control\\GraphicsDrivers"
+name = "HwSchMode"
+kind = "dword"
+data = "2"
+
+[[tweak]]
+id = "win-visual-effects"
+category = "interface"
+risk = "safe"
+name = { en = "Reduce visual effects", tr = "Görsel efektleri azalt" }
+description = { en = "Turns off window and taskbar animations for a snappier feel on slower PCs. Takes effect after signing out.", tr = "Yavaş bilgisayarlarda daha hızlı bir his için pencere ve görev çubuğu animasyonlarını kapatır. Oturum kapatıp açınca etkinleşir." }
+source = "https://learn.microsoft.com/en-us/windows-server/remote/remote-desktop-services/remote-desktop-services-vdi-optimize-configuration"
+
+[[tweak.action]]
+type = "registry"
+key = "HKCU\\Control Panel\\Desktop\\WindowMetrics"
+name = "MinAnimate"
+kind = "string"
+data = "0"
+
+[[tweak.action]]
+type = "registry"
+key = "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced"
+name = "TaskbarAnimations"
+kind = "dword"
+data = "0"
+
+[[tweak]]
+id = "win-search-indexing"
+category = "system"
+risk = "moderate"
+name = { en = "Turn off search indexing", tr = "Arama dizinlemeyi kapat" }
+description = { en = "Stops the Windows Search service from indexing files in the background. Side effect: Start menu, File Explorer and Outlook searches become slower.", tr = "Windows Search hizmetinin dosyaları arka planda dizinlemesini durdurur. Yan etki: Başlat menüsü, Dosya Gezgini ve Outlook aramaları yavaşlar." }
+source = "https://learn.microsoft.com/en-us/windows-server/security/windows-services/security-guidelines-for-disabling-system-services-in-windows-server"
+
+[[tweak.action]]
+type = "service"
+name = "WSearch"
+start = "disabled"
+
+[[tweak]]
+id = "win-firefox-privacy"
+category = "privacy"
+risk = "safe"
+name = { en = "Firefox: no telemetry or studies, install uBlock Origin", tr = "Firefox: telemetri ve deneyler kapalı, uBlock Origin kurulu" }
+description = { en = "Sets Firefox enterprise policies: telemetry and studies off, and uBlock Origin installed from addons.mozilla.org.", tr = "Firefox kurumsal ilkelerini ayarlar: telemetri ve deneyler kapalı, uBlock Origin addons.mozilla.org'dan kurulur." }
+source = "https://mozilla.github.io/policy-templates/"
+
+[[tweak.action]]
+type = "registry"
+key = 'HKLM\SOFTWARE\Policies\Mozilla\Firefox'
+name = "DisableTelemetry"
+kind = "dword"
+data = "1"
+
+[[tweak.action]]
+type = "registry"
+key = 'HKLM\SOFTWARE\Policies\Mozilla\Firefox'
+name = "DisableFirefoxStudies"
+kind = "dword"
+data = "1"
+
+[[tweak.action]]
+type = "registry"
+key = 'HKLM\SOFTWARE\Policies\Mozilla\Firefox\Extensions\Install'
+name = "1"
+kind = "string"
+data = "https://addons.mozilla.org/firefox/downloads/latest/ublock-origin/latest.xpi"

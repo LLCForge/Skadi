@@ -1,0 +1,577 @@
+# Linux tweaks.
+#
+# Action types: systemd | package | gsettings
+# `distros` limits a tweak to distribution families (matched against ID and ID_LIKE in
+# /etc/os-release). Actions whose unit, package or setting does not exist are skipped.
+
+[[tweak]]
+id = "linux-popularity-contest"
+category = "privacy"
+risk = "safe"
+distros = ["debian"]
+name = { en = "Remove popularity-contest", tr = "popularity-contest'i kaldır" }
+description = { en = "Removes the Debian package survey that periodically reports which packages you have installed.", tr = "Kurulu paketlerinizi düzenli olarak bildiren Debian paket anketini kaldırır." }
+source = "https://manpages.debian.org/bookworm/popularity-contest/popularity-contest.8.en.html"
+
+[[tweak.action]]
+type = "package"
+packages = { apt = "popularity-contest" }
+
+[[tweak]]
+id = "linux-ubuntu-report"
+category = "privacy"
+risk = "safe"
+distros = ["ubuntu"]
+name = { en = "Remove ubuntu-report", tr = "ubuntu-report'u kaldır" }
+description = { en = "Removes the tool that sends hardware and installation information to Canonical.", tr = "Donanım ve kurulum bilgilerini Canonical'a gönderen aracı kaldırır." }
+source = "https://github.com/ubuntu/ubuntu-report"
+
+[[tweak.action]]
+type = "package"
+packages = { apt = "ubuntu-report" }
+
+[[tweak]]
+id = "linux-ubuntu-crash-reports"
+category = "privacy"
+risk = "safe"
+distros = ["ubuntu"]
+name = { en = "Disable crash reporting", tr = "Çökme raporlamasını kapat" }
+description = { en = "Disables Apport and Whoopsie, which collect crash data and offer to send it to Canonical.", tr = "Çökme verisi toplayıp Canonical'a göndermeyi öneren Apport ve Whoopsie servislerini kapatır." }
+source = "https://ubuntu.com/project/docs/contributors/debugging/apport/"
+
+[[tweak.action]]
+type = "systemd"
+unit = "apport.service"
+
+[[tweak.action]]
+type = "systemd"
+unit = "whoopsie.service"
+
+[[tweak]]
+id = "linux-ubuntu-news"
+category = "privacy"
+risk = "safe"
+distros = ["ubuntu"]
+name = { en = "Disable Ubuntu news and ads", tr = "Ubuntu haberlerini ve reklamlarını kapat" }
+description = { en = "Stops the login message and APT from fetching news and Ubuntu Pro promotions from Canonical servers.", tr = "Giriş mesajının ve APT'nin Canonical sunucularından haber ve Ubuntu Pro tanıtımları çekmesini durdurur." }
+source = "https://canonical.com/legal/motd"
+
+[[tweak.action]]
+type = "systemd"
+unit = "motd-news.timer"
+
+[[tweak.action]]
+type = "systemd"
+unit = "apt-news.service"
+mode = "mask"
+
+[[tweak]]
+id = "linux-fedora-abrt"
+category = "privacy"
+risk = "safe"
+distros = ["fedora"]
+name = { en = "Disable ABRT crash reporting", tr = "ABRT çökme raporlamasını kapat" }
+description = { en = "Disables the ABRT daemon that collects crash data for reporting.", tr = "Raporlama için çökme verisi toplayan ABRT servisini kapatır." }
+source = "https://abrt.readthedocs.io/en/latest/howitworks.html"
+
+[[tweak.action]]
+type = "systemd"
+unit = "abrtd.service"
+
+[[tweak]]
+id = "linux-gnome-reporting"
+category = "privacy"
+risk = "safe"
+name = { en = "Disable GNOME problem and usage reporting", tr = "GNOME sorun ve kullanım raporlamasını kapat" }
+description = { en = "Stops GNOME from offering to report technical problems and from sending software usage statistics.", tr = "GNOME'un teknik sorunları raporlamayı önermesini ve yazılım kullanım istatistikleri göndermesini durdurur." }
+source = "https://gitlab.gnome.org/GNOME/gsettings-desktop-schemas/-/blob/master/schemas/org.gnome.desktop.privacy.gschema.xml.in"
+
+[[tweak.action]]
+type = "gsettings"
+schema = "org.gnome.desktop.privacy"
+key = "report-technical-problems"
+value = "false"
+
+[[tweak.action]]
+type = "gsettings"
+schema = "org.gnome.desktop.privacy"
+key = "send-software-usage-stats"
+value = "false"
+
+[[tweak]]
+id = "linux-gnome-recent-files"
+category = "privacy"
+risk = "moderate"
+name = { en = "Stop tracking recent files", tr = "Son kullanılan dosyaları izlemeyi durdur" }
+description = { en = "Stops GNOME from keeping a list of recently opened files.", tr = "GNOME'un son açılan dosyaların listesini tutmasını durdurur." }
+source = "https://help.gnome.org/users/gnome-help/stable/privacy-history-recent-off.html"
+
+[[tweak.action]]
+type = "gsettings"
+schema = "org.gnome.desktop.privacy"
+key = "remember-recent-files"
+value = "false"
+
+[[tweak]]
+id = "linux-fedora-countme"
+category = "privacy"
+risk = "safe"
+distros = ["fedora"]
+name = { en = "Disable DNF countme", tr = "DNF countme'yi kapat" }
+description = { en = "Stops DNF from adding the weekly 'countme' flag that Fedora uses to estimate the number of installs.", tr = "DNF'nin, Fedora'nın kurulum sayısını tahmin etmek için kullandığı haftalık 'countme' işaretini eklemesini durdurur." }
+source = "https://dnf.readthedocs.io/en/latest/conf_ref.html"
+
+[[tweak.action]]
+type = "config-line"
+path = "/etc/dnf/dnf.conf"
+section = "main"
+key = "countme"
+value = "False"
+
+[[tweak]]
+id = "linux-kde-baloo"
+category = "system"
+risk = "moderate"
+name = { en = "Disable KDE file indexing (Baloo)", tr = "KDE dosya dizinlemesini kapat (Baloo)" }
+description = { en = "Stops Baloo from indexing file names and contents. Saves disk and CPU; file search in Dolphin and KRunner becomes slower.", tr = "Baloo'nun dosya adlarını ve içeriklerini dizinlemesini durdurur. Disk ve işlemciden tasarruf sağlar; Dolphin ve KRunner'da dosya araması yavaşlar." }
+source = "https://invent.kde.org/frameworks/baloo/-/blob/master/src/lib/baloosettings.kcfg"
+
+[[tweak.action]]
+type = "kconfig"
+file = "baloofilerc"
+group = "Basic Settings"
+key = "Indexing-Enabled"
+value = "false"
+
+[[tweak]]
+id = "linux-gnome-location"
+category = "privacy"
+risk = "safe"
+name = { en = "Turn off GNOME location services", tr = "GNOME konum servislerini kapat" }
+description = { en = "Stops apps from asking GNOME for your location.", tr = "Uygulamaların GNOME üzerinden konumunuzu almasını engeller." }
+source = "https://gitlab.gnome.org/GNOME/gsettings-desktop-schemas/-/blob/master/schemas/org.gnome.system.location.gschema.xml.in"
+
+[[tweak.action]]
+type = "gsettings"
+schema = "org.gnome.system.location"
+key = "enabled"
+value = "false"
+
+[[tweak]]
+id = "linux-gnome-hot-corner"
+category = "interface"
+risk = "safe"
+name = { en = "Disable the GNOME hot corner", tr = "GNOME sıcak köşesini kapat" }
+description = { en = "Stops the Activities overview from opening when the pointer touches the top-left corner.", tr = "İmleç sol üst köşeye değdiğinde Etkinlikler görünümünün açılmasını engeller." }
+source = "https://gitlab.gnome.org/GNOME/gsettings-desktop-schemas/-/blob/master/schemas/org.gnome.desktop.interface.gschema.xml.in"
+
+[[tweak.action]]
+type = "gsettings"
+schema = "org.gnome.desktop.interface"
+key = "enable-hot-corners"
+value = "false"
+
+[[tweak]]
+id = "linux-gnome-battery-percentage"
+category = "interface"
+risk = "safe"
+name = { en = "Show battery percentage in GNOME", tr = "GNOME'da pil yüzdesini göster" }
+description = { en = "Shows the battery percentage next to the battery icon in the top bar.", tr = "Üst çubukta pil simgesinin yanında pil yüzdesini gösterir." }
+source = "https://gitlab.gnome.org/GNOME/gsettings-desktop-schemas/-/blob/master/schemas/org.gnome.desktop.interface.gschema.xml.in"
+
+[[tweak.action]]
+type = "gsettings"
+schema = "org.gnome.desktop.interface"
+key = "show-battery-percentage"
+value = "true"
+
+[[tweak]]
+id = "linux-llmnr-mdns"
+category = "security"
+risk = "moderate"
+name = { en = "Disable LLMNR and mDNS in systemd-resolved", tr = "systemd-resolved'da LLMNR ve mDNS'i kapat" }
+description = { en = "Stops local name broadcasts that other machines on the network can answer. Restart systemd-resolved to apply.", tr = "Ağdaki diğer makinelerin yanıtlayabildiği yerel ad yayınlarını durdurur. Uygulamak için systemd-resolved yeniden başlatılmalıdır." }
+source = "https://www.freedesktop.org/software/systemd/man/latest/resolved.conf.html"
+
+[[tweak.action]]
+type = "config-line"
+path = "/etc/systemd/resolved.conf"
+section = "Resolve"
+key = "LLMNR"
+value = "no"
+
+[[tweak.action]]
+type = "config-line"
+path = "/etc/systemd/resolved.conf"
+section = "Resolve"
+key = "MulticastDNS"
+value = "no"
+
+[[tweak]]
+id = "linux-avahi"
+category = "security"
+risk = "moderate"
+name = { en = "Disable Avahi (mDNS/DNS-SD)", tr = "Avahi'yi kapat (mDNS/DNS-SD)" }
+description = { en = "Stops the service that announces this computer on the local network. Network printer and file share discovery may stop working.", tr = "Bu bilgisayarı yerel ağda duyuran servisi durdurur. Ağ yazıcısı ve dosya paylaşımı keşfi çalışmayabilir." }
+source = "https://manpages.debian.org/bookworm/avahi-daemon/avahi-daemon.8.en.html"
+
+[[tweak.action]]
+type = "systemd"
+unit = "avahi-daemon.service"
+mode = "mask"
+
+[[tweak.action]]
+type = "systemd"
+unit = "avahi-daemon.socket"
+mode = "mask"
+
+[[tweak]]
+id = "linux-gnome-screen-lock"
+category = "security"
+risk = "safe"
+name = { en = "Lock the GNOME screen after 5 minutes", tr = "GNOME ekranını 5 dakika sonra kilitle" }
+description = { en = "Blanks the screen after 5 minutes of inactivity and locks it.", tr = "5 dakika hareketsizlikten sonra ekranı karartır ve kilitler." }
+source = "https://gitlab.gnome.org/GNOME/gsettings-desktop-schemas/-/blob/master/schemas/org.gnome.desktop.screensaver.gschema.xml.in"
+
+[[tweak.action]]
+type = "gsettings"
+schema = "org.gnome.desktop.session"
+key = "idle-delay"
+value = "uint32 300"
+
+[[tweak.action]]
+type = "gsettings"
+schema = "org.gnome.desktop.screensaver"
+key = "lock-enabled"
+value = "true"
+
+[[tweak]]
+id = "linux-ntp-cloudflare"
+category = "system"
+risk = "safe"
+name = { en = "Sync time with Cloudflare", tr = "Saati Cloudflare ile eşitle" }
+description = { en = "Sets time.cloudflare.com as the systemd-timesyncd server. Restart systemd-timesyncd to apply.", tr = "systemd-timesyncd sunucusu olarak time.cloudflare.com'u ayarlar. Uygulamak için systemd-timesyncd yeniden başlatılmalıdır." }
+source = "https://www.freedesktop.org/software/systemd/man/latest/timesyncd.conf.html"
+
+[[tweak.action]]
+type = "config-line"
+path = "/etc/systemd/timesyncd.conf"
+section = "Time"
+key = "NTP"
+value = "time.cloudflare.com"
+
+[[tweak]]
+id = "linux-gnome-tracker"
+category = "privacy"
+risk = "moderate"
+name = { en = "Stop GNOME file indexing", tr = "GNOME dosya dizinlemesini durdur" }
+description = { en = "Tells GNOME's search indexer (Tracker) to stop reading your folders. Side effect: searching file contents in Files and Activities stops working.", tr = "GNOME'un arama dizinleyicisinin (Tracker) klasörlerinizi okumasını durdurur. Yan etki: Dosyalar ve Etkinlikler'de dosya içeriği araması çalışmaz." }
+source = "https://gitlab.gnome.org/GNOME/localsearch/-/blob/main/data/org.freedesktop.Tracker.Miner.Files.gschema.xml"
+
+[[tweak.action]]
+type = "gsettings"
+schema = "org.freedesktop.Tracker3.Miner.Files"
+key = "index-recursive-directories"
+value = "[]"
+
+[[tweak.action]]
+type = "gsettings"
+schema = "org.freedesktop.Tracker3.Miner.Files"
+key = "index-single-directories"
+value = "[]"
+
+[[tweak]]
+id = "linux-auto-updates-apt"
+category = "security"
+risk = "safe"
+name = { en = "Install security updates automatically (apt)", tr = "Güvenlik güncellemelerini otomatik kur (apt)" }
+description = { en = "Lets unattended-upgrades refresh the package lists and install security updates every day. Needs the unattended-upgrades package.", tr = "unattended-upgrades'in paket listelerini her gün yenilemesini ve güvenlik güncellemelerini kurmasını sağlar. unattended-upgrades paketi gerekir." }
+source = "https://github.com/mvo5/unattended-upgrades"
+
+[[tweak.action]]
+type = "managed-file"
+path = "/etc/apt/apt.conf.d/52skadi-auto-upgrades"
+requires = ["/etc/apt/apt.conf.d/50unattended-upgrades"]
+content = '''
+APT::Periodic::Update-Package-Lists "1";
+APT::Periodic::Unattended-Upgrade "1";
+'''
+
+[[tweak]]
+id = "linux-auto-updates-dnf5"
+category = "security"
+risk = "safe"
+name = { en = "Install updates automatically (dnf5)", tr = "Güncellemeleri otomatik kur (dnf5)" }
+description = { en = "Turns on dnf5-automatic so updates are downloaded and installed on a schedule. Needs the dnf5-plugin-automatic package.", tr = "Güncellemelerin düzenli olarak indirilip kurulması için dnf5-automatic'i açar. dnf5-plugin-automatic paketi gerekir." }
+source = "https://dnf5.readthedocs.io/en/latest/dnf5_plugins/automatic.8.html"
+
+[[tweak.action]]
+type = "managed-file"
+path = "/etc/dnf/automatic.conf.d/90-skadi.conf"
+content = '''
+[commands]
+apply_updates = yes
+'''
+
+[[tweak.action]]
+type = "systemd"
+unit = "dnf5-automatic.timer"
+mode = "enable"
+
+[[tweak]]
+id = "linux-auto-updates-dnf4"
+category = "security"
+risk = "safe"
+name = { en = "Install updates automatically (dnf4)", tr = "Güncellemeleri otomatik kur (dnf4)" }
+description = { en = "Turns on dnf-automatic on older Fedora and RHEL-based systems so updates are installed on a schedule.", tr = "Eski Fedora ve RHEL tabanlı sistemlerde güncellemelerin düzenli kurulması için dnf-automatic'i açar." }
+source = "https://dnf.readthedocs.io/en/latest/automatic.html"
+
+[[tweak.action]]
+type = "config-line"
+path = "/etc/dnf/automatic.conf"
+section = "commands"
+key = "apply_updates"
+value = "yes"
+
+[[tweak.action]]
+type = "systemd"
+unit = "dnf-automatic.timer"
+mode = "enable"
+
+[[tweak]]
+id = "linux-mac-randomization"
+category = "privacy"
+risk = "moderate"
+name = { en = "Use a private MAC address on each network", tr = "Her ağda özel bir MAC adresi kullan" }
+description = { en = "NetworkManager uses a different, stable MAC address for every network, so networks cannot track this device across places. Side effect: MAC-based filters and DHCP reservations stop matching.", tr = "NetworkManager her ağ için farklı ama sabit bir MAC adresi kullanır; ağlar bu cihazı yerden yere izleyemez. Yan etki: MAC tabanlı filtreler ve DHCP rezervasyonları eşleşmez." }
+source = "https://networkmanager.dev/docs/api/latest/NetworkManager.conf.html"
+
+[[tweak.action]]
+type = "managed-file"
+path = "/etc/NetworkManager/conf.d/90-skadi-mac.conf"
+reload = "network-manager"
+content = '''
+[device]
+wifi.scan-rand-mac-address=yes
+
+[connection]
+wifi.cloned-mac-address=stable
+ethernet.cloned-mac-address=stable
+'''
+
+[[tweak]]
+id = "linux-dhcp-hostname"
+category = "privacy"
+risk = "moderate"
+name = { en = "Stop sending the computer name over DHCP", tr = "Bilgisayar adını DHCP ile gönderme" }
+description = { en = "Keeps your computer name from being announced to every network you join. Side effect: some office networks will not find your PC by name.", tr = "Bilgisayarınızın adının bağlandığınız her ağa duyurulmasını engeller. Yan etki: bazı ofis ağları bilgisayarınızı adıyla bulamaz." }
+source = "https://networkmanager.dev/docs/api/latest/NetworkManager.conf.html"
+
+[[tweak.action]]
+type = "managed-file"
+path = "/etc/NetworkManager/conf.d/91-skadi-dhcp-hostname.conf"
+reload = "network-manager"
+content = '''
+[connection]
+ipv4.dhcp-send-hostname=false
+ipv6.dhcp-send-hostname=false
+'''
+
+[[tweak]]
+id = "linux-ipv6-privacy"
+category = "privacy"
+risk = "safe"
+name = { en = "IPv6 privacy addresses", tr = "IPv6 gizlilik adresleri" }
+description = { en = "Uses changing temporary IPv6 addresses for outgoing connections, so websites cannot recognise this device by its address.", tr = "Giden bağlantılarda değişen geçici IPv6 adresleri kullanır; siteler bu cihazı adresinden tanıyamaz." }
+source = "https://docs.kernel.org/networking/ip-sysctl.html"
+
+[[tweak.action]]
+type = "managed-file"
+path = "/etc/sysctl.d/90-skadi-ipv6-privacy.conf"
+reload = "sysctl"
+content = '''
+net.ipv6.conf.all.use_tempaddr = 2
+net.ipv6.conf.default.use_tempaddr = 2
+'''
+
+[[tweak]]
+id = "linux-swappiness"
+category = "system"
+risk = "moderate"
+name = { en = "Use swap less (swappiness 10)", tr = "Takas alanını daha az kullan (swappiness 10)" }
+description = { en = "Keeps programs in memory longer before moving them to swap, which can feel faster on desktops with enough RAM. Side effect: memory runs out sooner on machines with little RAM.", tr = "Programları takas alanına taşımadan önce bellekte daha uzun tutar; yeterli belleği olan masaüstlerinde daha hızlı hissettirebilir. Yan etki: az belleği olan makinelerde bellek daha çabuk dolar." }
+source = "https://docs.kernel.org/admin-guide/sysctl/vm.html"
+
+[[tweak.action]]
+type = "managed-file"
+path = "/etc/sysctl.d/90-skadi-swappiness.conf"
+reload = "sysctl"
+content = '''
+vm.swappiness = 10
+'''
+
+[[tweak]]
+id = "linux-ssh-hardening"
+category = "security"
+risk = "moderate"
+name = { en = "Harden the SSH server", tr = "SSH sunucusunu sertleştir" }
+description = { en = "Blocks root login over SSH, turns off X11 forwarding and limits login attempts. Skadi checks the configuration with sshd -t and only applies it when you run Skadi with sudo from your own account. Side effect: log in as your user, then use sudo.", tr = "SSH ile root girişini engeller, X11 yönlendirmeyi kapatır ve giriş denemelerini sınırlar. Skadi yapılandırmayı sshd -t ile denetler ve yalnızca Skadi'yi kendi hesabınızdan sudo ile çalıştırdığınızda uygular. Yan etki: kendi kullanıcınızla girip sudo kullanırsınız." }
+source = "https://man7.org/linux/man-pages/man5/sshd_config.5.html"
+
+[[tweak.action]]
+type = "managed-file"
+path = "/etc/ssh/sshd_config.d/10-skadi-hardening.conf"
+reload = "sshd"
+guard = "sudo-user"
+content = '''
+PermitRootLogin no
+X11Forwarding no
+MaxAuthTries 4
+'''
+
+[[tweak]]
+id = "linux-ssh-keys-only"
+category = "security"
+risk = "advanced"
+name = { en = "SSH: allow only key login", tr = "SSH: yalnızca anahtarla girişe izin ver" }
+description = { en = "Turns off password login to the SSH server. Skadi refuses unless your account already has a key in ~/.ssh/authorized_keys, so you cannot lock yourself out. Side effect: every other user also needs a key.", tr = "SSH sunucusuna parolayla girişi kapatır. Hesabınızın ~/.ssh/authorized_keys dosyasında zaten bir anahtar yoksa Skadi bunu reddeder; böylece dışarıda kalmazsınız. Yan etki: diğer tüm kullanıcıların da anahtarı olmalı." }
+source = "https://man7.org/linux/man-pages/man5/sshd_config.5.html"
+
+[[tweak.action]]
+type = "managed-file"
+path = "/etc/ssh/sshd_config.d/11-skadi-keys-only.conf"
+reload = "sshd"
+guard = "authorized-keys"
+content = '''
+PasswordAuthentication no
+KbdInteractiveAuthentication no
+'''
+
+[[tweak]]
+id = "linux-chrome-privacy"
+category = "privacy"
+risk = "safe"
+name = { en = "Reduce Chrome and Chromium data collection", tr = "Chrome ve Chromium veri toplamasını azalt" }
+description = { en = "Turns off usage statistics, search suggestions sent while typing, URL-keyed data collection and extended Safe Browsing reports through browser policy.", tr = "Tarayıcı ilkeleriyle kullanım istatistiklerini, yazarken gönderilen arama önerilerini, adrese bağlı veri toplamayı ve genişletilmiş Güvenli Tarama raporlarını kapatır." }
+source = "https://www.chromium.org/administrators/linux-quick-start/"
+
+[[tweak.action]]
+type = "managed-file"
+path = "/etc/opt/chrome/policies/managed/skadi-privacy.json"
+requires = ["/opt/google/chrome/chrome"]
+content = '''
+{
+  "MetricsReportingEnabled": false,
+  "SearchSuggestEnabled": false,
+  "UrlKeyedAnonymizedDataCollectionEnabled": false,
+  "SafeBrowsingExtendedReportingEnabled": false
+}
+'''
+
+[[tweak.action]]
+type = "managed-file"
+path = "/etc/chromium/policies/managed/skadi-privacy.json"
+requires = ["/usr/lib/chromium/chromium", "/usr/lib64/chromium-browser/chromium-browser"]
+content = '''
+{
+  "MetricsReportingEnabled": false,
+  "SearchSuggestEnabled": false,
+  "UrlKeyedAnonymizedDataCollectionEnabled": false,
+  "SafeBrowsingExtendedReportingEnabled": false
+}
+'''
+
+[[tweak]]
+id = "linux-ublock-lite"
+category = "privacy"
+risk = "safe"
+name = { en = "Install uBlock Origin Lite in Chrome, Chromium and Brave", tr = "Chrome, Chromium ve Brave'e uBlock Origin Lite kur" }
+description = { en = "Installs the uBlock Origin Lite content blocker through browser policy. Users cannot remove it while the policy is set.", tr = "uBlock Origin Lite içerik engelleyicisini tarayıcı ilkesiyle kurar. İlke açıkken kullanıcılar kaldıramaz." }
+source = "https://chromewebstore.google.com/detail/ublock-origin-lite/ddkjiahejlhfcafbddmgiahcphecmpfh"
+
+[[tweak.action]]
+type = "managed-file"
+path = "/etc/opt/chrome/policies/managed/skadi-ublock.json"
+requires = ["/opt/google/chrome/chrome"]
+content = '''
+{
+  "ExtensionInstallForcelist": ["ddkjiahejlhfcafbddmgiahcphecmpfh;https://clients2.google.com/service/update2/crx"]
+}
+'''
+
+[[tweak.action]]
+type = "managed-file"
+path = "/etc/chromium/policies/managed/skadi-ublock.json"
+requires = ["/usr/lib/chromium/chromium", "/usr/lib64/chromium-browser/chromium-browser"]
+content = '''
+{
+  "ExtensionInstallForcelist": ["ddkjiahejlhfcafbddmgiahcphecmpfh;https://clients2.google.com/service/update2/crx"]
+}
+'''
+
+[[tweak.action]]
+type = "managed-file"
+path = "/etc/brave/policies/managed/skadi-ublock.json"
+requires = ["/opt/brave.com/brave/brave"]
+content = '''
+{
+  "ExtensionInstallForcelist": ["ddkjiahejlhfcafbddmgiahcphecmpfh;https://clients2.google.com/service/update2/crx"]
+}
+'''
+
+[[tweak]]
+id = "linux-firefox-privacy"
+category = "privacy"
+risk = "safe"
+name = { en = "Firefox: no telemetry or studies, install uBlock Origin", tr = "Firefox: telemetri ve deneyler kapalı, uBlock Origin kurulu" }
+description = { en = "Sets Firefox enterprise policies system-wide: telemetry and studies off, and uBlock Origin installed. Skipped if you already have your own policies.json. Not read by the Flatpak or Snap Firefox.", tr = "Firefox kurumsal ilkelerini sistem genelinde ayarlar: telemetri ve deneyler kapalı, uBlock Origin kurulu. Kendi policies.json dosyanız varsa atlanır. Flatpak ve Snap Firefox bunu okumaz." }
+source = "https://firefox-admin-docs.mozilla.org/guides/policies-configuration/"
+
+[[tweak.action]]
+type = "managed-file"
+path = "/etc/firefox/policies/policies.json"
+requires = ["/usr/lib/firefox/firefox", "/usr/lib64/firefox/firefox", "/usr/lib/firefox-esr/firefox-esr"]
+content = '''
+{
+  "policies": {
+    "DisableTelemetry": true,
+    "DisableFirefoxStudies": true,
+    "ExtensionSettings": {
+      "uBlock0@raymondhill.net": {
+        "installation_mode": "normal_installed",
+        "install_url": "https://addons.mozilla.org/firefox/downloads/latest/ublock-origin/latest.xpi"
+      }
+    }
+  }
+}
+'''
+
+[[tweak]]
+id = "linux-pacman-parallel"
+category = "system"
+risk = "safe"
+name = { en = "Parallel downloads in pacman", tr = "pacman'de paralel indirme" }
+description = { en = "Lets pacman download five packages at once; packages are still installed one after another.", tr = "pacman'in aynı anda beş paket indirmesini sağlar; paketler yine sırayla kurulur." }
+source = "https://man.archlinux.org/man/pacman.conf.5"
+
+[[tweak.action]]
+type = "config-line"
+path = "/etc/pacman.conf"
+section = "options"
+key = "ParallelDownloads"
+value = "5"
+
+[[tweak]]
+id = "linux-dnf-parallel"
+category = "system"
+risk = "safe"
+name = { en = "More parallel downloads in dnf", tr = "dnf'te daha fazla paralel indirme" }
+description = { en = "Lets dnf download up to ten packages at once; packages are still installed one after another.", tr = "dnf'in aynı anda on pakete kadar indirmesini sağlar; paketler yine sırayla kurulur." }
+source = "https://dnf.readthedocs.io/en/latest/conf_ref.html"
+
+[[tweak.action]]
+type = "config-line"
+path = "/etc/dnf/dnf.conf"
+section = "main"
+key = "max_parallel_downloads"
+value = "10"

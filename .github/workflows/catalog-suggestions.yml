@@ -1,0 +1,34 @@
+name: Catalog suggestions
+
+# Weekly: asks Repology for Linux and macOS package names that catalog apps are missing and keeps
+# one issue up to date with the suggestions. Nothing is added to the catalog automatically.
+
+on:
+  schedule:
+    - cron: "0 5 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  suggest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Ask Repology
+        run: python3 .github/scripts/repology-suggest.py catalog/apps.toml 60 > report.md
+      - name: Update the suggestions issue
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          title="Catalog: package names suggested by Repology"
+          number="$(gh issue list --repo "$GITHUB_REPOSITORY" --state open --search "in:title \"$title\"" --json number --jq '.[0].number')"
+          if [ -n "$number" ]; then
+            gh issue edit "$number" --repo "$GITHUB_REPOSITORY" --body-file report.md
+          else
+            gh issue create --repo "$GITHUB_REPOSITORY" --title "$title" --body-file report.md
+          fi

@@ -1,0 +1,87 @@
+# Startup items that most people can turn off. `match` is compared, case-insensitively, with the
+# item name and its command. Only programs whose own features keep working when started by hand
+# belong here; drivers, security software and accessibility tools never do.
+
+[[item]]
+match = "onedrive"
+advice = { en = "Starts OneDrive at sign-in. Turn off if you do not sync files with OneDrive.", tr = "Oturum açılırken OneDrive'ı başlatır. Dosyalarınızı OneDrive ile eşitlemiyorsanız kapatın." }
+
+[[item]]
+match = "teams"
+advice = { en = "Starts Microsoft Teams at sign-in. You can open it when you need it.", tr = "Oturum açılırken Microsoft Teams'i başlatır. İhtiyacınız olduğunda açabilirsiniz." }
+
+[[item]]
+match = "microsoftedgeautolaunch"
+advice = { en = "Preloads Microsoft Edge in the background.", tr = "Microsoft Edge'i arka planda önceden yükler." }
+
+[[item]]
+match = "spotify"
+advice = { en = "Starts Spotify at sign-in.", tr = "Oturum açılırken Spotify'ı başlatır." }
+
+[[item]]
+match = "discord"
+advice = { en = "Starts Discord at sign-in.", tr = "Oturum açılırken Discord'u başlatır." }
+
+[[item]]
+match = "steam"
+advice = { en = "Starts Steam at sign-in. Games still start from Steam when you open it.", tr = "Oturum açılırken Steam'i başlatır. Steam'i açtığınızda oyunlar yine çalışır." }
+
+[[item]]
+match = "epicgameslauncher"
+advice = { en = "Starts the Epic Games Launcher at sign-in.", tr = "Oturum açılırken Epic Games Launcher'ı başlatır." }
+
+[[item]]
+match = "eadm"
+advice = { en = "Starts the EA app at sign-in.", tr = "Oturum açılırken EA uygulamasını başlatır." }
+
+[[item]]
+match = "battle.net"
+advice = { en = "Starts Battle.net at sign-in.", tr = "Oturum açılırken Battle.net'i başlatır." }
+
+[[item]]
+match = "skype"
+advice = { en = "Starts Skype at sign-in.", tr = "Oturum açılırken Skype'ı başlatır." }
+
+[[item]]
+match = "zoom"
+advice = { en = "Starts Zoom at sign-in. Meeting links still open Zoom.", tr = "Oturum açılırken Zoom'u başlatır. Toplantı bağlantıları Zoom'u yine açar." }
+
+[[item]]
+match = "slack"
+advice = { en = "Starts Slack at sign-in.", tr = "Oturum açılırken Slack'i başlatır." }
+
+[[item]]
+match = "ituneshelper"
+advice = { en = "Watches for iPhones and iPods to open iTunes. Not needed to use iTunes.", tr = "iTunes'u açmak için iPhone ve iPod bağlanmasını izler. iTunes'u kullanmak için gerekmez." }
+
+[[item]]
+match = "adobegcinvoker"
+advice = { en = "Adobe's licence check helper. Adobe apps check the licence when they start anyway.", tr = "Adobe'nin lisans denetimi yardımcısı. Adobe uygulamaları açılırken lisansı zaten denetler." }
+
+[[item]]
+match = "acrotray"
+advice = { en = "Adobe Acrobat tray helper; PDFs still open without it.", tr = "Adobe Acrobat tepsi yardımcısı; PDF'ler onsuz da açılır." }
+
+[[item]]
+match = "ccleaner"
+advice = { en = "Starts CCleaner's background monitoring.", tr = "CCleaner'ın arka plan izlemesini başlatır." }
+
+[[item]]
+match = "docker desktop"
+advice = { en = "Starts Docker Desktop and its virtual machine at sign-in, which uses a lot of memory.", tr = "Oturum açılırken Docker Desktop'ı ve sanal makinesini başlatır; çok bellek kullanır." }
+
+[[item]]
+match = "utorrent"
+advice = { en = "Starts uTorrent at sign-in.", tr = "Oturum açılırken uTorrent'i başlatır." }
+
+[[item]]
+match = "opera browser assistant"
+advice = { en = "Opera's assistant that runs in the background.", tr = "Opera'nın arka planda çalışan yardımcısı." }
+
+[[item]]
+match = "evolution-alarm-notify"
+advice = { en = "Calendar reminders for Evolution. Turn off if you do not use Evolution.", tr = "Evolution takvim hatırlatıcıları. Evolution kullanmıyorsanız kapatın." }
+
+[[item]]
+match = "gnome-software-service"
+advice = { en = "Keeps GNOME Software running to check for updates. Skadi can check for updates instead.", tr = "Güncelleme denetimi için GNOME Yazılım'ı çalışır tutar. Güncellemeleri Skadi de denetleyebilir." }

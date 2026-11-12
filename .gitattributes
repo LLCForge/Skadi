@@ -1,0 +1,4 @@
+# Skadi is built on Linux, macOS and Windows; keep one line ending everywhere.
+* text=auto eol=lf
+*.png binary
+*.ico binary
