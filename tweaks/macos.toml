@@ -1,0 +1,158 @@
+# macOS tweaks.
+#
+# Action type: defaults
+# User settings run as the current user. `system = true` writes a system plist (absolute path,
+# without the .plist extension) and needs administrator rights. System Integrity Protection
+# prevents removing built-in apps, so macOS debloat is limited to settings.
+
+[[tweak]]
+id = "mac-personalized-ads"
+category = "privacy"
+risk = "safe"
+name = { en = "Disable personalized ads", tr = "Kişiselleştirilmiş reklamları kapat" }
+description = { en = "Stops Apple from using your data to personalize ads in the App Store, Apple News and Stocks.", tr = "Apple'ın App Store, Apple News ve Borsa'daki reklamları kişiselleştirmek için verilerinizi kullanmasını durdurur." }
+source = "https://developer.apple.com/documentation/devicemanagement/restrictions"
+
+[[tweak.action]]
+type = "defaults"
+domain = "com.apple.AdLib"
+key = "allowApplePersonalizedAdvertising"
+kind = "bool"
+value = "false"
+
+[[tweak]]
+id = "mac-diagnostics"
+category = "privacy"
+risk = "safe"
+name = { en = "Stop sharing analytics with Apple", tr = "Apple ile analiz paylaşımını durdur" }
+description = { en = "Turns off automatic submission of diagnostics and usage data to Apple and app developers.", tr = "Tanılama ve kullanım verilerinin Apple'a ve uygulama geliştiricilerine otomatik gönderilmesini kapatır." }
+source = "https://support.apple.com/guide/mac-help/share-analytics-information-mac-apple-mh27990/mac"
+
+[[tweak.action]]
+type = "defaults"
+domain = "/Library/Application Support/CrashReporter/DiagnosticMessagesHistory"
+key = "AutoSubmit"
+kind = "bool"
+value = "false"
+system = true
+
+[[tweak.action]]
+type = "defaults"
+domain = "/Library/Application Support/CrashReporter/DiagnosticMessagesHistory"
+key = "ThirdPartyDataSubmit"
+kind = "bool"
+value = "false"
+system = true
+
+[[tweak]]
+id = "mac-siri-data-sharing"
+category = "privacy"
+risk = "safe"
+name = { en = "Opt out of Siri audio sharing", tr = "Siri ses paylaşımından çık" }
+description = { en = "Opts out of sharing Siri and Dictation audio recordings with Apple.", tr = "Siri ve Dikte ses kayıtlarının Apple ile paylaşılmasından çıkar." }
+source = "https://support.apple.com/en-us/127070"
+
+[[tweak.action]]
+type = "defaults"
+domain = "com.apple.assistant.support"
+key = "Siri Data Sharing Opt-In Status"
+kind = "int"
+value = "2"
+
+[[tweak]]
+id = "mac-crash-dialog"
+category = "interface"
+risk = "safe"
+name = { en = "Hide crash report dialogs", tr = "Çökme raporu pencerelerini gizle" }
+description = { en = "Stops the dialog that asks to send a report to Apple when an app crashes.", tr = "Bir uygulama çöktüğünde Apple'a rapor göndermeyi soran pencereyi kapatır." }
+source = "https://developer.apple.com/library/archive/qa/qa1288/_index.html"
+
+[[tweak.action]]
+type = "defaults"
+domain = "com.apple.CrashReporter"
+key = "DialogType"
+kind = "string"
+value = "none"
+
+[[tweak]]
+id = "mac-show-extensions"
+category = "interface"
+risk = "safe"
+name = { en = "Show file extensions", tr = "Dosya uzantılarını göster" }
+description = { en = "Shows all file extensions in Finder. Takes effect after Finder restarts.", tr = "Finder'da tüm dosya uzantılarını gösterir. Finder yeniden başlayınca etkinleşir." }
+source = "https://support.apple.com/guide/mac-help/show-or-hide-filename-extensions-mchlp2304/mac"
+
+[[tweak.action]]
+type = "defaults"
+domain = "NSGlobalDomain"
+key = "AppleShowAllExtensions"
+kind = "bool"
+value = "true"
+
+[[tweak]]
+id = "mac-no-ds-store"
+category = "system"
+risk = "safe"
+name = { en = "No .DS_Store on network and USB drives", tr = "Ağ ve USB sürücülerde .DS_Store oluşturma" }
+description = { en = "Stops Finder from leaving .DS_Store files on network shares and USB drives.", tr = "Finder'ın ağ paylaşımlarında ve USB sürücülerde .DS_Store dosyası bırakmasını engeller." }
+source = "https://support.apple.com/en-us/102064"
+
+[[tweak.action]]
+type = "defaults"
+domain = "com.apple.desktopservices"
+key = "DSDontWriteNetworkStores"
+kind = "bool"
+value = "true"
+
+[[tweak.action]]
+type = "defaults"
+domain = "com.apple.desktopservices"
+key = "DSDontWriteUSBStores"
+kind = "bool"
+value = "true"
+
+[[tweak]]
+id = "mac-security-updates"
+category = "system"
+risk = "safe"
+name = { en = "Install security updates automatically", tr = "Güvenlik güncellemelerini otomatik kur" }
+description = { en = "Keeps automatic update checks on and installs security responses and system data files automatically.", tr = "Otomatik güncelleme denetimini açık tutar; güvenlik yanıtlarını ve sistem veri dosyalarını otomatik kurar." }
+source = "https://developer.apple.com/documentation/devicemanagement/softwareupdate"
+
+[[tweak.action]]
+type = "defaults"
+domain = "/Library/Preferences/com.apple.SoftwareUpdate"
+key = "AutomaticCheckEnabled"
+kind = "bool"
+value = "true"
+system = true
+
+[[tweak.action]]
+type = "defaults"
+domain = "/Library/Preferences/com.apple.SoftwareUpdate"
+key = "CriticalUpdateInstall"
+kind = "bool"
+value = "true"
+system = true
+
+[[tweak]]
+id = "mac-reduce-animations"
+category = "interface"
+risk = "safe"
+name = { en = "Reduce window and Dock animations", tr = "Pencere ve Dock animasyonlarını azalt" }
+description = { en = "Turns off the window opening animation and the bouncing Dock icons when apps start. Takes effect after signing out.", tr = "Pencere açılış animasyonunu ve uygulama başlarken zıplayan Dock simgelerini kapatır. Oturum kapatıp açınca etkinleşir." }
+source = "https://support.apple.com/guide/mac-help/mchlp1119/mac"
+
+[[tweak.action]]
+type = "defaults"
+domain = "NSGlobalDomain"
+key = "NSAutomaticWindowAnimationsEnabled"
+kind = "bool"
+value = "false"
+
+[[tweak.action]]
+type = "defaults"
+domain = "com.apple.dock"
+key = "launchanim"
+kind = "bool"
+value = "false"

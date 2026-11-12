@@ -1,0 +1,117 @@
+name: Release
+
+# Builds Skadi for every supported platform when a version tag (v1.2.3) is pushed, then publishes
+# the binaries with SHA256SUMS, a CycloneDX SBOM and signed SLSA build provenance (Sigstore).
+# The one-line launchers download from here and verify the checksums before running anything.
+
+on:
+  push:
+    tags: ["v*.*.*"]
+
+permissions:
+  contents: read
+
+env:
+  CARGO_TERM_COLOR: always
+  # Reproducible builds: fixed timestamp and no machine-specific paths in the binary.
+  CARGO_INCREMENTAL: "0"
+
+jobs:
+  build:
+    name: ${{ matrix.target }}
+    strategy:
+      fail-fast: true
+      matrix:
+        include:
+          - { target: x86_64-pc-windows-msvc, os: windows-latest, ext: .exe }
+          - { target: aarch64-pc-windows-msvc, os: windows-11-arm, ext: .exe }
+          - { target: x86_64-unknown-linux-gnu, os: ubuntu-22.04, ext: "" }
+          - { target: aarch64-unknown-linux-gnu, os: ubuntu-22.04-arm, ext: "" }
+          - { target: x86_64-apple-darwin, os: macos-latest, ext: "" }
+          - { target: aarch64-apple-darwin, os: macos-latest, ext: "" }
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Toolchain
+        shell: bash
+        run: rustup show active-toolchain && rustup target add ${{ matrix.target }}
+      - name: Build
+        shell: bash
+        run: |
+          export SOURCE_DATE_EPOCH="$(git log -1 --format=%ct)"
+          export RUSTFLAGS="--remap-path-prefix=$GITHUB_WORKSPACE=. --remap-path-prefix=$HOME=~"
+          # The MSVC linker writes a timestamp into every binary unless asked not to.
+          case "${{ matrix.target }}" in *msvc) RUSTFLAGS="$RUSTFLAGS -C link-arg=/Brepro" ;; esac
+          cargo build --release --locked --target ${{ matrix.target }}
+          mkdir -p dist
+          cp "target/${{ matrix.target }}/release/skadi${{ matrix.ext }}" "dist/skadi-${{ matrix.target }}${{ matrix.ext }}"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: skadi-${{ matrix.target }}
+          path: dist/*
+          if-no-files-found: error
+
+  # Builds the Linux binary, cleans everything and builds it again in the same place; the release
+  # stops if the two binaries differ.
+  reproducible:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Build twice from scratch and compare
+        run: |
+          export SOURCE_DATE_EPOCH="$(git log -1 --format=%ct)"
+          export RUSTFLAGS="--remap-path-prefix=$GITHUB_WORKSPACE=. --remap-path-prefix=$HOME=~"
+          cargo build --release --locked
+          cp target/release/skadi "$RUNNER_TEMP/skadi-first"
+          cargo clean
+          cargo build --release --locked
+          sha256sum "$RUNNER_TEMP/skadi-first" target/release/skadi
+          cmp "$RUNNER_TEMP/skadi-first" target/release/skadi
+
+  sbom:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: CycloneDX SBOM
+        run: |
+          cargo install cargo-cyclonedx --locked
+          cargo cyclonedx --format json --spec-version 1.5
+          mkdir -p dist
+          find crates -name '*.cdx.json' -exec cp {} dist/ \;
+          ls dist
+      - uses: actions/upload-artifact@v4
+        with:
+          name: sbom
+          path: dist/*
+          if-no-files-found: error
+
+  publish:
+    needs: [build, sbom, reproducible]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write
+      attestations: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: dist
+          merge-multiple: true
+      - name: Checksums
+        working-directory: dist
+        run: sha256sum skadi-* *.cdx.json > SHA256SUMS && cat SHA256SUMS
+      - name: Build provenance
+        uses: actions/attest-build-provenance@v2
+        with:
+          subject-path: "dist/*"
+      - name: Publish release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.ref_name }}
+        run: gh release create "$TAG" dist/* --repo "$GITHUB_REPOSITORY" --title "Skadi $TAG" --generate-notes --verify-tag

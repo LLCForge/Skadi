@@ -1,0 +1,18 @@
+#cloud-config
+# Runs Skadi once on first boot without any questions.
+#
+# - Pin a release with SKADI_VERSION so every machine gets the same, verified build.
+# - `profile apply` takes a preset id or a profile file; `--yes` skips the confirmation.
+# - Desktop settings (gsettings) need a user session, so apply desktop tweaks after the first
+#   login rather than here.
+
+write_files:
+  - path: /etc/skadi/profile.toml
+    permissions: "0644"
+    content: |
+      version = 1
+      apps = ["git", "firefox", "vlc"]
+      tweaks = ["linux-popularity-contest", "linux-ubuntu-report", "linux-ntp-cloudflare"]
+
+runcmd:
+  - [sh, -c, "curl -fsSL --proto '=https' --tlsv1.2 https://raw.githubusercontent.com/LLCForge/Skadi/main/install.sh | SKADI_VERSION=v0.1.0 sh -s -- profile apply /etc/skadi/profile.toml --yes"]

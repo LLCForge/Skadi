@@ -1,0 +1,13 @@
+{
+  "name": "Skadi",
+  "image": "mcr.microsoft.com/devcontainers/rust:1-bookworm",
+  "postCreateCommand": "cargo build --locked && cargo test --locked",
+  "customizations": {
+    "vscode": {
+      "extensions": ["rust-lang.rust-analyzer", "tamasfe.even-better-toml"]
+    }
+  },
+  "remoteEnv": {
+    "SKADI_LANG": "en"
+  }
+}

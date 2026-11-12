@@ -1,0 +1,3357 @@
+# Skadi application catalog
+#
+# Each [[app]] entry describes one application and its package id in every supported package
+# manager. Skadi picks the first manager (in preference order) that is available on the user's
+# system. Only list package ids you have verified; a wrong id is worse than a missing one.
+#
+# Many Windows (winget/choco) ids and FOSS flags are adapted from WinUtil
+# (https://github.com/ChrisTitusTech/winutil), MIT License. See NOTICE.
+#
+# Fields:
+#   id          lowercase letters, digits and '-' (unique)
+#   name        display name
+#   category    browsers | communication | development | multimedia | office | security | utilities | gaming | system | self-hosted
+#   description { en = "...", tr = "..." }  both languages are required, max 200 characters each
+#   homepage    optional, must start with https://
+#   foss        optional, true if the app is free and open-source software
+#   [app.packages]
+#     winget, msstore, choco, scoop                            (Windows)
+#     apt, dnf, yum, zypper, pacman, apk, xbps, emerge, eopkg,
+#     urpmi, flatpak, snap, nix                                (Linux)
+#     brew-cask, brew                                          (macOS)
+
+# --- browsers ----------------------------------------------------------------------------------
+
+[[app]]
+id = "brave"
+name = "Brave"
+category = "browsers"
+description = { en = "Chromium-based browser with built-in ad and tracker blocking.", tr = "Reklam ve izleyici engelleyici yerleşik Chromium tabanlı tarayıcı." }
+homepage = "https://brave.com/"
+foss = true
+telemetry = true
+privacy_source = "https://github.com/brave/brave-browser/wiki/Operational-Patterns"
+note = { en = "Sends privacy-preserving product analytics (P3A) by default; turn off at brave://settings/privacy > Allow privacy-preserving product analytics.", tr = "Varsayılan olarak gizliliği koruyan ürün analitiği (P3A) gönderir; brave://settings/privacy > Allow privacy-preserving product analytics seçeneğinden kapatılabilir." }
+alternatives = ["librewolf", "ungoogled"]
+[app.packages]
+winget = "Brave.Brave"
+choco = "brave"
+flatpak = "com.brave.Browser"
+snap = "brave"
+brew-cask = "brave-browser"
+
+[[app]]
+id = "chrome"
+name = "Chrome"
+category = "browsers"
+description = { en = "Google Chrome web browser, integrated with Google services.", tr = "Google hizmetleriyle entegre çalışan Google Chrome web tarayıcısı." }
+homepage = "https://www.google.com/chrome/"
+foss = false
+telemetry = true
+alternatives = ["ungoogled", "brave", "librewolf", "firefox"]
+note = { en = "Sends usage statistics and crash reports to Google by default.", tr = "Varsayılan olarak Google'a kullanım istatistikleri ve çökme raporları gönderir." }
+[app.packages]
+winget = "Google.Chrome"
+choco = "googlechrome"
+
+[[app]]
+id = "chromium"
+name = "Chromium"
+category = "browsers"
+description = { en = "Open-source browser project that serves as the foundation for Chrome and other web browsers.", tr = "Chrome ve diğer web tarayıcılarının temelini oluşturan açık kaynaklı tarayıcı projesi." }
+homepage = "https://www.chromium.org/"
+foss = true
+[app.packages]
+winget = "Hibbiki.Chromium"
+choco = "chromium"
+
+[[app]]
+id = "edge"
+name = "Edge"
+category = "browsers"
+description = { en = "Microsoft's web browser built on Chromium, integrated with Microsoft services.", tr = "Chromium tabanlı, Microsoft hizmetleriyle entegre çalışan Microsoft web tarayıcısı." }
+homepage = "https://www.microsoft.com/edge"
+foss = false
+telemetry = true
+alternatives = ["firefox", "librewolf", "brave"]
+note = { en = "Sends diagnostic data to Microsoft; the Edge debloat tweak reduces it.", tr = "Microsoft'a tanılama verisi gönderir; Edge sadeleştirme ayarı bunu azaltır." }
+[app.packages]
+winget = "Microsoft.Edge"
+choco = "microsoft-edge"
+
+[[app]]
+id = "firefox"
+name = "Firefox"
+category = "browsers"
+description = { en = "Open-source web browser from Mozilla.", tr = "Mozilla'nın açık kaynaklı web tarayıcısı." }
+homepage = "https://www.mozilla.org/firefox/"
+foss = true
+telemetry = true
+privacy_source = "https://firefox-source-docs.mozilla.org/toolkit/components/telemetry/internals/preferences.html"
+note = { en = "Sends technical and interaction data plus a daily usage ping to Mozilla by default; turn off both in Settings > Privacy & Security > Firefox Data Collection and Use.", tr = "Varsayılan olarak Mozilla'ya teknik ve etkileşim verileriyle günlük kullanım sinyali gönderir; ikisi de Ayarlar > Gizlilik ve Güvenlik > Firefox Veri Toplama ve Kullanımı bölümünden kapatılabilir." }
+alternatives = ["librewolf", "mullvad-browser"]
+[app.packages]
+winget = "Mozilla.Firefox"
+choco = "firefox"
+dnf = "firefox"
+zypper = "MozillaFirefox"
+pacman = "firefox"
+apk = "firefox"
+xbps = "firefox"
+emerge = "www-client/firefox"
+flatpak = "org.mozilla.firefox"
+snap = "firefox"
+nix = "nixpkgs#firefox"
+brew-cask = "firefox"
+
+[[app]]
+id = "firefoxesr"
+name = "Firefox ESR"
+category = "browsers"
+description = { en = "Extended Support Release of the open-source Firefox browser, with less frequent major updates.", tr = "Büyük güncellemeleri daha seyrek alan, açık kaynaklı Firefox tarayıcısının Uzatılmış Destek Sürümü." }
+homepage = "https://www.mozilla.org/en-US/firefox/enterprise/"
+foss = true
+telemetry = true
+privacy_source = "https://firefox-source-docs.mozilla.org/toolkit/components/telemetry/internals/preferences.html"
+note = { en = "Sends technical and interaction data to Mozilla by default; turn off in Settings > Privacy & Security > Firefox Data Collection and Use.", tr = "Varsayılan olarak Mozilla'ya teknik ve etkileşim verileri gönderir; Ayarlar > Gizlilik ve Güvenlik > Firefox Veri Toplama ve Kullanımı bölümünden kapatılabilir." }
+alternatives = ["librewolf"]
+[app.packages]
+winget = "Mozilla.Firefox.ESR"
+choco = "FirefoxESR"
+brew-cask = "firefox@esr"
+
+[[app]]
+id = "floorp"
+name = "Floorp"
+category = "browsers"
+description = { en = "Open-source web browser project aiming for a simple and fast browsing experience.", tr = "Basit ve hızlı bir gezinme deneyimi hedefleyen açık kaynaklı web tarayıcısı projesi." }
+homepage = "https://floorp.app/"
+foss = true
+telemetry = false
+privacy_source = "https://floorp.app/privacy"
+[app.packages]
+winget = "Ablaze.Floorp"
+choco = "floorp"
+flatpak = "one.ablaze.floorp"
+brew-cask = "floorp"
+
+[[app]]
+id = "helium"
+name = "Helium"
+category = "browsers"
+description = { en = "Web browser focused on privacy and speed.", tr = "Gizlilik ve hıza odaklanan web tarayıcısı." }
+homepage = "https://helium.computer"
+foss = true
+telemetry = false
+privacy_source = "https://helium.computer"
+[app.packages]
+winget = "ImputNet.Helium"
+choco = "helium"
+brew-cask = "helium-browser"
+
+[[app]]
+id = "librewolf"
+name = "LibreWolf"
+category = "browsers"
+description = { en = "Privacy-focused Firefox fork with telemetry removed.", tr = "Telemetrisi kaldırılmış, gizlilik odaklı Firefox türevi." }
+homepage = "https://librewolf.net/"
+foss = true
+telemetry = false
+privacy_source = "https://librewolf.net/"
+[app.packages]
+winget = "LibreWolf.LibreWolf"
+choco = "librewolf"
+flatpak = "io.gitlab.librewolf-community"
+brew-cask = "librewolf"
+
+[[app]]
+id = "mullvad-browser"
+name = "Mullvad Browser"
+category = "browsers"
+description = { en = "Privacy browser built with the Tor Project, without the Tor network.", tr = "Tor Projesi ile geliştirilen, Tor ağı kullanmayan gizlilik tarayıcısı." }
+homepage = "https://mullvad.net/browser"
+foss = true
+telemetry = false
+privacy_source = "https://mullvad.net/en/browser"
+[app.packages]
+winget = "MullvadVPN.MullvadBrowser"
+flatpak = "net.mullvad.MullvadBrowser"
+brew-cask = "mullvad-browser"
+
+[[app]]
+id = "tor-browser"
+name = "Tor Browser"
+category = "browsers"
+description = { en = "Browse anonymously through the Tor network.", tr = "Tor ağı üzerinden anonim gezinme." }
+homepage = "https://www.torproject.org/"
+foss = true
+telemetry = false
+privacy_source = "https://www.torproject.org/about/privacy_policy/"
+[app.packages]
+winget = "TorProject.TorBrowser"
+choco = "tor-browser"
+flatpak = "org.torproject.torbrowser-launcher"
+brew-cask = "tor-browser"
+
+[[app]]
+id = "ungoogled"
+name = "Ungoogled Chromium"
+category = "browsers"
+description = { en = "Version of Chromium without Google integration, aimed at more privacy and control.", tr = "Daha fazla gizlilik ve denetim için Google entegrasyonundan arındırılmış Chromium sürümü." }
+homepage = "https://github.com/Eloston/ungoogled-chromium"
+foss = true
+telemetry = false
+privacy_source = "https://github.com/ungoogled-software/ungoogled-chromium"
+[app.packages]
+winget = "eloston.ungoogled-chromium"
+choco = "ungoogled-chromium"
+
+[[app]]
+id = "vivaldi"
+name = "Vivaldi"
+category = "browsers"
+description = { en = "Highly customizable web browser focused on personalization and productivity features.", tr = "Kişiselleştirme ve üretkenlik özelliklerine odaklanan, yüksek oranda özelleştirilebilir web tarayıcısı." }
+homepage = "https://vivaldi.com/"
+foss = false
+telemetry = true
+privacy_source = "https://vivaldi.com/privacy/browser/"
+note = { en = "Sends a daily ping with an installation ID, version and system details to count active users; no off switch is documented.", tr = "Aktif kullanıcıları saymak için kurulum kimliği, sürüm ve sistem bilgilerini içeren günlük bir sinyal gönderir; belgelenmiş bir kapatma seçeneği yoktur." }
+alternatives = ["librewolf", "ungoogled"]
+[app.packages]
+winget = "Vivaldi.Vivaldi"
+choco = "vivaldi"
+flatpak = "com.vivaldi.Vivaldi"
+brew-cask = "vivaldi"
+
+[[app]]
+id = "waterfox"
+name = "Waterfox"
+category = "browsers"
+description = { en = "Fast, privacy-focused web browser based on Firefox that aims to preserve user choice.", tr = "Firefox tabanlı, kullanıcı tercihlerini korumayı amaçlayan hızlı ve gizlilik odaklı web tarayıcısı." }
+homepage = "https://www.waterfox.net/"
+foss = true
+telemetry = false
+privacy_source = "https://www.waterfox.com/docs/policies/privacy/"
+[app.packages]
+winget = "Waterfox.Waterfox"
+choco = "waterfox"
+brew-cask = "waterfox"
+
+[[app]]
+id = "zenbrowser"
+name = "Zen Browser"
+category = "browsers"
+description = { en = "Privacy-focused, performance-driven web browser built on Firefox.", tr = "Firefox üzerine kurulu, gizlilik ve performans odaklı web tarayıcısı." }
+homepage = "https://zen-browser.app/"
+foss = true
+telemetry = false
+privacy_source = "https://zen-browser.app/privacy-policy/"
+[app.packages]
+winget = "Zen-Team.Zen-Browser"
+brew-cask = "zen"
+
+# --- communication -----------------------------------------------------------------------------
+
+[[app]]
+id = "betterbird"
+name = "Betterbird"
+category = "communication"
+description = { en = "Fork of Mozilla Thunderbird with additional features and bug fixes.", tr = "Mozilla Thunderbird'ün ek özellikler ve hata düzeltmeleri içeren bir çatalı." }
+homepage = "https://www.betterbird.eu/"
+foss = true
+[app.packages]
+winget = "Betterbird.Betterbird"
+choco = "betterbird"
+flatpak = "eu.betterbird.Betterbird"
+
+[[app]]
+id = "chatterino"
+name = "Chatterino"
+category = "communication"
+description = { en = "Twitch chat client with a clean, customizable interface.", tr = "Temiz ve özelleştirilebilir arayüze sahip Twitch sohbet istemcisi." }
+homepage = "https://www.chatterino.com/"
+foss = true
+[app.packages]
+winget = "ChatterinoTeam.Chatterino"
+choco = "chatterino"
+flatpak = "com.chatterino.chatterino"
+brew-cask = "chatterino"
+
+[[app]]
+id = "discord"
+name = "Discord"
+category = "communication"
+description = { en = "Voice, video and text chat.", tr = "Sesli, görüntülü ve yazılı sohbet." }
+homepage = "https://discord.com/"
+foss = false
+telemetry = true
+privacy_source = "https://discord.com/privacy"
+note = { en = "Collects event data on how you use the app; turn off in User Settings > Data & Privacy.", tr = "Uygulamayı nasıl kullandığınıza dair olay verileri toplar; Kullanıcı Ayarları > Veri ve Gizlilik bölümünden kapatılabilir." }
+alternatives = ["matrix"]
+[app.packages]
+winget = "Discord.Discord"
+choco = "discord"
+flatpak = "com.discordapp.Discord"
+snap = "discord"
+brew-cask = "discord"
+
+[[app]]
+id = "dorion"
+name = "Dorion"
+category = "communication"
+description = { en = "Alternative Discord client with a small footprint, quick startup, themes and plugins.", tr = "Düşük kaynak kullanan, hızlı açılan, tema ve eklenti desteği sunan alternatif Discord istemcisi." }
+homepage = "https://spikehd.dev/projects/dorion/"
+foss = true
+[app.packages]
+winget = "SpikeHD.Dorion"
+choco = "dorion"
+
+[[app]]
+id = "matrix"
+name = "Element"
+category = "communication"
+description = { en = "Client for Matrix, an open network for secure, decentralized communication.", tr = "Güvenli ve merkeziyetsiz iletişim için açık bir ağ olan Matrix'in istemci uygulaması." }
+homepage = "https://element.io/"
+foss = true
+telemetry = false
+privacy_source = "https://element.io/legal/privacy"
+[app.packages]
+winget = "Element.Element"
+choco = "element-desktop"
+flatpak = "im.riot.Riot"
+brew-cask = "element"
+
+[[app]]
+id = "protonmail"
+name = "Proton Mail"
+category = "communication"
+description = { en = "End-to-end encrypted email service with zero-access encryption.", tr = "Sıfır erişimli şifreleme sunan, uçtan uca şifreli e-posta hizmeti." }
+homepage = "https://proton.me/mail"
+foss = true
+[app.packages]
+winget = "Proton.ProtonMail"
+choco = "protonmail"
+flatpak = "me.proton.Mail"
+brew-cask = "proton-mail"
+
+[[app]]
+id = "qtox"
+name = "QTox"
+category = "communication"
+description = { en = "Free open-source messaging app designed with a focus on user privacy and security.", tr = "Tasarımında kullanıcı gizliliğine ve güvenliğine öncelik veren ücretsiz, açık kaynaklı mesajlaşma uygulaması." }
+homepage = "https://qtox.github.io/"
+foss = true
+[app.packages]
+winget = "Tox.qTox"
+choco = "qtox"
+flatpak = "io.github.qtox.qTox"
+
+[[app]]
+id = "signal"
+name = "Signal"
+category = "communication"
+description = { en = "End-to-end encrypted messaging.", tr = "Uçtan uca şifreli mesajlaşma." }
+homepage = "https://signal.org/"
+foss = true
+[app.packages]
+winget = "OpenWhisperSystems.Signal"
+choco = "signal"
+flatpak = "org.signal.Signal"
+snap = "signal-desktop"
+brew-cask = "signal"
+
+[[app]]
+id = "slack"
+name = "Slack"
+category = "communication"
+description = { en = "Team collaboration hub with channels, messaging and file sharing for workplace communication.", tr = "Kanallar, mesajlaşma ve dosya paylaşımı ile ekipler arası iletişimi sağlayan iş birliği platformu." }
+homepage = "https://slack.com/"
+foss = false
+telemetry = true
+privacy_source = "https://slack.com/trust/privacy/privacy-policy"
+note = { en = "Records usage metadata about the workspaces, channels and features you use; there is no in-app off switch.", tr = "Kullandığınız çalışma alanları, kanallar ve özelliklerle ilgili kullanım meta verilerini kaydeder; uygulama içinde kapatma seçeneği yoktur." }
+alternatives = ["matrix"]
+[app.packages]
+winget = "SlackTechnologies.Slack"
+choco = "slack"
+flatpak = "com.slack.Slack"
+brew-cask = "slack"
+
+[[app]]
+id = "teams"
+name = "Teams"
+category = "communication"
+description = { en = "Microsoft collaboration platform with chat, video conferencing and file sharing, integrated with Office 365.", tr = "Office 365 ile entegre çalışan; sohbet, görüntülü görüşme ve dosya paylaşımı sunan Microsoft iş birliği platformu." }
+homepage = "https://www.microsoft.com/en-us/microsoft-teams/group-chat-software"
+foss = false
+telemetry = true
+privacy_source = "https://learn.microsoft.com/en-us/microsoftteams/privacy/policy-control-overview"
+note = { en = "Sends required and optional diagnostic data to Microsoft by default; only an admin can change the level, through the Office cloud policy service.", tr = "Varsayılan olarak Microsoft'a zorunlu ve isteğe bağlı tanılama verileri gönderir; seviyeyi yalnızca yönetici Office bulut ilkesi hizmetinden değiştirebilir." }
+alternatives = ["matrix"]
+[app.packages]
+winget = "Microsoft.Teams"
+choco = "microsoft-teams"
+
+[[app]]
+id = "teamspeak3"
+name = "TeamSpeak 3"
+category = "communication"
+description = { en = "Cross-platform voice chat application for communicating with teammates.", tr = "Takım arkadaşlarınızla iletişim kurmak için kullanılan, platformlar arası sesli sohbet uygulaması." }
+homepage = "https://www.teamspeak.com/"
+foss = false
+[app.packages]
+winget = "TeamSpeakSystems.TeamSpeakClient"
+choco = "teamspeak"
+flatpak = "com.teamspeak.TeamSpeak3"
+
+[[app]]
+id = "teamspeak6"
+name = "TeamSpeak 6"
+category = "communication"
+description = { en = "Cross-platform voice chat application for communicating with teammates.", tr = "Takım arkadaşlarınızla iletişim kurmak için kullanılan, platformlar arası sesli sohbet uygulaması." }
+homepage = "https://www.teamspeak.com/"
+foss = false
+[app.packages]
+winget = "TeamSpeakSystems.TeamSpeakClient.Beta.6"
+
+[[app]]
+id = "telegram"
+name = "Telegram"
+category = "communication"
+description = { en = "Cloud-based instant messaging app known for its security features, speed and simplicity.", tr = "Güvenlik özellikleri, hızı ve sadeliğiyle bilinen bulut tabanlı anlık mesajlaşma uygulaması." }
+homepage = "https://telegram.org/"
+foss = true
+[app.packages]
+winget = "Telegram.TelegramDesktop"
+choco = "telegram"
+flatpak = "org.telegram.desktop"
+brew-cask = "telegram"
+
+[[app]]
+id = "thunderbird"
+name = "Thunderbird"
+category = "communication"
+description = { en = "Open-source email client from Mozilla.", tr = "Mozilla'nın açık kaynaklı e-posta istemcisi." }
+homepage = "https://www.thunderbird.net/"
+foss = true
+telemetry = true
+privacy_source = "https://www.mozilla.org/en-US/privacy/thunderbird/"
+note = { en = "Sends telemetry about your interactions to Mozilla; turn off in Settings > Privacy & Security > Thunderbird Data Collection and Use.", tr = "Etkileşimlerinizle ilgili telemetriyi Mozilla'ya gönderir; Ayarlar > Gizlilik ve Güvenlik > Thunderbird Veri Toplama ve Kullanımı bölümünden kapatılabilir." }
+[app.packages]
+winget = "Mozilla.Thunderbird"
+choco = "thunderbird"
+apt = "thunderbird"
+dnf = "thunderbird"
+zypper = "MozillaThunderbird"
+pacman = "thunderbird"
+flatpak = "org.mozilla.thunderbird"
+brew-cask = "thunderbird"
+
+[[app]]
+id = "vesktop"
+name = "Vesktop"
+category = "communication"
+description = { en = "Cross-platform Electron-based desktop app for Discord with Vencord pre-installed.", tr = "Vencord önceden yüklü gelen, Electron tabanlı ve platformlar arası Discord masaüstü uygulaması." }
+homepage = "https://vesktop.dev"
+foss = true
+[app.packages]
+winget = "Vencord.Vesktop"
+flatpak = "dev.vencord.Vesktop"
+
+[[app]]
+id = "viber"
+name = "Viber"
+category = "communication"
+description = { en = "Free messaging and calling app with group chats and video calls.", tr = "Grup sohbetleri ve görüntülü aramalar sunan ücretsiz mesajlaşma ve arama uygulaması." }
+homepage = "https://www.viber.com/"
+foss = false
+telemetry = true
+privacy_source = "https://www.viber.com/en/terms/viber-privacy-policy/"
+note = { en = "Collects activity data for usage statistics; some processing can be limited in the app's Privacy settings.", tr = "Kullanım istatistikleri için etkinlik verileri toplar; bazı işlemler uygulamanın Gizlilik ayarlarından sınırlandırılabilir." }
+alternatives = ["signal"]
+[app.packages]
+winget = "Rakuten.Viber"
+choco = "viber"
+flatpak = "com.viber.Viber"
+brew-cask = "viber"
+
+[[app]]
+id = "whatsapp"
+name = "WhatsApp Desktop"
+category = "communication"
+description = { en = "Official Windows desktop messaging app from Meta, distributed through the Microsoft Store.", tr = "Meta'nın Microsoft Store üzerinden dağıtılan resmi Windows masaüstü mesajlaşma uygulaması." }
+homepage = "https://www.whatsapp.com/download"
+foss = false
+telemetry = true
+privacy_source = "https://www.whatsapp.com/legal/privacy-policy"
+note = { en = "Collects usage, diagnostic and performance data, including which features you use; there is no off switch.", tr = "Hangi özellikleri kullandığınız dahil kullanım, tanılama ve performans verileri toplar; kapatma seçeneği yoktur." }
+alternatives = ["signal"]
+[app.packages]
+msstore = "9NKSQGP7F2NH"
+brew-cask = "whatsapp"
+
+[[app]]
+id = "zoom"
+name = "Zoom"
+category = "communication"
+description = { en = "Video and web conferencing service for online meetings, webinars and collaborative projects.", tr = "Çevrimiçi toplantılar, web seminerleri ve ortak projeler için görüntülü ve web konferans hizmeti." }
+homepage = "https://zoom.us/"
+foss = false
+telemetry = true
+privacy_source = "https://www.zoom.com/en/trust/privacy/privacy-statement/"
+note = { en = "Collects product usage and performance data; the optional part is controlled by the Diagnostic Data Preferences setting.", tr = "Ürün kullanım ve performans verileri toplar; isteğe bağlı kısmı Tanılama Verisi Tercihleri ayarından yönetilir." }
+[app.packages]
+winget = "Zoom.Zoom"
+choco = "zoom"
+flatpak = "us.zoom.Zoom"
+brew-cask = "zoom"
+
+# --- development -------------------------------------------------------------------------------
+
+[[app]]
+id = "java21"
+name = "Amazon Corretto 21 (LTS)"
+category = "development"
+description = { en = "No-cost, production-ready distribution of OpenJDK, Amazon Corretto 21 (LTS).", tr = "OpenJDK'nin ücretsiz ve üretime hazır dağıtımı olan Amazon Corretto 21 (LTS) sürümü." }
+homepage = "https://aws.amazon.com/corretto"
+foss = true
+[app.packages]
+winget = "Amazon.Corretto.21.JDK"
+choco = "corretto21jdk"
+
+[[app]]
+id = "java25"
+name = "Amazon Corretto 25 (LTS)"
+category = "development"
+description = { en = "No-cost, production-ready distribution of OpenJDK, Amazon Corretto 25 (LTS).", tr = "OpenJDK'nin ücretsiz ve üretime hazır dağıtımı olan Amazon Corretto 25 (LTS) sürümü." }
+homepage = "https://aws.amazon.com/corretto"
+foss = true
+[app.packages]
+winget = "Amazon.Corretto.25.JDK"
+choco = "corretto25jdk"
+
+[[app]]
+id = "java8"
+name = "Amazon Corretto 8 (LTS)"
+category = "development"
+description = { en = "No-cost, production-ready distribution of OpenJDK, Amazon Corretto 8 (LTS).", tr = "OpenJDK'nin ücretsiz ve üretime hazır dağıtımı olan Amazon Corretto 8 (LTS) sürümü." }
+homepage = "https://aws.amazon.com/corretto"
+foss = true
+[app.packages]
+winget = "Amazon.Corretto.8.JDK"
+choco = "corretto8jdk"
+
+[[app]]
+id = "bruno"
+name = "Bruno"
+category = "development"
+description = { en = "Local-first API client that stores collections as plain text files for version control and collaboration.", tr = "Koleksiyonları sürüm kontrolü ve iş birliği için düz metin dosyaları olarak saklayan, yerel öncelikli API istemcisi." }
+homepage = "https://www.usebruno.com/"
+foss = true
+[app.packages]
+winget = "Bruno.Bruno"
+choco = "bruno"
+flatpak = "com.usebruno.Bruno"
+brew-cask = "bruno"
+
+[[app]]
+id = "chatgpt"
+name = "ChatGPT Desktop"
+category = "development"
+description = { en = "Official ChatGPT desktop app for Windows, distributed through the Microsoft Store.", tr = "Microsoft Store üzerinden dağıtılan, Windows için resmi ChatGPT masaüstü uygulaması." }
+homepage = "https://openai.com/chatgpt/download/"
+foss = false
+[app.packages]
+msstore = "9NT1R1C2HH7J"
+
+[[app]]
+id = "claude-code"
+name = "Claude Code"
+category = "development"
+description = { en = "Anthropic's agentic coding tool for terminal and IDE development workflows.", tr = "Terminal ve IDE geliştirme iş akışları için Anthropic'in ajan tabanlı kodlama aracı." }
+homepage = "https://code.claude.com/"
+foss = false
+telemetry = true
+privacy_source = "https://code.claude.com/docs/en/data-usage"
+note = { en = "Sends usage metrics (latency, reliability, usage patterns) to Anthropic by default; set DISABLE_TELEMETRY=1 to turn off.", tr = "Varsayılan olarak Anthropic'e kullanım metrikleri (gecikme, güvenilirlik, kullanım kalıpları) gönderir; kapatmak için DISABLE_TELEMETRY=1 ayarlanabilir." }
+[app.packages]
+winget = "Anthropic.ClaudeCode"
+choco = "claude-code"
+brew-cask = "claude-code"
+
+[[app]]
+id = "claude"
+name = "Claude Desktop"
+category = "development"
+description = { en = "Anthropic's Claude desktop app for AI-assisted work and chat.", tr = "Yapay zeka destekli çalışma ve sohbet için Anthropic'in Claude masaüstü uygulaması." }
+homepage = "https://claude.ai/download"
+foss = false
+[app.packages]
+winget = "Anthropic.Claude"
+choco = "claude"
+
+[[app]]
+id = "cmake"
+name = "CMake"
+category = "development"
+description = { en = "Open-source, cross-platform family of tools for building, testing and packaging software.", tr = "Yazılımları derlemek, test etmek ve paketlemek için açık kaynaklı, çok platformlu araç ailesi." }
+homepage = "https://cmake.org/"
+foss = true
+[app.packages]
+winget = "Kitware.CMake"
+choco = "cmake"
+brew = "cmake"
+
+[[app]]
+id = "codex"
+name = "Codex"
+category = "development"
+description = { en = "OpenAI coding agent that runs locally in your terminal.", tr = "Terminalinizde yerel olarak çalışan OpenAI kodlama ajanı." }
+homepage = "https://developers.openai.com/codex/cli"
+foss = true
+[app.packages]
+winget = "OpenAI.Codex"
+choco = "codex"
+
+[[app]]
+id = "cursor"
+name = "Cursor"
+category = "development"
+description = { en = "VS Code-based code editor with AI assistance and agentic coding features.", tr = "Yapay zeka desteği ve ajan tabanlı kodlama özellikleri sunan, VS Code tabanlı kod düzenleyici." }
+homepage = "https://cursor.com/"
+foss = false
+[app.packages]
+winget = "Anysphere.Cursor"
+choco = "cursoride"
+brew-cask = "cursor"
+
+[[app]]
+id = "dockerdesktop"
+name = "Docker Desktop"
+category = "development"
+description = { en = "Local environment for building, running and testing containerized applications on Windows.", tr = "Windows üzerinde konteynerli uygulamaları oluşturmak, çalıştırmak ve test etmek için yerel ortam." }
+homepage = "https://www.docker.com/products/docker-desktop/"
+foss = false
+telemetry = true
+privacy_source = "https://docs.docker.com/desktop/settings-and-maintenance/settings/"
+note = { en = "Sends diagnostics, crash reports and usage data by default; turn off in Settings > General > Send usage statistics.", tr = "Varsayılan olarak tanılama, çökme raporu ve kullanım verileri gönderir; Ayarlar > Genel > Send usage statistics seçeneğinden kapatılabilir." }
+[app.packages]
+winget = "Docker.DockerDesktop"
+choco = "docker-desktop"
+brew-cask = "docker-desktop"
+
+[[app]]
+id = "fnm"
+name = "Fast Node Manager"
+category = "development"
+description = { en = "Fast, cross-platform tool for installing and switching between Node.js versions.", tr = "Node.js sürümlerini kurmak ve aralarında geçiş yapmak için hızlı, çok platformlu araç." }
+homepage = "https://github.com/Schniz/fnm"
+foss = true
+[app.packages]
+winget = "Schniz.fnm"
+choco = "fnm"
+brew = "fnm"
+
+[[app]]
+id = "git"
+name = "Git"
+category = "development"
+description = { en = "Distributed version control system.", tr = "Dağıtık sürüm kontrol sistemi." }
+homepage = "https://git-scm.com/"
+foss = true
+[app.packages]
+winget = "Git.Git"
+choco = "git"
+scoop = "git"
+apt = "git"
+dnf = "git"
+yum = "git"
+zypper = "git"
+pacman = "git"
+apk = "git"
+xbps = "git"
+emerge = "dev-vcs/git"
+eopkg = "git"
+urpmi = "git"
+nix = "nixpkgs#git"
+brew = "git"
+
+[[app]]
+id = "gitextensions"
+name = "Git Extensions"
+category = "development"
+description = { en = "Graphical Git client for Windows with repository, history and commit management tools.", tr = "Depo, geçmiş ve commit yönetim araçları sunan Windows için grafik arayüzlü Git istemcisi." }
+homepage = "https://gitextensions.github.io/"
+foss = true
+[app.packages]
+winget = "GitExtensionsTeam.GitExtensions"
+choco = "gitextensions"
+
+[[app]]
+id = "githubcli"
+name = "GitHub CLI"
+category = "development"
+description = { en = "Command-line tool that brings pull requests, issues, releases and other GitHub workflows to the terminal.", tr = "Pull request, issue, sürüm ve diğer GitHub iş akışlarını terminale taşıyan komut satırı aracı." }
+homepage = "https://cli.github.com/"
+foss = true
+telemetry = true
+privacy_source = "https://docs.github.com/en/github-cli/github-cli/github-cli-telemetry"
+note = { en = "Sends pseudonymous usage telemetry; turn off with 'gh config set telemetry disabled' or GH_TELEMETRY=false.", tr = "Takma adlı kullanım telemetrisi gönderir; 'gh config set telemetry disabled' komutu veya GH_TELEMETRY=false ile kapatılabilir." }
+[app.packages]
+winget = "GitHub.cli"
+choco = "gh"
+
+[[app]]
+id = "githubdesktop"
+name = "GitHub Desktop"
+category = "development"
+description = { en = "Visual Git client that simplifies working with GitHub repositories.", tr = "GitHub depolarıyla çalışmayı kolaylaştıran görsel Git istemcisi." }
+homepage = "https://desktop.github.com/"
+foss = true
+[app.packages]
+winget = "GitHub.GitHubDesktop"
+brew-cask = "github"
+
+[[app]]
+id = "golang"
+name = "Go"
+category = "development"
+description = { en = "Statically typed, compiled programming language designed for simplicity, reliability and efficiency.", tr = "Sadelik, güvenilirlik ve verimlilik için tasarlanmış, statik tipli ve derlenen programlama dili." }
+homepage = "https://go.dev/"
+foss = true
+telemetry = false
+privacy_source = "https://go.dev/doc/telemetry"
+[app.packages]
+winget = "GoLang.Go"
+choco = "golang"
+brew = "go"
+
+[[app]]
+id = "hugo"
+name = "Hugo"
+category = "development"
+description = { en = "Static site generator framework for building websites.", tr = "Web siteleri oluşturmak için kullanılan statik site oluşturucu çatısı." }
+homepage = "https://gohugo.io"
+foss = true
+[app.packages]
+winget = "Hugo.Hugo.Extended"
+choco = "hugo-extended"
+brew = "hugo"
+
+[[app]]
+id = "jetbrains"
+name = "Jetbrains Toolbox"
+category = "development"
+description = { en = "Tool for installing and managing JetBrains developer tools.", tr = "JetBrains geliştirici araçlarını kolayca kurmaya ve yönetmeye yarayan uygulama." }
+homepage = "https://www.jetbrains.com/toolbox/"
+foss = false
+[app.packages]
+winget = "JetBrains.Toolbox"
+choco = "jetbrainstoolbox"
+brew-cask = "jetbrains-toolbox"
+
+[[app]]
+id = "lazygit"
+name = "Lazygit"
+category = "development"
+description = { en = "Simple terminal user interface for running Git commands.", tr = "Git komutlarını çalıştırmak için basit bir terminal kullanıcı arayüzü." }
+homepage = "https://github.com/jesseduffield/lazygit/"
+foss = true
+[app.packages]
+winget = "JesseDuffield.lazygit"
+choco = "lazygit"
+brew = "lazygit"
+
+[[app]]
+id = "lua"
+name = "Lua"
+category = "development"
+description = { en = "Batteries-included environment for the Lua scripting language on Windows.", tr = "Windows üzerinde Lua betik dili için gerekli bileşenleri hazır sunan çalışma ortamı." }
+homepage = "https://github.com/rjpcomputing/luaforwindows"
+foss = true
+[app.packages]
+winget = "rjpcomputing.luaforwindows"
+choco = "lua"
+
+[[app]]
+id = "neovim"
+name = "Neovim"
+category = "development"
+description = { en = "Highly extensible text editor that improves on the original Vim.", tr = "Orijinal Vim'i geliştiren, son derece genişletilebilir metin düzenleyici." }
+homepage = "https://neovim.io/"
+foss = true
+[app.packages]
+winget = "Neovim.Neovim"
+choco = "neovim"
+flatpak = "io.neovim.nvim"
+brew = "neovim"
+
+[[app]]
+id = "nodejs"
+name = "NodeJS"
+category = "development"
+description = { en = "JavaScript runtime built on Chrome's V8 engine for server-side and network applications.", tr = "Sunucu taraflı ve ağ uygulamaları için Chrome'un V8 motoru üzerine kurulu JavaScript çalışma ortamı." }
+homepage = "https://nodejs.org/"
+foss = true
+conflicts = ["nodejslts"]
+[app.packages]
+winget = "OpenJS.NodeJS"
+choco = "nodejs"
+
+[[app]]
+id = "nodejslts"
+name = "NodeJS LTS"
+category = "development"
+description = { en = "Long-Term Support releases of the Node.js JavaScript runtime for stable server-side development.", tr = "Kararlı sunucu taraflı geliştirme için Node.js JavaScript çalışma ortamının uzun süreli destek (LTS) sürümleri." }
+homepage = "https://nodejs.org/"
+foss = true
+conflicts = ["nodejs"]
+[app.packages]
+winget = "OpenJS.NodeJS.LTS"
+choco = "nodejs-lts"
+
+[[app]]
+id = "notepadplus"
+name = "Notepad++"
+category = "development"
+description = { en = "Free, open-source code editor and Notepad replacement supporting many languages.", tr = "Birçok dili destekleyen, Not Defteri yerine kullanılabilen ücretsiz ve açık kaynaklı kod düzenleyici." }
+homepage = "https://notepad-plus-plus.org/"
+foss = true
+[app.packages]
+winget = "Notepad++.Notepad++"
+choco = "notepadplusplus"
+
+[[app]]
+id = "posh"
+name = "Oh My Posh (Prompt)"
+category = "development"
+description = { en = "Cross-platform prompt theme engine for any shell.", tr = "Her kabuk için çapraz platform komut istemi tema motoru." }
+homepage = "https://ohmyposh.dev/"
+foss = true
+[app.packages]
+winget = "JanDeDobbeleer.OhMyPosh"
+choco = "oh-my-posh"
+brew = "oh-my-posh"
+
+[[app]]
+id = "opencode"
+name = "OpenCode"
+category = "development"
+description = { en = "Open-source AI coding agent for the terminal that works with local and hosted models from any provider.", tr = "Terminal için, herhangi bir sağlayıcının yerel ve barındırılan modelleriyle çalışan açık kaynaklı yapay zeka kodlama ajanı." }
+homepage = "https://opencode.ai/"
+foss = true
+[app.packages]
+choco = "opencode"
+brew = "opencode"
+
+[[app]]
+id = "pnpm"
+name = "pnpm"
+category = "development"
+description = { en = "Fast, disk space efficient package manager for JavaScript and Node.js.", tr = "JavaScript ve Node.js için hızlı ve disk alanından tasarruf eden paket yöneticisi." }
+homepage = "https://pnpm.io/"
+foss = true
+[app.packages]
+winget = "pnpm.pnpm"
+brew = "pnpm"
+
+[[app]]
+id = "postman"
+name = "Postman"
+category = "development"
+description = { en = "API platform and desktop client for designing, testing, documenting and collaborating on APIs.", tr = "API'leri tasarlamak, test etmek, belgelemek ve birlikte geliştirmek için API platformu ve masaüstü istemcisi." }
+homepage = "https://www.postman.com/downloads/"
+foss = false
+telemetry = true
+privacy_source = "https://learning.postman.com/docs/getting-started/installation/settings/general-settings"
+note = { en = "Sends anonymous usage data to Postman; turn off \"Send anonymous usage data to Postman\" in Settings > General.", tr = "Postman'e anonim kullanım verisi gönderir; Ayarlar > Genel'deki \"Send anonymous usage data to Postman\" seçeneğinden kapatılabilir." }
+alternatives = ["bruno"]
+[app.packages]
+winget = "Postman.Postman"
+choco = "postman"
+flatpak = "com.getpostman.Postman"
+brew-cask = "postman"
+
+[[app]]
+id = "python3"
+name = "Python3"
+category = "development"
+description = { en = "General-purpose programming language used for web development, data analysis, artificial intelligence and more.", tr = "Web geliştirme, veri analizi, yapay zekâ ve daha birçok alanda kullanılan genel amaçlı programlama dili." }
+homepage = "https://www.python.org/"
+foss = true
+[app.packages]
+winget = "Python.Python.3.14"
+choco = "python"
+
+[[app]]
+id = "ruby"
+name = "Ruby"
+category = "development"
+description = { en = "Ruby language execution environment installed together with MSYS2.", tr = "MSYS2 kurulumuyla birlikte gelen Ruby dili çalışma ortamı." }
+homepage = "https://rubyinstaller.org/"
+foss = true
+[app.packages]
+winget = "RubyInstallerTeam.Ruby.4.0"
+choco = "ruby"
+
+[[app]]
+id = "rustlang"
+name = "Rust"
+category = "development"
+description = { en = "Programming language designed for safety and performance, especially for systems programming.", tr = "Özellikle sistem programlamaya yönelik, güvenlik ve performans odaklı programlama dili." }
+homepage = "https://www.rust-lang.org/"
+foss = true
+[app.packages]
+winget = "Rustlang.Rust.MSVC"
+choco = "rust"
+brew = "rust"
+
+[[app]]
+id = "starship"
+name = "Starship (Shell Prompt)"
+category = "development"
+description = { en = "Fast, customizable, cross-platform command prompt for PowerShell and other shells.", tr = "PowerShell ve diğer kabuklar için hızlı, özelleştirilebilir ve platformlar arası komut istemi." }
+homepage = "https://starship.rs/"
+foss = true
+[app.packages]
+winget = "Starship.Starship"
+choco = "starship"
+brew = "starship"
+
+[[app]]
+id = "sublimetext"
+name = "Sublime Text"
+category = "development"
+description = { en = "Sophisticated text editor for code, markup and prose.", tr = "Kod, işaretleme dilleri ve düz metin için tasarlanmış metin düzenleyici." }
+homepage = "https://www.sublimetext.com/"
+foss = false
+[app.packages]
+winget = "SublimeHQ.SublimeText.4"
+choco = "sublimetext4"
+flatpak = "com.sublimehq.SublimeText"
+brew-cask = "sublime-text"
+
+[[app]]
+id = "unity"
+name = "Unity Game Engine"
+category = "development"
+description = { en = "Game development platform for creating 2D, 3D, augmented reality and virtual reality games.", tr = "2D, 3D, artırılmış gerçeklik ve sanal gerçeklik oyunları geliştirmeye yarayan oyun geliştirme platformu." }
+homepage = "https://unity.com/"
+foss = false
+telemetry = true
+privacy_source = "https://docs.unity.com/en-us/engine/6000.6/manual/unity-editor/editor-analytics"
+note = { en = "The Editor collects usage data such as menu use, build times and target platforms; turn off in Preferences > General > Disable Editor Analytics.", tr = "Editör, menü kullanımı, derleme süreleri ve hedef platformlar gibi kullanım verilerini toplar; Tercihler > Genel > Disable Editor Analytics'ten kapatılabilir." }
+[app.packages]
+winget = "Unity.UnityHub"
+choco = "unity-hub"
+brew-cask = "unity"
+
+[[app]]
+id = "uv"
+name = "uv"
+category = "development"
+description = { en = "Fast Python package and project manager written in Rust.", tr = "Rust ile yazılmış, hızlı bir Python paket ve proje yöneticisi." }
+homepage = "https://docs.astral.sh/uv/getting-started/installation/"
+foss = true
+[app.packages]
+winget = "astral-sh.uv"
+choco = "uv"
+brew = "uv"
+
+[[app]]
+id = "vagrant"
+name = "Vagrant"
+category = "development"
+description = { en = "Tool that builds and manages reproducible virtual machine development environments from declarative configuration.", tr = "Bildirimsel yapılandırmadan tekrarlanabilir sanal makine geliştirme ortamları oluşturan ve yöneten araç." }
+homepage = "https://developer.hashicorp.com/vagrant"
+foss = false
+[app.packages]
+winget = "Hashicorp.Vagrant"
+choco = "vagrant"
+
+[[app]]
+id = "visualstudio2022"
+name = "Visual Studio 2022"
+category = "development"
+description = { en = "Integrated development environment (IDE) for building, debugging and deploying applications.", tr = "Uygulama geliştirme, hata ayıklama ve dağıtım için tümleşik geliştirme ortamı (IDE)." }
+homepage = "https://visualstudio.microsoft.com/"
+foss = false
+telemetry = true
+privacy_source = "https://learn.microsoft.com/en-us/visualstudio/ide/visual-studio-experience-improvement-program"
+note = { en = "The Customer Experience Improvement Program is on by default and sends usage and hardware data; turn off in Help > Privacy > Privacy Settings (some required diagnostic data is still sent).", tr = "Müşteri Deneyimini Geliştirme Programı varsayılan olarak açıktır ve kullanım ile donanım verisi gönderir; Yardım > Gizlilik > Gizlilik Ayarları'ndan kapatılabilir (zorunlu bazı tanılama verileri yine gönderilir)." }
+[app.packages]
+winget = "Microsoft.VisualStudio.2022.Community"
+choco = "visualstudio2022community"
+
+[[app]]
+id = "visualstudio2026"
+name = "Visual Studio 2026"
+category = "development"
+description = { en = "Integrated development environment (IDE) for building, debugging and deploying applications.", tr = "Uygulama geliştirme, hata ayıklama ve dağıtım için tümleşik geliştirme ortamı (IDE)." }
+homepage = "https://visualstudio.microsoft.com/"
+foss = false
+telemetry = true
+privacy_source = "https://learn.microsoft.com/en-us/visualstudio/ide/visual-studio-experience-improvement-program"
+note = { en = "The Customer Experience Improvement Program is on by default and sends usage and hardware data; turn off in Help > Privacy > Privacy Settings (some required diagnostic data is still sent).", tr = "Müşteri Deneyimini Geliştirme Programı varsayılan olarak açıktır ve kullanım ile donanım verisi gönderir; Yardım > Gizlilik > Gizlilik Ayarları'ndan kapatılabilir (zorunlu bazı tanılama verileri yine gönderilir)." }
+[app.packages]
+winget = "Microsoft.VisualStudio.Community"
+choco = "visualstudio2026community"
+
+[[app]]
+id = "vscode"
+name = "Visual Studio Code"
+category = "development"
+description = { en = "Code editor from Microsoft.", tr = "Microsoft'un kod düzenleyicisi." }
+homepage = "https://code.visualstudio.com/"
+foss = false
+telemetry = true
+alternatives = ["vscodium"]
+note = { en = "Microsoft telemetry is on by default; VSCodium is the same editor built without it.", tr = "Microsoft telemetrisi varsayılan olarak açıktır; VSCodium aynı editörün telemetrisiz derlemesidir." }
+[app.packages]
+winget = "Microsoft.VisualStudioCode"
+choco = "vscode"
+flatpak = "com.visualstudio.code"
+brew-cask = "visual-studio-code"
+
+[[app]]
+id = "vscodium"
+name = "VSCodium"
+category = "development"
+description = { en = "VS Code built without Microsoft telemetry.", tr = "Microsoft telemetrisi olmadan derlenmiş VS Code." }
+homepage = "https://vscodium.com/"
+foss = true
+telemetry = false
+privacy_source = "https://vscodium.com/"
+[app.packages]
+winget = "VSCodium.VSCodium"
+choco = "vscodium"
+flatpak = "com.vscodium.codium"
+brew-cask = "vscodium"
+
+[[app]]
+id = "yarn"
+name = "Yarn"
+category = "development"
+description = { en = "Dependency management tool for JavaScript projects.", tr = "JavaScript projeleri için bağımlılık yönetim aracı." }
+homepage = "https://yarnpkg.com/"
+foss = true
+telemetry = true
+privacy_source = "https://yarnpkg.com/advanced/telemetry"
+note = { en = "Sends weekly usage statistics such as command names, install counts and plugin names; turn off with `yarn config set --home enableTelemetry 0`.", tr = "Komut adları, kurulum sayıları ve eklenti adları gibi haftalık kullanım istatistikleri gönderir; `yarn config set --home enableTelemetry 0` komutuyla kapatılabilir." }
+alternatives = ["pnpm"]
+[app.packages]
+winget = "Yarn.Yarn"
+choco = "yarn"
+brew = "yarn"
+
+[[app]]
+id = "zed"
+name = "Zed"
+category = "development"
+description = { en = "High-performance code editor designed for speed and collaboration.", tr = "Hız ve iş birliği için baştan tasarlanmış yüksek performanslı kod düzenleyici." }
+homepage = "https://zed.dev/"
+foss = true
+telemetry = true
+privacy_source = "https://zed.dev/docs/telemetry"
+note = { en = "Sends usage metrics and crash reports; turn off by setting telemetry.metrics and telemetry.diagnostics to false in Settings.", tr = "Kullanım ölçümleri ve çökme raporları gönderir; Ayarlar'da telemetry.metrics ve telemetry.diagnostics değerleri false yapılarak kapatılabilir." }
+alternatives = ["vscodium", "neovim"]
+[app.packages]
+winget = "ZedIndustries.Zed"
+choco = "zed"
+flatpak = "dev.zed.Zed"
+brew-cask = "zed"
+
+# --- multimedia --------------------------------------------------------------------------------
+
+[[app]]
+id = "aimp"
+name = "AIMP (Music Player)"
+category = "multimedia"
+description = { en = "Music player with support for various audio formats, playlists and a customizable interface.", tr = "Çeşitli ses biçimlerini, çalma listelerini ve özelleştirilebilir arayüzü destekleyen müzik çalar." }
+homepage = "https://www.aimp.ru/"
+foss = false
+[app.packages]
+winget = "AIMP.AIMP"
+choco = "aimp"
+
+[[app]]
+id = "audacity"
+name = "Audacity"
+category = "multimedia"
+description = { en = "Free, open-source audio recording and editing software.", tr = "Ücretsiz ve açık kaynaklı ses kaydı ve düzenleme yazılımı." }
+homepage = "https://www.audacityteam.org/"
+foss = true
+telemetry = false
+privacy_source = "https://www.audacityteam.org/about/desktop-privacy-notice/"
+[app.packages]
+winget = "Audacity.Audacity"
+choco = "audacity"
+flatpak = "org.audacityteam.Audacity"
+brew-cask = "audacity"
+
+[[app]]
+id = "blender"
+name = "Blender (3D Graphics)"
+category = "multimedia"
+description = { en = "Open-source 3D creation suite with modeling, sculpting, animation and rendering tools.", tr = "Modelleme, heykel, animasyon ve render araçları sunan açık kaynaklı 3D üretim paketi." }
+homepage = "https://www.blender.org/"
+foss = true
+[app.packages]
+winget = "BlenderFoundation.Blender"
+choco = "blender"
+flatpak = "org.blender.Blender"
+brew-cask = "blender"
+
+[[app]]
+id = "calibre"
+name = "Calibre"
+category = "multimedia"
+description = { en = "E-book manager, viewer and format converter for your library.", tr = "E-kitap yöneticisi, görüntüleyicisi ve dönüştürücüsü." }
+homepage = "https://calibre-ebook.com/"
+foss = true
+telemetry = false
+privacy_source = "https://calibre-ebook.com/privacy"
+[app.packages]
+winget = "calibre.calibre"
+choco = "calibre"
+flatpak = "com.calibre_ebook.calibre"
+brew-cask = "calibre"
+
+[[app]]
+id = "eartrumpet"
+name = "EarTrumpet (Audio)"
+category = "multimedia"
+description = { en = "Audio control app for Windows with a simple interface for managing sound settings.", tr = "Ses ayarlarını yönetmek için basit bir arayüz sunan Windows ses kontrol uygulaması." }
+homepage = "https://eartrumpet.app/"
+foss = true
+[app.packages]
+winget = "File-New-Project.EarTrumpet"
+choco = "eartrumpet"
+
+[[app]]
+id = "fileconverter"
+name = "File Converter"
+category = "multimedia"
+description = { en = "Tool that converts and compresses files from the Windows Explorer context menu.", tr = "Dosyaları Windows Gezgini sağ tık menüsünden dönüştüren ve sıkıştıran araç." }
+homepage = "https://file-converter.io/"
+foss = true
+[app.packages]
+winget = "AdrienAllard.FileConverter"
+choco = "file-converter"
+
+[[app]]
+id = "foobar"
+name = "foobar2000 (Music Player)"
+category = "multimedia"
+description = { en = "Customizable and extensible music player for Windows with a modular design.", tr = "Modüler yapıya sahip, özelleştirilebilir ve genişletilebilir Windows müzik çalar." }
+homepage = "https://www.foobar2000.org/"
+foss = false
+[app.packages]
+winget = "PeterPawlowski.foobar2000"
+choco = "foobar2000"
+brew-cask = "foobar2000"
+
+[[app]]
+id = "gimp"
+name = "GIMP"
+category = "multimedia"
+description = { en = "Image editor.", tr = "Görüntü düzenleyici." }
+homepage = "https://www.gimp.org/"
+foss = true
+[app.packages]
+winget = "GIMP.GIMP.3"
+choco = "gimp"
+apt = "gimp"
+dnf = "gimp"
+zypper = "gimp"
+pacman = "gimp"
+flatpak = "org.gimp.GIMP"
+brew-cask = "gimp"
+
+[[app]]
+id = "handbrake"
+name = "HandBrake"
+category = "multimedia"
+description = { en = "Open-source video transcoder that converts video from nearly any format to widely supported codecs.", tr = "Videoları neredeyse her biçimden yaygın codec'lere dönüştüren açık kaynaklı video dönüştürücü." }
+homepage = "https://handbrake.fr/"
+foss = true
+[app.packages]
+winget = "HandBrake.HandBrake"
+choco = "handbrake"
+flatpak = "fr.handbrake.ghb"
+brew-cask = "handbrake-app"
+
+[[app]]
+id = "imageglass"
+name = "ImageGlass (Image Viewer)"
+category = "multimedia"
+description = { en = "Image viewer that supports many image formats and focuses on simplicity and speed.", tr = "Birçok görüntü biçimini destekleyen, sadelik ve hıza odaklanan görüntü görüntüleyici." }
+homepage = "https://imageglass.org/"
+foss = true
+telemetry = false
+privacy_source = "https://imageglass.org/privacy"
+[app.packages]
+winget = "DuongDieuPhap.ImageGlass"
+choco = "imageglass"
+
+[[app]]
+id = "irfanview"
+name = "IrfanView"
+category = "multimedia"
+description = { en = "Lightweight, free image viewer and editor with multi-format support, batch processing and plugins.", tr = "Çoklu biçim desteği, toplu işleme ve eklentiler sunan hafif ve ücretsiz görüntü görüntüleyici ve düzenleyici." }
+homepage = "https://irfanview.com/"
+foss = false
+telemetry = false
+privacy_source = "https://www.irfanview.com/privacy_policy.htm"
+[app.packages]
+winget = "IrfanSkiljan.IrfanView"
+choco = "irfanview"
+
+[[app]]
+id = "itunes"
+name = "iTunes"
+category = "multimedia"
+description = { en = "Apple media player, media library and online radio application.", tr = "Apple tarafından geliştirilen medya oynatıcı, medya kütüphanesi ve çevrimiçi radyo uygulaması." }
+homepage = "https://www.apple.com/itunes/"
+foss = false
+[app.packages]
+winget = "Apple.iTunes"
+choco = "itunes"
+
+[[app]]
+id = "klite"
+name = "K-Lite Codec Standard"
+category = "multimedia"
+description = { en = "Collection of audio and video codecs and related tools for media playback.", tr = "Medya oynatımı için ses ve video codec bileşenleri ile ilgili araçlardan oluşan paket." }
+homepage = "https://www.codecguide.com/"
+foss = false
+[app.packages]
+winget = "CodecGuide.K-LiteCodecPack.Standard"
+choco = "k-litecodecpack-standard"
+
+[[app]]
+id = "mpchc"
+name = "Media Player Classic - Home Cinema"
+category = "multimedia"
+description = { en = "Free, open-source video and audio player for Windows based on the original Guliverkli project.", tr = "Orijinal Guliverkli projesine dayanan, Windows için ücretsiz ve açık kaynaklı video ve ses oynatıcı." }
+homepage = "https://mpc-hc.org/"
+foss = true
+[app.packages]
+winget = "clsid2.mpc-hc"
+choco = "mpc-hc-clsid2"
+
+[[app]]
+id = "mpc-qt"
+name = "mpc-qt"
+category = "multimedia"
+description = { en = "Qt-based media player in the style of Media Player Classic.", tr = "Media Player Classic tarzında, Qt tabanlı medya oynatıcı." }
+homepage = "https://mpc-qt.github.io"
+foss = true
+[app.packages]
+winget = "mpc-qt.mpc-qt"
+choco = "mpc-qt"
+flatpak = "io.github.mpc_qt.mpc-qt"
+
+[[app]]
+id = "mpv"
+name = "mpv"
+category = "multimedia"
+description = { en = "Free, open-source, cross-platform media player supporting many formats, codecs and subtitle types.", tr = "Birçok biçimi, codec'i ve altyazı türünü destekleyen ücretsiz, açık kaynaklı ve çapraz platform medya oynatıcı." }
+homepage = "https://mpv.io/"
+foss = true
+[app.packages]
+winget = "shinchiro.mpv"
+flatpak = "io.mpv.Mpv"
+brew = "mpv"
+
+[[app]]
+id = "nomacs"
+name = "nomacs"
+category = "multimedia"
+description = { en = "Free, open-source image viewer for common formats, including RAW and PSD images.", tr = "RAW ve PSD dahil yaygın görüntü biçimlerini açan ücretsiz ve açık kaynaklı görüntü görüntüleyici." }
+homepage = "https://nomacs.org/"
+foss = true
+[app.packages]
+winget = "nomacs.nomacs"
+choco = "nomacs"
+
+[[app]]
+id = "obs-studio"
+name = "OBS Studio"
+category = "multimedia"
+description = { en = "Screen recording and live streaming.", tr = "Ekran kaydı ve canlı yayın." }
+homepage = "https://obsproject.com/"
+foss = true
+[app.packages]
+winget = "OBSProject.OBSStudio"
+choco = "obs-studio"
+apt = "obs-studio"
+pacman = "obs-studio"
+flatpak = "com.obsproject.Studio"
+brew-cask = "obs"
+
+[[app]]
+id = "paintdotnet"
+name = "Paint.NET"
+category = "multimedia"
+description = { en = "Free image and photo editor for Windows with an intuitive interface and editing tools.", tr = "Sezgisel arayüze ve çeşitli düzenleme araçlarına sahip, Windows için ücretsiz görüntü ve fotoğraf düzenleyici." }
+homepage = "https://www.getpaint.net/"
+foss = false
+telemetry = true
+privacy_source = "https://paint.net/privacy.html"
+note = { en = "The Classic (non-Store) release anonymously reports when an install or update has completed; the vendor documents no switch for this, though MSI-based installs do not report it.", tr = "Klasik (Store dışı) sürüm, kurulum veya güncelleme tamamlandığında bunu anonim olarak bildirir; üretici bunu kapatmak için bir ayar belirtmiyor, ancak MSI ile yapılan kurulumlar bildirim göndermez." }
+alternatives = ["gimp"]
+[app.packages]
+winget = "dotPDN.PaintDotNet"
+choco = "paint.net"
+
+[[app]]
+id = "sharex"
+name = "ShareX (Screenshots)"
+category = "multimedia"
+description = { en = "Free open-source screen capture and file sharing tool with multiple capture methods and editing options.", tr = "Çeşitli yakalama yöntemleri ve düzenleme seçenekleri sunan ücretsiz, açık kaynaklı ekran görüntüsü ve dosya paylaşım aracı." }
+homepage = "https://getsharex.com/"
+foss = true
+telemetry = false
+privacy_source = "https://getsharex.com/privacy-policy"
+[app.packages]
+winget = "ShareX.ShareX"
+choco = "sharex"
+
+[[app]]
+id = "vlc"
+name = "VLC"
+category = "multimedia"
+description = { en = "Media player that plays almost any format.", tr = "Neredeyse her formatı oynatan medya oynatıcı." }
+homepage = "https://www.videolan.org/vlc/"
+foss = true
+telemetry = false
+privacy_source = "https://www.videolan.org/vlc/"
+[app.packages]
+winget = "VideoLAN.VLC"
+choco = "vlc"
+apt = "vlc"
+zypper = "vlc"
+pacman = "vlc"
+apk = "vlc"
+xbps = "vlc"
+emerge = "media-video/vlc"
+flatpak = "org.videolan.VLC"
+snap = "vlc"
+brew-cask = "vlc"
+
+# --- office ------------------------------------------------------------------------------------
+
+[[app]]
+id = "adobe"
+name = "Adobe Acrobat Reader"
+category = "office"
+description = { en = "Free PDF viewer for viewing, printing and annotating PDF documents.", tr = "PDF belgelerini görüntülemek, yazdırmak ve not eklemek için ücretsiz PDF okuyucu." }
+homepage = "https://www.adobe.com/acrobat/pdf-reader.html"
+foss = false
+telemetry = true
+privacy_source = "https://www.adobe.com/privacy/apip.html"
+note = { en = "Shares system information and feature usage through the Adobe Product Improvement Program; turn off in Preferences > Usage Information.", tr = "Adobe Ürün Geliştirme Programı aracılığıyla sistem bilgisi ve özellik kullanım verisi paylaşır; Tercihler > Kullanım Bilgileri'nden kapatılabilir." }
+alternatives = ["okular"]
+[app.packages]
+winget = "Adobe.Acrobat.Reader.64-bit"
+choco = "adobereader"
+brew-cask = "adobe-acrobat-reader"
+
+[[app]]
+id = "foxpdfreader"
+name = "Foxit PDF Reader"
+category = "office"
+description = { en = "Free PDF viewer with a familiar ribbon-style interface.", tr = "Tanıdık şerit tarzı arayüze sahip ücretsiz PDF okuyucu." }
+homepage = "https://www.foxit.com/pdf-reader/"
+foss = false
+[app.packages]
+winget = "Foxit.FoxitReader"
+choco = "foxitreader"
+
+[[app]]
+id = "joplin"
+name = "Joplin"
+category = "office"
+description = { en = "Open-source note-taking and to-do application with synchronization.", tr = "Senkronizasyon destekli, açık kaynaklı not alma ve yapılacaklar listesi uygulaması." }
+homepage = "https://joplinapp.org/"
+foss = true
+telemetry = false
+privacy_source = "https://joplinapp.org/privacy/"
+[app.packages]
+winget = "Joplin.Joplin"
+choco = "joplin"
+flatpak = "net.cozic.joplin_desktop"
+brew-cask = "joplin"
+
+[[app]]
+id = "libreoffice"
+name = "LibreOffice"
+category = "office"
+description = { en = "Free office suite.", tr = "Ücretsiz ofis paketi." }
+homepage = "https://www.libreoffice.org/"
+foss = true
+[app.packages]
+winget = "TheDocumentFoundation.LibreOffice"
+choco = "libreoffice-fresh"
+apt = "libreoffice"
+dnf = "libreoffice"
+zypper = "libreoffice"
+pacman = "libreoffice-fresh"
+flatpak = "org.libreoffice.LibreOffice"
+brew-cask = "libreoffice"
+
+[[app]]
+id = "naps2"
+name = "NAPS2 (Scanner)"
+category = "office"
+description = { en = "Document scanning application for creating electronic documents from scanners.", tr = "Tarayıcıdan elektronik belge oluşturmayı kolaylaştıran belge tarama uygulaması." }
+homepage = "https://www.naps2.com/"
+foss = true
+[app.packages]
+winget = "Cyanfish.NAPS2"
+choco = "naps2"
+brew-cask = "naps2"
+
+[[app]]
+id = "obsidian"
+name = "Obsidian"
+category = "office"
+description = { en = "Note-taking and knowledge management application.", tr = "Not alma ve bilgi yönetimi uygulaması." }
+homepage = "https://obsidian.md/"
+foss = false
+telemetry = false
+privacy_source = "https://obsidian.md/privacy"
+[app.packages]
+winget = "Obsidian.Obsidian"
+choco = "obsidian"
+flatpak = "md.obsidian.Obsidian"
+brew-cask = "obsidian"
+
+[[app]]
+id = "okular"
+name = "Okular"
+category = "office"
+description = { en = "Versatile document viewer with advanced features.", tr = "Gelişmiş özelliklere sahip çok yönlü bir belge görüntüleyici." }
+homepage = "https://okular.kde.org/"
+foss = true
+telemetry = false
+privacy_source = "https://kde.org/privacypolicy-apps/"
+[app.packages]
+winget = "KDE.Okular"
+choco = "okular"
+flatpak = "org.kde.okular"
+
+[[app]]
+id = "onlyoffice"
+name = "ONLYOFFICE Desktop"
+category = "office"
+description = { en = "Desktop office suite for document editing and collaboration.", tr = "Belge düzenleme ve ortak çalışma için masaüstü ofis paketi." }
+homepage = "https://www.onlyoffice.com/desktop.aspx"
+foss = true
+[app.packages]
+winget = "ONLYOFFICE.DesktopEditors"
+choco = "onlyoffice"
+brew-cask = "onlyoffice"
+
+[[app]]
+id = "pdf-xchange"
+name = "PDF-XChange Editor"
+category = "office"
+description = { en = "Windows editor for creating, viewing, editing, annotating and signing PDF files.", tr = "PDF dosyalarını oluşturmak, görüntülemek, düzenlemek, not eklemek ve imzalamak için Windows düzenleyicisi." }
+homepage = "https://www.pdf-xchange.com/"
+foss = false
+[app.packages]
+winget = "TrackerSoftware.PDF-XChangeEditor"
+choco = "pdfxchangeeditor"
+
+[[app]]
+id = "pdf24creator"
+name = "PDF24 Creator"
+category = "office"
+description = { en = "Free, easy-to-use set of online and desktop PDF tools.", tr = "Çevrimiçi ve masaüstü kullanılabilen, ücretsiz ve kullanımı kolay PDF araçları." }
+homepage = "https://tools.pdf24.org/en/creator"
+foss = false
+[app.packages]
+winget = "geeksoftwareGmbH.PDF24Creator"
+choco = "pdf24"
+
+[[app]]
+id = "pdfgear"
+name = "PDFgear"
+category = "office"
+description = { en = "Free PDF management software for Windows, macOS and mobile.", tr = "Windows, macOS ve mobil için tamamen ücretsiz PDF yönetim yazılımı." }
+homepage = "https://www.pdfgear.com/"
+foss = false
+[app.packages]
+winget = "PDFgear.PDFgear"
+choco = "pdfgear"
+
+[[app]]
+id = "pdfsam"
+name = "PDFsam Basic"
+category = "office"
+description = { en = "Free, open-source tool for splitting, merging and rotating PDF files.", tr = "PDF dosyalarını bölmek, birleştirmek ve döndürmek için ücretsiz, açık kaynaklı araç." }
+homepage = "https://pdfsam.org/"
+foss = true
+telemetry = false
+privacy_source = "https://pdfsam.org/privacy-policy/"
+[app.packages]
+winget = "PDFsam.PDFsam"
+choco = "pdfsam"
+brew-cask = "pdfsam-basic"
+
+[[app]]
+id = "qownnotes"
+name = "QOwnNotes"
+category = "office"
+description = { en = "Free open-source note-taking app with Nextcloud and ownCloud integration.", tr = "Nextcloud ve ownCloud entegrasyonuna sahip ücretsiz, açık kaynaklı not alma uygulaması." }
+homepage = "https://www.qownnotes.org/"
+foss = true
+[app.packages]
+winget = "pbek.QOwnNotes"
+choco = "qownnotes"
+flatpak = "org.qownnotes.QOwnNotes"
+
+[[app]]
+id = "simplenote"
+name = "Simplenote"
+category = "office"
+description = { en = "Simple app for keeping notes, lists, ideas and more.", tr = "Not, liste ve fikirlerinizi tutmanızı sağlayan basit bir uygulama." }
+homepage = "https://simplenote.com/"
+foss = true
+telemetry = true
+privacy_source = "https://automattic.com/privacy/"
+note = { en = "Sends usage analytics to Automattic by default; you can opt out of analytics in the app's settings.", tr = "Varsayılan olarak Automattic'e kullanım analizi gönderir; uygulama ayarlarından analiz paylaşımı kapatılabilir." }
+alternatives = ["joplin"]
+[app.packages]
+winget = "Automattic.Simplenote"
+choco = "simplenote"
+flatpak = "com.simplenote.Simplenote"
+
+[[app]]
+id = "sumatra"
+name = "Sumatra PDF"
+category = "office"
+description = { en = "Lightweight, fast PDF viewer with a minimalist design.", tr = "Minimalist tasarıma sahip hafif ve hızlı PDF görüntüleyici." }
+homepage = "https://www.sumatrapdfreader.org/free-pdf-reader.html"
+foss = true
+telemetry = true
+privacy_source = "https://www.sumatrapdfreader.org/docs/Privacy-policy"
+note = { en = "Official builds send crash reports automatically without asking; there is no documented switch to turn this off.", tr = "Resmi sürümler sormadan otomatik çökme raporu gönderir; bunu kapatmak için belgelenmiş bir ayar yoktur." }
+alternatives = ["okular"]
+[app.packages]
+winget = "SumatraPDF.SumatraPDF"
+choco = "sumatrapdf"
+
+[[app]]
+id = "xournal"
+name = "Xournal++"
+category = "office"
+description = { en = "Open-source handwriting note-taking software with PDF annotation support.", tr = "PDF üzerine not alma desteği sunan, açık kaynaklı el yazısı not alma yazılımı." }
+homepage = "https://xournalpp.github.io/"
+foss = true
+[app.packages]
+winget = "Xournal++.Xournal++"
+choco = "xournalplusplus"
+flatpak = "com.github.xournalpp.xournalpp"
+
+[[app]]
+id = "zotero"
+name = "Zotero"
+category = "office"
+description = { en = "Free tool for collecting, organizing, citing and sharing research materials.", tr = "Araştırma materyallerini toplamaya, düzenlemeye, alıntılamaya ve paylaşmaya yarayan ücretsiz araç." }
+homepage = "https://www.zotero.org/"
+foss = true
+[app.packages]
+winget = "DigitalScholar.Zotero"
+choco = "zotero"
+flatpak = "org.zotero.Zotero"
+brew-cask = "zotero"
+
+# --- security ----------------------------------------------------------------------------------
+
+[[app]]
+id = "bitwarden"
+name = "Bitwarden"
+category = "security"
+description = { en = "Open-source password manager with sync.", tr = "Senkronizasyonlu açık kaynaklı parola yöneticisi." }
+homepage = "https://bitwarden.com/"
+foss = true
+[app.packages]
+winget = "Bitwarden.Bitwarden"
+choco = "bitwarden"
+flatpak = "com.bitwarden.desktop"
+snap = "bitwarden"
+brew-cask = "bitwarden"
+
+[[app]]
+id = "keepassxc"
+name = "KeePassXC"
+category = "security"
+description = { en = "Offline password manager.", tr = "Çevrimdışı parola yöneticisi." }
+homepage = "https://keepassxc.org/"
+foss = true
+telemetry = false
+privacy_source = "https://keepassxc.org/docs/"
+[app.packages]
+winget = "KeePassXCTeam.KeePassXC"
+choco = "keepassxc"
+apt = "keepassxc"
+dnf = "keepassxc"
+zypper = "keepassxc"
+pacman = "keepassxc"
+apk = "keepassxc"
+xbps = "keepassxc"
+flatpak = "org.keepassxc.KeePassXC"
+snap = "keepassxc"
+brew-cask = "keepassxc"
+
+[[app]]
+id = "veracrypt"
+name = "VeraCrypt"
+category = "security"
+description = { en = "Disk and container encryption.", tr = "Disk ve kapsayıcı şifreleme." }
+homepage = "https://veracrypt.io/"
+[app.packages]
+winget = "IDRIX.VeraCrypt"
+choco = "veracrypt"
+brew-cask = "veracrypt"
+
+[[app]]
+id = "wireguard"
+name = "WireGuard"
+category = "security"
+description = { en = "Fast and modern VPN.", tr = "Hızlı ve modern VPN." }
+homepage = "https://www.wireguard.com/"
+foss = true
+[app.packages]
+winget = "WireGuard.WireGuard"
+choco = "wireguard"
+apt = "wireguard-tools"
+dnf = "wireguard-tools"
+pacman = "wireguard-tools"
+brew = "wireguard-tools"
+
+# --- utilities ---------------------------------------------------------------------------------
+
+[[app]]
+id = "1password"
+name = "1Password"
+category = "utilities"
+description = { en = "Password manager for storing and managing your passwords securely.", tr = "Parolalarınızı güvenli biçimde saklamanızı ve yönetmenizi sağlayan parola yöneticisi." }
+homepage = "https://1password.com/"
+foss = false
+telemetry = false
+privacy_source = "https://support.1password.com/telemetry"
+[app.packages]
+winget = "AgileBits.1Password"
+choco = "1password"
+flatpak = "com.onepassword.OnePassword"
+brew-cask = "1password"
+
+[[app]]
+id = "7zip"
+name = "7-Zip"
+category = "utilities"
+description = { en = "File archiver with a high compression ratio.", tr = "Yüksek sıkıştırma oranlı arşiv aracı." }
+homepage = "https://www.7-zip.org/"
+foss = true
+[app.packages]
+winget = "7zip.7zip"
+choco = "7zip"
+scoop = "7zip"
+brew = "sevenzip"
+
+[[app]]
+id = "abdownloadmanager"
+name = "AB Download Manager"
+category = "utilities"
+description = { en = "Open-source download manager with multi-threaded downloads, queue scheduling, speed limits and browser integration.", tr = "Çok iş parçacıklı indirme, kuyruk zamanlama, hız sınırlama ve tarayıcı entegrasyonu sunan açık kaynaklı indirme yöneticisi." }
+homepage = "https://abdownloadmanager.com/"
+foss = true
+[app.packages]
+winget = "amir1376.ABDownloadManager"
+choco = "ab-download-manager"
+flatpak = "com.abdownloadmanager.abdownloadmanager"
+
+[[app]]
+id = "advancedip"
+name = "Advanced IP Scanner"
+category = "utilities"
+description = { en = "Network scanner that analyzes LAN networks and lists information about connected devices.", tr = "Yerel ağları tarayıp bağlı cihazlar hakkında bilgi veren ağ tarayıcısı." }
+homepage = "https://www.advanced-ip-scanner.com/"
+foss = false
+[app.packages]
+winget = "Famatech.AdvancedIPScanner"
+choco = "advanced-ip-scanner"
+
+[[app]]
+id = "angryipscanner"
+name = "Angry IP Scanner"
+category = "utilities"
+description = { en = "Open-source, cross-platform network scanner for scanning IP addresses and ports.", tr = "IP adreslerini ve portları taramak için kullanılan açık kaynaklı, çok platformlu ağ tarayıcısı." }
+homepage = "https://angryip.org/"
+foss = true
+telemetry = false
+privacy_source = "https://angryip.org/about/privacy"
+[app.packages]
+winget = "angryziber.AngryIPScanner"
+choco = "angryip"
+flatpak = "org.angryip.ipscan"
+
+[[app]]
+id = "anydesk"
+name = "AnyDesk"
+category = "utilities"
+description = { en = "Remote desktop software for accessing and controlling computers remotely.", tr = "Bilgisayarlara uzaktan erişmeyi ve onları kontrol etmeyi sağlayan uzak masaüstü yazılımı." }
+homepage = "https://anydesk.com/"
+foss = false
+[app.packages]
+winget = "AnyDesk.AnyDesk"
+choco = "anydesk"
+flatpak = "com.anydesk.Anydesk"
+brew-cask = "anydesk"
+
+[[app]]
+id = "autohotkey"
+name = "AutoHotkey"
+category = "utilities"
+description = { en = "Scripting language for Windows used to create automation scripts, macros and custom keyboard shortcuts.", tr = "Windows için otomasyon betikleri, makrolar ve özel klavye kısayolları oluşturmaya yarayan betik dili." }
+homepage = "https://www.autohotkey.com/"
+foss = true
+[app.packages]
+winget = "AutoHotkey.AutoHotkey"
+choco = "autohotkey"
+
+[[app]]
+id = "blurautoclicker"
+name = "BlurAutoClicker"
+category = "utilities"
+description = { en = "Auto-clicker with a few advanced features and better performance than common alternatives.", tr = "Bazı gelişmiş özellikler sunan ve yaygın alternatiflerden daha iyi performans hedefleyen otomatik tıklayıcı." }
+homepage = "https://blur009.vercel.app/projects/blur-autoclicker/"
+foss = true
+[app.packages]
+winget = "Blur009.BlurAutoClicker"
+
+[[app]]
+id = "bulkcrapuninstaller"
+name = "Bulk Crap Uninstaller"
+category = "utilities"
+description = { en = "Free, open-source Windows uninstaller that removes multiple unwanted programs at once.", tr = "İstenmeyen birçok programı tek seferde kaldıran, ücretsiz ve açık kaynaklı Windows kaldırma aracı." }
+homepage = "https://www.bcuninstaller.com/"
+foss = true
+[app.packages]
+winget = "Klocman.BulkCrapUninstaller"
+choco = "bulk-crap-uninstaller"
+
+[[app]]
+id = "cinebenchr23"
+name = "Cinebench R23"
+category = "utilities"
+description = { en = "Benchmark tool for comparing CPU rendering performance across systems.", tr = "Sistemler arasında CPU render performansını karşılaştırmak için kullanılan kıyaslama aracı." }
+homepage = "https://www.maxon.net/en/cinebench"
+foss = false
+[app.packages]
+winget = "Maxon.CinebenchR23"
+
+[[app]]
+id = "cloudflarewarp"
+name = "Cloudflare WARP"
+category = "utilities"
+description = { en = "Freemium VPN service from Cloudflare that also uses Cloudflare's DNS.", tr = "Cloudflare'in DNS hizmetini de kullanan, ücretsiz sürümü bulunan Cloudflare VPN hizmeti." }
+homepage = "https://one.one.one.one"
+foss = false
+telemetry = true
+privacy_source = "https://www.cloudflare.com/application/privacypolicy/"
+note = { en = "Records enabled services, data volume, crash logs and anonymized network information; network reporting can be disabled in the app.", tr = "Etkin hizmetleri, veri miktarını, çökme kayıtlarını ve anonim ağ bilgilerini kaydeder; ağ raporlaması uygulama içinden kapatılabilir." }
+[app.packages]
+winget = "Cloudflare.Warp"
+choco = "warp"
+
+[[app]]
+id = "cpuz"
+name = "CPU-Z"
+category = "utilities"
+description = { en = "System diagnostic tool that shows detailed information about the CPU, memory and motherboard.", tr = "İşlemci, bellek ve anakart hakkında ayrıntılı bilgi veren sistem tanılama aracı." }
+homepage = "https://www.cpuid.com/softwares/cpu-z.html"
+foss = false
+[app.packages]
+winget = "CPUID.CPU-Z"
+choco = "cpu-z"
+
+[[app]]
+id = "crystaldiskinfo"
+name = "Crystal Disk Info"
+category = "utilities"
+description = { en = "Disk health monitoring tool that reports the status of hard drives and helps anticipate problems.", tr = "Sabit disklerin durumunu raporlayan ve olası sorunları önceden fark etmeye yardımcı olan disk sağlığı izleme aracı." }
+homepage = "https://crystalmark.info/en/software/crystaldiskinfo/"
+foss = true
+[app.packages]
+winget = "CrystalDewWorld.CrystalDiskInfo"
+choco = "crystaldiskinfo"
+
+[[app]]
+id = "crystaldiskmark"
+name = "Crystal Disk Mark"
+category = "utilities"
+description = { en = "Disk benchmarking tool that measures read and write speeds of hard drives and SSDs.", tr = "Sabit disklerin ve SSD'lerin okuma ve yazma hızlarını ölçen disk kıyaslama aracı." }
+homepage = "https://crystalmark.info/en/software/crystaldiskmark/"
+foss = true
+[app.packages]
+winget = "CrystalDewWorld.CrystalDiskMark"
+choco = "crystaldiskmark"
+
+[[app]]
+id = "deskflow"
+name = "Deskflow"
+category = "utilities"
+description = { en = "Free open-source software KVM for sharing one keyboard and mouse across multiple computers.", tr = "Tek bir klavye ve fareyi birden çok bilgisayarda paylaşmanızı sağlayan ücretsiz, açık kaynaklı yazılım tabanlı KVM." }
+homepage = "https://github.com/deskflow/deskflow"
+foss = true
+[app.packages]
+winget = "Deskflow.Deskflow"
+choco = "deskflow"
+flatpak = "org.deskflow.deskflow"
+
+[[app]]
+id = "ddu"
+name = "Display Driver Uninstaller"
+category = "utilities"
+description = { en = "Tool for completely uninstalling NVIDIA, AMD and Intel graphics drivers, useful for troubleshooting driver issues.", tr = "NVIDIA, AMD ve Intel ekran kartı sürücülerini tamamen kaldıran, sürücü sorunlarını gidermeye yarayan araç." }
+homepage = "https://www.wagnardsoft.com/display-driver-uninstaller-DDU-"
+foss = true
+[app.packages]
+winget = "Wagnardsoft.DisplayDriverUninstaller"
+choco = "ddu"
+
+[[app]]
+id = "dropbox"
+name = "Dropbox"
+category = "utilities"
+description = { en = "Cloud storage client for syncing files and sharing content across devices.", tr = "Dosyaları cihazlar arasında eşitlemeye ve içerik paylaşmaya yarayan bulut depolama istemcisi." }
+homepage = "https://www.dropbox.com/desktop"
+foss = false
+telemetry = true
+privacy_source = "https://www.dropbox.com/privacy"
+note = { en = "Collects information on how you use the service, including actions in your account; no switch to turn this off is documented.", tr = "Hesabınızdaki işlemler dahil hizmeti nasıl kullandığınıza dair bilgi toplar; bunu kapatmak için belgelenmiş bir ayar yoktur." }
+alternatives = ["syncthing", "nextclouddesktop"]
+[app.packages]
+winget = "Dropbox.Dropbox"
+choco = "dropbox"
+flatpak = "com.dropbox.Client"
+brew-cask = "dropbox"
+
+[[app]]
+id = "enteauth"
+name = "Ente Auth"
+category = "utilities"
+description = { en = "Free, cross-platform, end-to-end encrypted authenticator app.", tr = "Ücretsiz, çok platformlu, uçtan uca şifreli kimlik doğrulayıcı uygulaması." }
+homepage = "https://ente.io/auth/"
+foss = true
+telemetry = false
+privacy_source = "https://ente.com/privacy"
+[app.packages]
+winget = "ente-io.auth-desktop"
+choco = "ente-auth"
+brew-cask = "ente-auth"
+
+[[app]]
+id = "everything"
+name = "Everything"
+category = "utilities"
+description = { en = "Instant filename search engine for Windows that locates files and folders as you type.", tr = "Windows için, yazdıkça dosya ve klasörleri dosya adına göre anında bulan arama motoru." }
+homepage = "https://www.voidtools.com/"
+foss = false
+[app.packages]
+winget = "voidtools.Everything"
+choco = "everything"
+
+[[app]]
+id = "flux"
+name = "F.lux"
+category = "utilities"
+description = { en = "Utility that adjusts screen color temperature to reduce eye strain at night.", tr = "Geceleri göz yorgunluğunu azaltmak için ekranın renk sıcaklığını ayarlayan yardımcı program." }
+homepage = "https://justgetflux.com/"
+foss = false
+[app.packages]
+winget = "flux.flux"
+choco = "f.lux"
+brew-cask = "flux-app"
+
+[[app]]
+id = "files"
+name = "Files"
+category = "utilities"
+description = { en = "Alternative file manager for Windows, replacing File Explorer.", tr = "Windows için Dosya Gezgini yerine kullanılabilen alternatif dosya yöneticisi." }
+homepage = "https://files.community"
+foss = true
+telemetry = true
+privacy_source = "https://files.community/privacy"
+note = { en = "Sends diagnostic data to Sentry and usage data through Microsoft services; no switch to turn this off is documented.", tr = "Tanılama verilerini Sentry'ye, kullanım verilerini Microsoft hizmetleri üzerinden gönderir; bunu kapatmak için belgelenmiş bir ayar yoktur." }
+[app.packages]
+winget = "FilesCommunity.Files"
+choco = "files"
+
+[[app]]
+id = "glazewm"
+name = "GlazeWM"
+category = "utilities"
+description = { en = "Tiling window manager for Windows inspired by i3 and Polybar.", tr = "i3 ve Polybar'dan esinlenen, Windows için döşemeli pencere yöneticisi." }
+homepage = "https://github.com/glzr-io/glazewm"
+foss = true
+[app.packages]
+winget = "glzr-io.glazewm"
+choco = "glazewm"
+
+[[app]]
+id = "googledrive"
+name = "Google Drive"
+category = "utilities"
+description = { en = "File syncing client across devices tied to your Google account.", tr = "Google hesabınıza bağlı olarak dosyaları cihazlar arasında eşitleyen istemci." }
+homepage = "https://www.google.com/drive/"
+foss = false
+telemetry = true
+privacy_source = "https://policies.google.com/privacy"
+note = { en = "Google collects information about your activity in its services, including Drive; no Drive-specific switch to turn this off is documented.", tr = "Google, Drive dahil hizmetlerindeki etkinliğinize dair bilgi toplar; Drive'a özel bir kapatma ayarı belgelenmemiştir." }
+alternatives = ["syncthing", "nextclouddesktop"]
+[app.packages]
+winget = "Google.GoogleDrive"
+choco = "googledrive"
+brew-cask = "google-drive"
+
+[[app]]
+id = "gpuz"
+name = "GPU-Z"
+category = "utilities"
+description = { en = "Utility that shows detailed information about your graphics card and GPU.", tr = "Ekran kartınız ve GPU hakkında ayrıntılı bilgi gösteren yardımcı program." }
+homepage = "https://www.techpowerup.com/gpuz/"
+foss = false
+[app.packages]
+winget = "TechPowerUp.GPU-Z"
+choco = "gpu-z"
+
+[[app]]
+id = "gsudo"
+name = "gsudo"
+category = "utilities"
+description = { en = "Sudo equivalent for Windows that runs commands with elevated privileges in the current console window.", tr = "Komutları mevcut konsol penceresinde yönetici yetkileriyle çalıştıran, Windows için sudo karşılığı." }
+homepage = "https://github.com/gerardog/gsudo"
+foss = true
+[app.packages]
+winget = "gerardog.gsudo"
+choco = "gsudo"
+
+[[app]]
+id = "hwinfo"
+name = "HWiNFO"
+category = "utilities"
+description = { en = "Tool providing comprehensive hardware information and diagnostics for Windows.", tr = "Windows için kapsamlı donanım bilgisi ve tanılama sağlayan araç." }
+homepage = "https://www.hwinfo.com/"
+foss = false
+[app.packages]
+winget = "REALiX.HWiNFO"
+choco = "hwinfo"
+
+[[app]]
+id = "hwmonitor"
+name = "HWMonitor"
+category = "utilities"
+description = { en = "Hardware monitoring program that reads the main health sensors of a PC.", tr = "Bilgisayarın temel sağlık sensörlerini okuyan donanım izleme programı." }
+homepage = "https://www.cpuid.com/softwares/hwmonitor.html"
+foss = false
+[app.packages]
+winget = "CPUID.HWMonitor"
+choco = "hwmonitor"
+
+[[app]]
+id = "xeheditor"
+name = "HxD Hex Editor"
+category = "utilities"
+description = { en = "Free hex editor for editing, viewing, searching and analyzing binary files.", tr = "İkili dosyaları düzenlemeye, görüntülemeye, aramaya ve analiz etmeye yarayan ücretsiz hex düzenleyici." }
+homepage = "https://mh-nexus.de/en/hxd/"
+foss = false
+[app.packages]
+winget = "MHNexus.HxD"
+choco = "HxD"
+
+[[app]]
+id = "imhex"
+name = "ImHex"
+category = "utilities"
+description = { en = "Free, open-source hex editor for reverse engineers, with a pattern language, disassembler and data analysis tools.", tr = "Desen dili, disassembler ve veri analiz araçları içeren, tersine mühendisler için ücretsiz ve açık kaynaklı hex düzenleyici." }
+homepage = "https://imhex.werwolv.net/"
+foss = true
+[app.packages]
+winget = "WerWolv.ImHex"
+choco = "imhex"
+flatpak = "net.werwolv.ImHex"
+
+[[app]]
+id = "internetdownloadmanager"
+name = "Internet Download Manager"
+category = "utilities"
+description = { en = "Download manager for accelerating, resuming and scheduling file downloads.", tr = "Dosya indirmelerini hızlandıran, devam ettiren ve zamanlayan indirme yöneticisi." }
+homepage = "https://www.internetdownloadmanager.com/"
+foss = false
+telemetry = false
+privacy_source = "https://www.internetdownloadmanager.com/privacy.html"
+[app.packages]
+winget = "Tonec.InternetDownloadManager"
+choco = "internet-download-manager"
+
+[[app]]
+id = "jpegview"
+name = "JPEG View"
+category = "utilities"
+description = { en = "Fast, configurable image viewer and editor for JPEG, PNG, WEBP, HEIC, AVIF, TIFF and other formats with a minimal interface.", tr = "JPEG, PNG, WEBP, HEIC, AVIF, TIFF gibi biçimler için sade arayüzlü, hızlı ve yapılandırılabilir görüntü görüntüleyici ve düzenleyici." }
+homepage = "https://github.com/sylikc/jpegview"
+foss = true
+[app.packages]
+winget = "sylikc.JPEGView"
+choco = "jpegview"
+
+[[app]]
+id = "minitoolpartitionwizard"
+name = "MiniTool Partition Wizard"
+category = "utilities"
+description = { en = "Free partition manager for merging partitions, converting file systems and organizing disk space.", tr = "Bölüm birleştirme, dosya sistemi dönüştürme ve disk alanını düzenleme gibi işlemler yapan ücretsiz disk bölümü yöneticisi." }
+homepage = "https://www.partitionwizard.com/"
+foss = false
+[app.packages]
+winget = "MiniTool.PartitionWizard.Free"
+choco = "partitionwizard"
+
+[[app]]
+id = "msedgeredirect"
+name = "MSEdgeRedirect"
+category = "utilities"
+description = { en = "Tool that redirects Edge news, search, widgets and weather links to your default browser.", tr = "Edge haber, arama, pano ve hava durumu bağlantılarını varsayılan tarayıcınıza yönlendiren araç." }
+homepage = "https://github.com/rcmaehl/MSEdgeRedirect"
+foss = true
+[app.packages]
+winget = "rcmaehl.MSEdgeRedirect"
+choco = "msedgeredirect"
+
+[[app]]
+id = "msiafterburner"
+name = "MSI Afterburner"
+category = "utilities"
+description = { en = "Graphics card overclocking and monitoring utility.", tr = "Ekran kartı hız aşırtma ve izleme yardımcı programı." }
+homepage = "https://www.msi.com/Landing/afterburner"
+foss = false
+[app.packages]
+winget = "Guru3D.Afterburner"
+choco = "msiafterburner"
+
+[[app]]
+id = "mullvadvpn"
+name = "Mullvad VPN"
+category = "utilities"
+description = { en = "VPN client software for the Mullvad VPN service.", tr = "Mullvad VPN hizmeti için VPN istemci yazılımı." }
+homepage = "https://mullvad.net/"
+foss = true
+telemetry = false
+privacy_source = "https://github.com/mullvad/mullvadvpn-app/blob/main/docs/logging-and-telemetry.md"
+[app.packages]
+winget = "MullvadVPN.MullvadVPN"
+choco = "mullvad-app"
+brew-cask = "mullvad-vpn"
+
+[[app]]
+id = "nanazip"
+name = "NanaZip"
+category = "utilities"
+description = { en = "Fast and efficient file compression and extraction tool.", tr = "Hızlı ve verimli bir dosya sıkıştırma ve arşiv açma aracı." }
+homepage = "https://nanazip.org"
+foss = true
+telemetry = false
+privacy_source = "https://github.com/M2Team/NanaZip/blob/main/Documents/Privacy.md"
+[app.packages]
+winget = "M2Team.NanaZip"
+choco = "nanazip"
+
+[[app]]
+id = "nilesoftshell"
+name = "Nilesoft Shell"
+category = "utilities"
+description = { en = "Context menu tool that adds extra functionality and customization options to the Windows context menu.", tr = "Windows sağ tık menüsüne ek işlevler ve özelleştirme seçenekleri ekleyen bağlam menüsü aracı." }
+homepage = "https://nilesoft.org/"
+foss = false
+[app.packages]
+winget = "Nilesoft.Shell"
+choco = "nilesoft-shell"
+
+[[app]]
+id = "nmap"
+name = "Nmap"
+category = "utilities"
+description = { en = "Open-source network exploration and security auditing tool that discovers devices, ports and services.", tr = "Ağdaki cihazları, portları ve hizmetleri keşfeden açık kaynaklı ağ keşfi ve güvenlik denetimi aracı." }
+homepage = "https://nmap.org/"
+foss = true
+[app.packages]
+winget = "Insecure.Nmap"
+choco = "nmap"
+brew = "nmap"
+
+[[app]]
+id = "nvclean"
+name = "NVCleanstall"
+category = "utilities"
+description = { en = "Tool for customizing NVIDIA driver installations with more control over the install process.", tr = "NVIDIA sürücü kurulumunu özelleştirmeye ve kurulum sürecini daha ayrıntılı denetlemeye yarayan araç." }
+homepage = "https://www.techpowerup.com/nvcleanstall/"
+foss = false
+[app.packages]
+winget = "TechPowerUp.NVCleanstall"
+
+[[app]]
+id = "ofgb"
+name = "OFGB (Oh Frick Go Back)"
+category = "utilities"
+description = { en = "GUI tool for removing ads from various places around Windows 11.", tr = "Windows 11'in çeşitli yerlerindeki reklamları kaldırmaya yarayan grafik arayüzlü araç." }
+homepage = "https://github.com/xM4ddy/OFGB"
+foss = true
+[app.packages]
+winget = "xM4ddy.OFGB"
+choco = "ofgb"
+
+[[app]]
+id = "opautoclicker"
+name = "OPAutoClicker"
+category = "utilities"
+description = { en = "Autoclicker with two modes: clicking at the cursor location or at a preset location.", tr = "İmleç konumunda ya da önceden belirlenen konumda tıklayan iki modlu otomatik tıklayıcı." }
+homepage = "https://www.opautoclicker.com"
+foss = false
+[app.packages]
+winget = "OPAutoClicker.OPAutoClicker"
+choco = "autoclicker"
+
+[[app]]
+id = "openrgb"
+name = "OpenRGB"
+category = "utilities"
+description = { en = "Open-source software for controlling RGB lighting on various components and peripherals.", tr = "Çeşitli bileşen ve çevre birimlerindeki RGB aydınlatmayı yöneten açık kaynaklı yazılım." }
+homepage = "https://openrgb.org/"
+foss = true
+[app.packages]
+winget = "OpenRGB.OpenRGB"
+choco = "openrgb"
+flatpak = "org.openrgb.OpenRGB"
+
+[[app]]
+id = "openvpn"
+name = "OpenVPN Connect"
+category = "utilities"
+description = { en = "VPN client for connecting securely to a VPN server over an encrypted connection.", tr = "Şifreli bağlantıyla bir VPN sunucusuna güvenli şekilde bağlanmayı sağlayan VPN istemcisi." }
+homepage = "https://openvpn.net/"
+foss = false
+[app.packages]
+winget = "OpenVPNTechnologies.OpenVPNConnect"
+choco = "openvpn-connect"
+brew-cask = "openvpn-connect"
+
+[[app]]
+id = "ovirtualbox"
+name = "Oracle VirtualBox"
+category = "utilities"
+description = { en = "Free, open-source virtualization tool for x86 and AMD64/Intel64 systems.", tr = "x86 ve AMD64/Intel64 mimarileri için ücretsiz ve açık kaynaklı sanallaştırma aracı." }
+homepage = "https://www.virtualbox.org/"
+foss = true
+[app.packages]
+winget = "Oracle.VirtualBox"
+choco = "virtualbox"
+brew-cask = "virtualbox"
+
+[[app]]
+id = "parsec"
+name = "Parsec"
+category = "utilities"
+description = { en = "Low-latency remote desktop application for collaboration and gaming across devices.", tr = "Cihazlar arasında ortak çalışma ve oyun için düşük gecikmeli uzak masaüstü uygulaması." }
+homepage = "https://parsec.app/"
+foss = false
+[app.packages]
+winget = "Parsec.Parsec"
+choco = "parsec"
+flatpak = "com.parsecgaming.parsec"
+brew-cask = "parsec"
+
+[[app]]
+id = "peazip"
+name = "PeaZip"
+category = "utilities"
+description = { en = "Free, open-source file archiver supporting many archive formats and encryption.", tr = "Birçok arşiv biçimini ve şifrelemeyi destekleyen ücretsiz, açık kaynaklı dosya arşivleyici." }
+homepage = "https://peazip.github.io/"
+foss = true
+telemetry = false
+privacy_source = "https://peazip.github.io/"
+[app.packages]
+winget = "Giorgiotani.Peazip"
+choco = "peazip"
+flatpak = "io.github.peazip.PeaZip"
+
+[[app]]
+id = "policyplus"
+name = "Policy Plus"
+category = "utilities"
+description = { en = "Local Group Policy Editor that works on all Windows editions.", tr = "Tüm Windows sürümlerinde çalışan Yerel Grup İlkesi Düzenleyicisi." }
+homepage = "https://github.com/Fleex255/PolicyPlus"
+foss = true
+[app.packages]
+winget = "Fleex255.PolicyPlus"
+
+[[app]]
+id = "processlasso"
+name = "Process Lasso"
+category = "utilities"
+description = { en = "System optimization tool that adjusts process priorities and CPU affinities to improve responsiveness.", tr = "Süreç önceliklerini ve CPU ilişkilerini ayarlayarak sistem tepkisini iyileştiren sistem optimizasyon ve otomasyon aracı." }
+homepage = "https://bitsum.com/"
+foss = false
+[app.packages]
+winget = "BitSum.ProcessLasso"
+choco = "plasso"
+
+[[app]]
+id = "protonauth"
+name = "Proton Authenticator"
+category = "utilities"
+description = { en = "Two-factor authentication app from Proton that syncs and backs up 2FA codes.", tr = "2FA kodlarını güvenle eşitleyen ve yedekleyen Proton'un iki adımlı doğrulama uygulaması." }
+homepage = "https://proton.me/authenticator"
+foss = true
+telemetry = false
+privacy_source = "https://proton.me/authenticator"
+[app.packages]
+winget = "Proton.ProtonAuthenticator"
+choco = "protonauth"
+
+[[app]]
+id = "protondrive"
+name = "Proton Drive"
+category = "utilities"
+description = { en = "End-to-end encrypted cloud storage for your files.", tr = "Dosyalarınız için uçtan uca şifreli bulut depolama hizmeti." }
+homepage = "https://proton.me/drive"
+foss = true
+telemetry = true
+privacy_source = "https://proton.me/support/share-usage-statistics"
+note = { en = "Sends anonymous usage statistics by default; turn off Collect usage diagnostics in Proton Account Settings > Security and privacy > Privacy and data collection.", tr = "Varsayılan olarak anonim kullanım istatistikleri gönderir; Proton Hesabı Ayarlar > Güvenlik ve gizlilik > Gizlilik ve veri toplama bölümünden Collect usage diagnostics kapatılabilir." }
+alternatives = ["syncthing"]
+[app.packages]
+winget = "Proton.ProtonDrive"
+choco = "protondrive"
+brew-cask = "proton-drive"
+
+[[app]]
+id = "protonpass"
+name = "Proton Pass"
+category = "utilities"
+description = { en = "Cloud-based password manager with end-to-end encryption and unique email aliases.", tr = "Uçtan uca şifreleme ve benzersiz e-posta takma adları sunan bulut tabanlı parola yöneticisi." }
+homepage = "https://proton.me/pass"
+foss = true
+[app.packages]
+winget = "Proton.ProtonPass"
+choco = "protonpass"
+flatpak = "me.proton.Pass"
+brew-cask = "proton-pass"
+
+[[app]]
+id = "protonvpn"
+name = "Proton VPN"
+category = "utilities"
+description = { en = "No-logs VPN service with features such as Secure Core and Tor over VPN.", tr = "Secure Core ve Tor over VPN gibi özellikler sunan, kayıt tutmayan VPN hizmeti." }
+homepage = "https://protonvpn.com/"
+foss = true
+telemetry = true
+privacy_source = "https://protonvpn.com/support/share-usage-statistics"
+note = { en = "Sends anonymous usage statistics by default; turn off Share anonymous usage statistics in Settings (on Windows under Help us fight censorship).", tr = "Varsayılan olarak anonim kullanım istatistikleri gönderir; Ayarlar'dan (Windows'ta Help us fight censorship altında) Share anonymous usage statistics kapatılabilir." }
+alternatives = ["mullvadvpn"]
+[app.packages]
+winget = "Proton.ProtonVPN"
+choco = "protonvpn"
+flatpak = "com.protonvpn.www"
+brew-cask = "protonvpn"
+
+[[app]]
+id = "putty"
+name = "PuTTY"
+category = "utilities"
+description = { en = "Free open-source terminal emulator, serial console and file transfer client supporting SSH, Telnet and SCP.", tr = "SSH, Telnet ve SCP protokollerini destekleyen ücretsiz, açık kaynaklı terminal emülatörü, seri konsol ve dosya aktarım istemcisi." }
+homepage = "https://www.chiark.greenend.org.uk/~sgtatham/putty/"
+foss = true
+telemetry = false
+privacy_source = "https://www.chiark.greenend.org.uk/~sgtatham/putty/faq.html"
+[app.packages]
+winget = "PuTTY.PuTTY"
+choco = "putty"
+flatpak = "uk.org.greenend.chiark.sgtatham.putty"
+
+[[app]]
+id = "qbittorrent"
+name = "qBittorrent"
+category = "utilities"
+description = { en = "Free open-source BitTorrent client designed to be a feature-rich, lightweight alternative to other torrent clients.", tr = "Diğer torrent istemcilerine özellik açısından zengin ve hafif bir alternatif sunan ücretsiz, açık kaynaklı BitTorrent istemcisi." }
+homepage = "https://www.qbittorrent.org/"
+foss = true
+[app.packages]
+winget = "qBittorrent.qBittorrent"
+choco = "qbittorrent"
+flatpak = "org.qbittorrent.qBittorrent"
+
+[[app]]
+id = "revo"
+name = "Revo Uninstaller"
+category = "utilities"
+description = { en = "Uninstaller tool that removes unwanted software and cleans leftover data from your system.", tr = "İstenmeyen yazılımları kaldırmaya ve sistemdeki artık verileri temizlemeye yarayan program kaldırma aracı." }
+homepage = "https://www.revouninstaller.com/"
+foss = false
+[app.packages]
+winget = "RevoUninstaller.RevoUninstaller"
+choco = "revo-uninstaller"
+
+[[app]]
+id = "rufus"
+name = "Rufus Imager"
+category = "utilities"
+description = { en = "Utility for formatting and creating bootable USB drives, such as USB keys and pen drives.", tr = "USB bellekleri biçimlendirmeye ve önyüklenebilir USB sürücüler oluşturmaya yarayan yardımcı program." }
+homepage = "https://rufus.ie/"
+foss = true
+[app.packages]
+winget = "Rufus.Rufus"
+choco = "rufus"
+
+[[app]]
+id = "signalrgb"
+name = "SignalRGB"
+category = "utilities"
+description = { en = "Free application for controlling and syncing RGB devices from a single place.", tr = "RGB cihazlarını tek bir yerden kontrol etmenizi ve senkronize etmenizi sağlayan ücretsiz uygulama." }
+homepage = "https://www.signalrgb.com/"
+foss = false
+telemetry = true
+privacy_source = "https://signalrgb.com/privacy/"
+note = { en = "Collects usage analytics such as features used, effects and performance data; no in-app switch is documented.", tr = "Kullanılan özellikler, efektler ve performans verileri gibi kullanım analitiği toplar; belgelenmiş bir uygulama içi kapatma seçeneği yoktur." }
+alternatives = ["openrgb"]
+[app.packages]
+winget = "WhirlwindFX.SignalRgb"
+
+[[app]]
+id = "simplewall"
+name = "Simplewall"
+category = "utilities"
+description = { en = "Free open-source Windows firewall for controlling inbound and outbound network traffic of applications.", tr = "Uygulamaların gelen ve giden ağ trafiğini denetleyen, Windows için ücretsiz ve açık kaynaklı güvenlik duvarı." }
+homepage = "https://github.com/henrypp/simplewall"
+foss = true
+[app.packages]
+winget = "Henry++.simplewall"
+choco = "simplewall"
+
+[[app]]
+id = "sdio"
+name = "Snappy Driver Installer Origin"
+category = "utilities"
+description = { en = "Free open-source driver updater for Windows with a large driver database.", tr = "Geniş bir sürücü veritabanına sahip, Windows için ücretsiz ve açık kaynaklı sürücü güncelleme aracı." }
+homepage = "https://www.glenn.delahoy.com/snappy-driver-installer-origin/"
+foss = true
+[app.packages]
+winget = "GlennDelahoy.SnappyDriverInstallerOrigin"
+choco = "sdio"
+
+[[app]]
+id = "startallback"
+name = "StartAllBack"
+category = "utilities"
+description = { en = "Tool that restores and improves the Windows taskbar, Start menu, File Explorer and shell interface.", tr = "Windows görev çubuğunu, Başlat menüsünü, Dosya Gezgini'ni ve kabuk arayüzünü eski haline getiren ve geliştiren araç." }
+homepage = "https://www.startallback.com/"
+foss = false
+[app.packages]
+winget = "StartIsBack.StartAllBack"
+choco = "StartAllBack"
+
+[[app]]
+id = "systeminformer"
+name = "System Informer"
+category = "utilities"
+description = { en = "Free multi-purpose tool for monitoring system resources, debugging software and detecting malware.", tr = "Sistem kaynaklarını izlemeye, yazılım hatalarını ayıklamaya ve zararlı yazılımları tespit etmeye yarayan ücretsiz çok amaçlı araç." }
+homepage = "https://systeminformer.com/"
+foss = true
+[app.packages]
+winget = "WinsiderSS.SystemInformer"
+choco = "systeminformer"
+
+[[app]]
+id = "tailscale"
+name = "Tailscale"
+category = "utilities"
+description = { en = "WireGuard-based client that connects all your devices into one private network.", tr = "Tüm cihazlarınızı WireGuard tabanlı tek bir özel ağda birleştiren istemci." }
+homepage = "https://tailscale.com/"
+foss = false
+telemetry = true
+privacy_source = "https://tailscale.com/kb/1011/log-mesh-traffic"
+note = { en = "Sends client logs and telemetry to Tailscale by default; disable with the --no-logs-no-support flag or TS_NO_LOGS_NO_SUPPORT environment variable.", tr = "Varsayılan olarak istemci günlüklerini ve telemetriyi Tailscale'e gönderir; --no-logs-no-support bayrağı veya TS_NO_LOGS_NO_SUPPORT ortam değişkeniyle kapatılabilir." }
+alternatives = ["netbird"]
+[app.packages]
+winget = "Tailscale.Tailscale"
+choco = "tailscale"
+brew-cask = "tailscale-app"
+
+[[app]]
+id = "teamviewer"
+name = "TeamViewer"
+category = "utilities"
+description = { en = "Remote access and support software for connecting to and controlling remote devices.", tr = "Uzak cihazlara bağlanmayı ve onları kontrol etmeyi sağlayan uzaktan erişim ve destek yazılımı." }
+homepage = "https://www.teamviewer.com/"
+foss = false
+telemetry = true
+privacy_source = "https://www.teamviewer.com/en/privacy-policy/"
+note = { en = "Analyzes product usage and device identifiers, including for license checks; no user switch is documented.", tr = "Lisans denetimi dahil ürün kullanımını ve cihaz kimliklerini analiz eder; belgelenmiş bir kullanıcı kapatma seçeneği yoktur." }
+[app.packages]
+winget = "TeamViewer.TeamViewer"
+choco = "teamviewer"
+brew-cask = "teamviewer"
+
+[[app]]
+id = "tightvnc"
+name = "TightVNC"
+category = "utilities"
+description = { en = "Free open-source remote desktop software for viewing and controlling a computer over the network.", tr = "Bir bilgisayarı ağ üzerinden görüntülemenizi ve kontrol etmenizi sağlayan ücretsiz, açık kaynaklı uzak masaüstü yazılımı." }
+homepage = "https://www.tightvnc.com/"
+foss = true
+[app.packages]
+winget = "GlavSoft.TightVNC"
+choco = "TightVNC"
+
+[[app]]
+id = "totalcommander"
+name = "Total Commander"
+category = "utilities"
+description = { en = "File manager for Windows with a powerful, intuitive interface for managing files.", tr = "Dosya yönetimi için güçlü ve kullanımı kolay bir arayüz sunan Windows dosya yöneticisi." }
+homepage = "https://www.ghisler.com/"
+foss = false
+[app.packages]
+winget = "Ghisler.TotalCommander"
+choco = "TotalCommander"
+
+[[app]]
+id = "ttaskbar"
+name = "TranslucentTB"
+category = "utilities"
+description = { en = "Tool for customizing the transparency of the Windows taskbar.", tr = "Windows görev çubuğunun saydamlığını özelleştirmeye yarayan araç." }
+homepage = "https://translucenttb.github.io"
+foss = true
+[app.packages]
+winget = "CharlesMilette.TranslucentTB"
+choco = "translucenttb"
+
+[[app]]
+id = "treesize"
+name = "TreeSize Free"
+category = "utilities"
+description = { en = "Disk space manager that analyzes and visualizes space usage on your drives.", tr = "Sürücülerinizdeki alan kullanımını analiz eden ve görselleştiren disk alanı yöneticisi." }
+homepage = "https://www.jam-software.com/treesize_free/"
+foss = false
+[app.packages]
+winget = "JAMSoftware.TreeSize.Free"
+choco = "treesizefree"
+
+[[app]]
+id = "wingetui"
+name = "UniGetUI"
+category = "utilities"
+description = { en = "Graphical interface for WinGet, Chocolatey and other Windows command-line package managers.", tr = "WinGet, Chocolatey ve diğer Windows komut satırı paket yöneticileri için grafik arayüz." }
+homepage = "https://devolutions.net/unigetui/"
+foss = true
+telemetry = true
+privacy_source = "https://docs.devolutions.net/unigetui/guides/understand/privacy"
+note = { en = "Sends anonymous usage data by default; turn off in Settings > General preferences > Telemetry > Manage > Decline.", tr = "Varsayılan olarak anonim kullanım verisi gönderir; Ayarlar > Genel tercihler > Telemetri > Yönet > Reddet yoluyla kapatılabilir." }
+[app.packages]
+winget = "Devolutions.UniGetUI"
+choco = "wingetui"
+
+[[app]]
+id = "ventoy"
+name = "Ventoy"
+category = "utilities"
+description = { en = "Open-source tool for creating bootable USB drives that can hold multiple ISO files at once.", tr = "Tek bir USB sürücüde birden çok ISO dosyası barındırabilen, önyüklenebilir USB oluşturan açık kaynaklı araç." }
+homepage = "https://www.ventoy.net/"
+foss = true
+[app.packages]
+winget = "Ventoy.Ventoy"
+choco = "ventoy"
+
+[[app]]
+id = "winrar"
+name = "WinRAR"
+category = "utilities"
+description = { en = "Archive manager for creating, managing and extracting compressed files.", tr = "Sıkıştırılmış dosyalar oluşturmaya, yönetmeye ve çıkarmaya yarayan arşiv yöneticisi." }
+homepage = "https://www.win-rar.com/"
+foss = false
+[app.packages]
+winget = "RARLab.WinRAR"
+choco = "winrar"
+
+[[app]]
+id = "winscp"
+name = "WinSCP"
+category = "utilities"
+description = { en = "Open-source SFTP, FTP and SCP client for Windows for secure file transfers between local and remote computers.", tr = "Yerel ve uzak bilgisayarlar arasında güvenli dosya aktarımı sağlayan, Windows için açık kaynaklı SFTP, FTP ve SCP istemcisi." }
+homepage = "https://winscp.net/"
+foss = true
+telemetry = true
+privacy_source = "https://winscp.net/eng/docs/usagestatistics"
+note = { en = "Sends anonymous usage statistics with update checks; turn off in the installer or Preferences > Updates.", tr = "Güncelleme denetimiyle birlikte anonim kullanım istatistikleri gönderir; kurulumda veya Tercihler > Güncellemeler'den kapatılabilir." }
+[app.packages]
+winget = "WinSCP.WinSCP"
+choco = "winscp"
+
+[[app]]
+id = "wireshark"
+name = "Wireshark"
+category = "utilities"
+description = { en = "Open-source network protocol analyzer that captures and analyzes network traffic in real time.", tr = "Ağ trafiğini gerçek zamanlı yakalayıp analiz eden açık kaynaklı ağ protokol çözümleyicisi." }
+homepage = "https://www.wireshark.org/"
+foss = true
+[app.packages]
+winget = "WiresharkFoundation.Wireshark"
+choco = "wireshark"
+flatpak = "org.wireshark.Wireshark"
+brew-cask = "wireshark-app"
+
+[[app]]
+id = "wiseprogramuninstaller"
+name = "Wise Program Uninstaller (WiseCleaner)"
+category = "utilities"
+description = { en = "Windows program uninstaller that removes applications quickly and completely through a simple interface.", tr = "Uygulamaları basit bir arayüzle hızlı ve eksiksiz biçimde kaldıran Windows program kaldırma aracı." }
+homepage = "https://www.wisecleaner.com/wise-program-uninstaller.html"
+foss = false
+[app.packages]
+winget = "WiseCleaner.WiseProgramUninstaller"
+
+[[app]]
+id = "wiztree"
+name = "WizTree"
+category = "utilities"
+description = { en = "Fast disk space analyzer that finds the files and folders using the most space on your drive.", tr = "Sürücünüzde en çok yer kaplayan dosya ve klasörleri hızla bulan disk alanı çözümleyicisi." }
+homepage = "https://wiztreefree.com/"
+foss = false
+[app.packages]
+winget = "AntibodySoftware.WizTree"
+choco = "wiztree"
+
+# --- gaming ------------------------------------------------------------------------------------
+
+[[app]]
+id = "battlenet"
+name = "Battle.net"
+category = "gaming"
+description = { en = "Game launcher for games created and developed by Activision Blizzard.", tr = "Activision Blizzard tarafından geliştirilen oyunlar için oyun başlatıcısı." }
+homepage = "https://battle.net"
+foss = false
+telemetry = true
+privacy_source = "https://www.blizzard.com/en-us/legal/a4380ee5-5c8d-4e3b-83b7-ea26d01a9918/blizzard-entertainment-online-privacy-policy"
+note = { en = "Automatically collects device information and usage data from its client software; no in-app switch is documented.", tr = "İstemci yazılımından cihaz bilgisi ve kullanım verisini otomatik olarak toplar; belgelenmiş bir uygulama içi kapatma seçeneği yoktur." }
+[app.packages]
+winget = "Blizzard.BattleNet"
+brew-cask = "battle-net"
+
+[[app]]
+id = "cemu"
+name = "Cemu"
+category = "gaming"
+description = { en = "Highly experimental emulator for running Wii U applications on a PC.", tr = "Wii U uygulamalarını bilgisayarda çalıştırmak için geliştirilen deneysel emülatör." }
+homepage = "https://cemu.info/"
+foss = true
+[app.packages]
+winget = "Cemu.Cemu"
+choco = "cemu"
+flatpak = "info.cemu.Cemu"
+
+[[app]]
+id = "overwolf"
+name = "CurseForge"
+category = "gaming"
+description = { en = "Desktop application for managing mods and modpacks across multiple games, powered by Overwolf.", tr = "Overwolf altyapısıyla çalışan, birçok oyun için mod ve mod paketlerini yöneten masaüstü uygulaması." }
+homepage = "https://www.overwolf.com/app/overwolf-curseforge"
+foss = false
+telemetry = true
+privacy_source = "https://legal.overwolf.com/docs/overwolf/platform/platform-privacy-policy"
+note = { en = "Automatically collects usage data for analytics and ads; consent can be withdrawn in the app's privacy settings.", tr = "Analitik ve reklam için kullanım verisini otomatik olarak toplar; uygulamanın gizlilik ayarlarından onay geri çekilebilir." }
+[app.packages]
+winget = "Overwolf.CurseForge"
+brew-cask = "curseforge"
+
+[[app]]
+id = "eaapp"
+name = "EA App"
+category = "gaming"
+description = { en = "Platform for accessing and playing Electronic Arts games.", tr = "Electronic Arts oyunlarına erişmek ve oynamak için kullanılan platform." }
+homepage = "https://www.ea.com/ea-app"
+foss = false
+telemetry = true
+privacy_source = "https://www.ea.com/legal/privacy-and-cookie-policy"
+note = { en = "Collects usage, gameplay and device data through analytics; no in-app switch is documented.", tr = "Analitik yoluyla kullanım, oyun ve cihaz verisi toplar; belgelenmiş bir uygulama içi kapatma seçeneği yoktur." }
+[app.packages]
+winget = "ElectronicArts.EADesktop"
+choco = "ea-app"
+brew-cask = "ea"
+
+[[app]]
+id = "es-de"
+name = "EmulationStation Desktop Edition"
+category = "gaming"
+description = { en = "Frontend for browsing and launching games from a multi-platform game collection.", tr = "Çok platformlu oyun koleksiyonunuzdaki oyunlara göz atmak ve onları başlatmak için kullanılan ön yüz." }
+homepage = "https://es-de.org/"
+foss = true
+telemetry = false
+privacy_source = "https://es-de.org/privacy/privacy-policy"
+[app.packages]
+winget = "ES-DE.EmulationStation-DE"
+brew-cask = "es-de"
+
+[[app]]
+id = "epicgames"
+name = "Epic Games Launcher"
+category = "gaming"
+description = { en = "Client for accessing and playing games from the Epic Games Store.", tr = "Epic Games Store oyunlarına erişmek ve oynamak için kullanılan istemci." }
+homepage = "https://www.epicgames.com/store/en-US/"
+foss = false
+[app.packages]
+winget = "EpicGames.EpicGamesLauncher"
+choco = "epicgameslauncher"
+brew-cask = "epic-games"
+
+[[app]]
+id = "geforcenow"
+name = "GeForce NOW"
+category = "gaming"
+description = { en = "Cloud gaming service for playing PC games on your device.", tr = "PC oyunlarını kendi cihazınızda oynamanızı sağlayan bulut oyun hizmeti." }
+homepage = "https://www.nvidia.com/en-us/geforce-now/"
+foss = false
+telemetry = true
+privacy_source = "https://www.nvidia.com/en-us/about-nvidia/privacy-policy/"
+note = { en = "Collects installation, configuration and feature usage data from the software; no in-app switch is documented.", tr = "Yazılımdan kurulum, yapılandırma ve özellik kullanım verisi toplar; belgelenmiş bir uygulama içi kapatma seçeneği yoktur." }
+[app.packages]
+winget = "Nvidia.GeForceNow"
+choco = "nvidia-geforce-now"
+
+[[app]]
+id = "gog"
+name = "GOG Galaxy"
+category = "gaming"
+description = { en = "Gaming client that offers DRM-free games and additional content.", tr = "DRM içermeyen oyunlar ve ek içerikler sunan oyun istemcisi." }
+homepage = "https://www.gog.com/galaxy"
+foss = false
+[app.packages]
+winget = "GOG.Galaxy"
+choco = "goggalaxy"
+brew-cask = "gog-galaxy"
+
+[[app]]
+id = "heroiclauncher"
+name = "Heroic Games Launcher"
+category = "gaming"
+description = { en = "Open-source alternative game launcher for the Epic Games Store.", tr = "Epic Games Store için açık kaynaklı alternatif oyun başlatıcısı." }
+homepage = "https://heroicgameslauncher.com/"
+foss = true
+telemetry = false
+privacy_source = "https://www.heroicgameslauncher.com/faq"
+[app.packages]
+winget = "HeroicGamesLauncher.HeroicGamesLauncher"
+choco = "heroic-games-launcher"
+
+[[app]]
+id = "itch"
+name = "Itch.io"
+category = "gaming"
+description = { en = "Digital distribution platform for indie games and creative projects.", tr = "Bağımsız oyunlar ve yaratıcı projeler için dijital dağıtım platformu." }
+homepage = "https://itch.io/"
+foss = true
+[app.packages]
+winget = "ItchIo.Itch"
+choco = "itch"
+flatpak = "io.itch.itch"
+brew-cask = "itch"
+
+[[app]]
+id = "modrinth"
+name = "Modrinth App"
+category = "gaming"
+description = { en = "Desktop application for managing Minecraft mods and modpacks.", tr = "Minecraft modlarını ve mod paketlerini yönetmeye yarayan masaüstü uygulaması." }
+homepage = "https://modrinth.com/app"
+foss = true
+telemetry = true
+privacy_source = "https://modrinth.com/legal/privacy"
+note = { en = "Sends playtime and app interaction data (via PostHog); no in-app switch is documented.", tr = "Oynama süresi ve uygulama etkileşim verisi (PostHog üzerinden) gönderir; belgelenmiş bir uygulama içi kapatma seçeneği yoktur." }
+alternatives = ["prismlauncher"]
+[app.packages]
+winget = "Modrinth.ModrinthApp"
+choco = "modrinth-app"
+flatpak = "com.modrinth.ModrinthApp"
+brew-cask = "modrinth"
+
+[[app]]
+id = "playnite"
+name = "Playnite"
+category = "gaming"
+description = { en = "Open-source video game library manager that gives all your games a unified interface.", tr = "Tüm oyunlarınızı tek bir arayüzde toplayan açık kaynaklı video oyunu kütüphane yöneticisi." }
+homepage = "https://playnite.link/"
+foss = true
+telemetry = false
+privacy_source = "https://github.com/JosefNemec/Playnite#privacy-statement"
+[app.packages]
+winget = "Playnite.Playnite"
+choco = "playnite"
+
+[[app]]
+id = "prismlauncher"
+name = "Prism Launcher"
+category = "gaming"
+description = { en = "Open-source Minecraft launcher that manages multiple instances, accounts and mods.", tr = "Birden çok örneği, hesabı ve modu yönetebilen açık kaynaklı Minecraft başlatıcısı." }
+homepage = "https://prismlauncher.org/"
+foss = true
+[app.packages]
+winget = "PrismLauncher.PrismLauncher"
+choco = "prismlauncher"
+flatpak = "org.prismlauncher.PrismLauncher"
+brew-cask = "prismlauncher"
+
+[[app]]
+id = "roblox"
+name = "Roblox"
+category = "gaming"
+description = { en = "Platform and game creation system for building and playing games made by the community.", tr = "Topluluk tarafından geliştirilen oyunları oluşturmaya ve oynamaya yarayan oyun platformu ve oyun yapım sistemi." }
+homepage = "https://www.roblox.com/"
+foss = false
+telemetry = true
+privacy_source = "https://en.help.roblox.com/hc/en-us/articles/115004630823-Roblox-Privacy-and-Cookie-Policy"
+note = { en = "Collects information about how you use the service along with device identifiers; no documented switch to turn this off.", tr = "Hizmeti nasıl kullandığınıza dair bilgileri ve cihaz kimliklerini toplar; bunu kapatmak için belgelenmiş bir ayar yoktur." }
+[app.packages]
+winget = "Roblox.Roblox"
+brew-cask = "roblox"
+
+[[app]]
+id = "steam"
+name = "Steam"
+category = "gaming"
+description = { en = "Game store and launcher.", tr = "Oyun mağazası ve başlatıcısı." }
+homepage = "https://store.steampowered.com/"
+foss = false
+telemetry = true
+privacy_source = "https://store.steampowered.com/privacy_agreement/"
+note = { en = "Collects playtime, game statistics, device information and application usage data; no documented switch to turn this off.", tr = "Oynama süresi, oyun istatistikleri, cihaz bilgileri ve uygulama kullanım verilerini toplar; bunu kapatmak için belgelenmiş bir ayar yoktur." }
+[app.packages]
+winget = "Valve.Steam"
+choco = "steam-client"
+flatpak = "com.valvesoftware.Steam"
+brew-cask = "steam"
+
+[[app]]
+id = "ubisoft"
+name = "Ubisoft Connect"
+category = "gaming"
+description = { en = "Ubisoft's digital distribution and online gaming service, providing access to its games and services.", tr = "Ubisoft oyunlarına ve hizmetlerine erişim sağlayan dijital dağıtım ve çevrimiçi oyun hizmeti." }
+homepage = "https://ubisoftconnect.com/"
+foss = false
+telemetry = true
+privacy_source = "https://www.ubisoft.com/legal/documents/privacypolicy/en-US"
+note = { en = "Collects telemetry such as playtime statistics, feature usage and device/configuration data; no documented switch to turn this off.", tr = "Oynama süresi istatistikleri, özellik kullanımı ve cihaz/yapılandırma verileri gibi telemetri toplar; bunu kapatmak için belgelenmiş bir ayar yoktur." }
+[app.packages]
+winget = "Ubisoft.Connect"
+choco = "ubisoft-connect"
+
+[[app]]
+id = "vrdesktopstreamer"
+name = "Virtual Desktop Streamer"
+category = "gaming"
+description = { en = "Tool for streaming your desktop screen to VR devices.", tr = "Masaüstü ekranınızı VR cihazlarına aktarmanızı sağlayan araç." }
+homepage = "https://www.vrdesktop.net/"
+foss = false
+[app.packages]
+winget = "VirtualDesktop.Streamer"
+brew-cask = "virtual-desktop-streamer"
+
+# --- system ------------------------------------------------------------------------------------
+
+[[app]]
+id = "dotnet10"
+name = ".NET Desktop Runtime 10"
+category = "system"
+description = { en = "Runtime environment required for running applications developed with .NET 10.", tr = ".NET 10 ile geliştirilen uygulamaları çalıştırmak için gereken çalışma zamanı ortamı." }
+homepage = "https://dotnet.microsoft.com/download/dotnet/10.0"
+foss = true
+[app.packages]
+winget = "Microsoft.DotNet.DesktopRuntime.10"
+choco = "dotnet-10.0-runtime"
+
+[[app]]
+id = "dotnet6"
+name = ".NET Desktop Runtime 6"
+category = "system"
+description = { en = "Runtime environment required for running applications developed with .NET 6.", tr = ".NET 6 ile geliştirilen uygulamaları çalıştırmak için gereken çalışma zamanı ortamı." }
+homepage = "https://dotnet.microsoft.com/download/dotnet/6.0"
+foss = true
+[app.packages]
+winget = "Microsoft.DotNet.DesktopRuntime.6"
+choco = "dotnet-6.0-runtime"
+
+[[app]]
+id = "dotnet8"
+name = ".NET Desktop Runtime 8"
+category = "system"
+description = { en = "Runtime environment required for running applications developed with .NET 8.", tr = ".NET 8 ile geliştirilen uygulamaları çalıştırmak için gereken çalışma zamanı ortamı." }
+homepage = "https://dotnet.microsoft.com/download/dotnet/8.0"
+foss = true
+[app.packages]
+winget = "Microsoft.DotNet.DesktopRuntime.8"
+choco = "dotnet-8.0-runtime"
+
+[[app]]
+id = "dotnet9"
+name = ".NET Desktop Runtime 9"
+category = "system"
+description = { en = "Runtime environment required for running applications developed with .NET 9.", tr = ".NET 9 ile geliştirilen uygulamaları çalıştırmak için gereken çalışma zamanı ortamı." }
+homepage = "https://dotnet.microsoft.com/download/dotnet/9.0"
+foss = true
+[app.packages]
+winget = "Microsoft.DotNet.DesktopRuntime.9"
+choco = "dotnet-9.0-runtime"
+
+[[app]]
+id = "autoruns"
+name = "Autoruns"
+category = "system"
+description = { en = "Utility that shows which programs are configured to run at system startup or login.", tr = "Sistem açılışında veya oturum açılırken çalışacak şekilde ayarlanmış programları gösteren yardımcı araç." }
+homepage = "https://learn.microsoft.com/en-us/sysinternals/downloads/autoruns"
+foss = false
+[app.packages]
+winget = "Microsoft.Sysinternals.Autoruns"
+choco = "autoruns"
+
+[[app]]
+id = "dismtools"
+name = "DISMTools"
+category = "system"
+description = { en = "Customizable graphical interface for the DISM utility, supporting Windows images from Windows 7 onward.", tr = "Windows 7 ve sonrası Windows imajlarını destekleyen, DISM aracı için özelleştirilebilir grafik arayüz." }
+homepage = "https://github.com/CodingWonders/DISMTools"
+foss = true
+[app.packages]
+winget = "CodingWondersSoftware.DISMTools.Stable"
+choco = "dismtools"
+
+[[app]]
+id = "ntlite"
+name = "NTLite"
+category = "system"
+description = { en = "Tool for integrating updates and drivers and automating Windows and application setup to speed up deployment.", tr = "Güncelleme ve sürücü entegre eden, Windows ve uygulama kurulumunu otomatikleştirerek dağıtımı hızlandıran araç." }
+homepage = "https://ntlite.com"
+foss = false
+telemetry = false
+privacy_source = "https://ntlite.com/privacy/"
+[app.packages]
+winget = "Nlitesoft.NTLite"
+choco = "ntlite-free"
+
+[[app]]
+id = "nuget"
+name = "NuGet"
+category = "system"
+description = { en = "Package manager for .NET that lets developers manage and share libraries.", tr = "Geliştiricilerin kütüphaneleri yönetmesini ve paylaşmasını sağlayan .NET paket yöneticisi." }
+homepage = "https://www.nuget.org/"
+foss = true
+[app.packages]
+winget = "Microsoft.NuGet"
+choco = "nuget.commandline"
+brew = "nuget"
+
+[[app]]
+id = "onedrive"
+name = "OneDrive"
+category = "system"
+description = { en = "Microsoft cloud storage service for storing and sharing files across devices.", tr = "Dosyaları cihazlar arasında saklamaya ve paylaşmaya yarayan Microsoft bulut depolama hizmeti." }
+homepage = "https://onedrive.live.com/"
+foss = false
+telemetry = true
+privacy_source = "https://support.microsoft.com/en-us/office/diagnostic-data-in-microsoft-365-f409137d-15d3-4803-a8ae-d26fcbfc91dd"
+note = { en = "Sends required diagnostic data to Microsoft. Optional diagnostic data is sent only with consent and can be changed under Account Privacy settings.", tr = "Microsoft'a zorunlu tanılama verileri gönderir. İsteğe bağlı tanılama verileri yalnızca onayla gönderilir ve Hesap Gizliliği ayarlarından değiştirilebilir." }
+alternatives = ["syncthing", "nextclouddesktop"]
+[app.packages]
+winget = "Microsoft.OneDrive"
+choco = "onedrive"
+
+[[app]]
+id = "powershell"
+name = "PowerShell"
+category = "system"
+description = { en = "Task automation framework and scripting language with command-line capabilities for system administrators.", tr = "Sistem yöneticileri için komut satırı olanakları sunan görev otomasyonu çerçevesi ve betik dili." }
+homepage = "https://github.com/PowerShell/PowerShell"
+foss = true
+telemetry = true
+privacy_source = "https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_telemetry"
+note = { en = "Sends basic usage telemetry to Microsoft at startup and during sessions; turn off by setting POWERSHELL_TELEMETRY_OPTOUT=1, or on 7.6.2+ by turning off optional diagnostic data in Windows Settings.", tr = "Başlangıçta ve oturum boyunca Microsoft'a temel kullanım telemetrisi gönderir; POWERSHELL_TELEMETRY_OPTOUT=1 ayarlanarak ya da 7.6.2 ve sonrasında Windows Ayarları'nda isteğe bağlı tanılama verileri kapatılarak devre dışı bırakılabilir." }
+[app.packages]
+winget = "Microsoft.PowerShell"
+choco = "powershell-core"
+
+[[app]]
+id = "powertoys"
+name = "PowerToys"
+category = "system"
+description = { en = "Set of utilities for power users, including FancyZones and PowerRename.", tr = "FancyZones ve PowerRename gibi araçlar içeren, ileri düzey kullanıcılar için yardımcı program seti." }
+homepage = "https://github.com/microsoft/PowerToys"
+foss = true
+telemetry = false
+privacy_source = "https://github.com/microsoft/PowerToys/blob/main/DATA_AND_PRIVACY.md"
+[app.packages]
+winget = "Microsoft.PowerToys"
+choco = "powertoys"
+
+[[app]]
+id = "processexplorer"
+name = "Process Explorer"
+category = "system"
+description = { en = "Task manager and system monitor for Windows processes.", tr = "Windows süreçleri için görev yöneticisi ve sistem izleme aracı." }
+homepage = "https://learn.microsoft.com/sysinternals/downloads/process-explorer"
+foss = false
+[app.packages]
+winget = "Microsoft.Sysinternals.ProcessExplorer"
+choco = "procexp"
+
+[[app]]
+id = "processmonitor"
+name = "Process Monitor"
+category = "system"
+description = { en = "Sysinternals tool that shows real-time file system, registry and process/thread activity.", tr = "Dosya sistemi, kayıt defteri ve süreç/iş parçacığı etkinliğini gerçek zamanlı gösteren Sysinternals aracı." }
+homepage = "https://docs.microsoft.com/en-us/sysinternals/downloads/procmon"
+foss = false
+[app.packages]
+winget = "Microsoft.Sysinternals.ProcessMonitor"
+choco = "procmon"
+
+[[app]]
+id = "pstools"
+name = "PsTools"
+category = "system"
+description = { en = "Sysinternals utilities for managing local and remote Windows systems and monitoring processes.", tr = "Yerel ve uzak Windows sistemlerini yönetmek ve süreçleri izlemek için Sysinternals yardımcı programları." }
+homepage = "https://learn.microsoft.com/en-us/sysinternals/downloads/pstools"
+foss = false
+[app.packages]
+winget = "Microsoft.Sysinternals.PsTools"
+choco = "pstools"
+
+[[app]]
+id = "rdcman"
+name = "RDCMan"
+category = "system"
+description = { en = "Tool for managing multiple remote desktop connections, useful for server labs and data centers.", tr = "Sunucu laboratuvarları ve veri merkezleri için birden fazla uzak masaüstü bağlantısını yöneten araç." }
+homepage = "https://learn.microsoft.com/en-us/sysinternals/downloads/rdcman"
+foss = false
+[app.packages]
+winget = "Microsoft.Sysinternals.RDCMan"
+choco = "rdcman"
+
+[[app]]
+id = "tcpview"
+name = "TCPView"
+category = "system"
+description = { en = "Sysinternals network monitoring tool that lists all TCP and UDP endpoints on your system.", tr = "Sistemdeki tüm TCP ve UDP uç noktalarını ayrıntılı olarak listeleyen Sysinternals ağ izleme aracı." }
+homepage = "https://docs.microsoft.com/en-us/sysinternals/downloads/tcpview"
+foss = false
+[app.packages]
+winget = "Microsoft.Sysinternals.TCPView"
+choco = "tcpview"
+
+[[app]]
+id = "vc2015-32"
+name = "Visual C++ 2015-2022 32-bit"
+category = "system"
+description = { en = "Redistributable package with the Visual C++ runtime components required to run 32-bit applications.", tr = "32 bit uygulamaları çalıştırmak için gereken Visual C++ çalışma zamanı bileşenlerini kuran yeniden dağıtılabilir paket." }
+homepage = "https://support.microsoft.com/en-us/help/2977003/the-latest-supported-visual-c-downloads"
+foss = false
+[app.packages]
+winget = "Microsoft.VCRedist.2015+.x86"
+choco = "vcredist2015"
+
+[[app]]
+id = "vc2015-64"
+name = "Visual C++ 2015-2022 64-bit"
+category = "system"
+description = { en = "Redistributable package with the Visual C++ runtime components required to run 64-bit applications.", tr = "64 bit uygulamaları çalıştırmak için gereken Visual C++ çalışma zamanı bileşenlerini kuran yeniden dağıtılabilir paket." }
+homepage = "https://support.microsoft.com/en-us/help/2977003/the-latest-supported-visual-c-downloads"
+foss = false
+[app.packages]
+winget = "Microsoft.VCRedist.2015+.x64"
+choco = "vcredist2015"
+
+[[app]]
+id = "terminal"
+name = "Windows Terminal"
+category = "system"
+description = { en = "Modern command-line terminal application with support for multiple tabs and panes.", tr = "Birden çok sekme ve bölmeyi destekleyen, komut satırı kullanıcıları için modern terminal uygulaması." }
+homepage = "https://aka.ms/terminal"
+foss = true
+[app.packages]
+winget = "Microsoft.WindowsTerminal"
+choco = "microsoft-windows-terminal"
+
+# --- self-hosted -------------------------------------------------------------------------------
+
+[[app]]
+id = "jellyfinmediaplayer"
+name = "Jellyfin Media Player"
+category = "self-hosted"
+description = { en = "Desktop client for the Jellyfin media server that gives access to your media library.", tr = "Jellyfin medya sunucusundaki medya kütüphanenize erişmenizi sağlayan masaüstü istemcisi." }
+homepage = "https://jellyfin.org/"
+foss = true
+telemetry = false
+privacy_source = "https://jellyfin.org/"
+[app.packages]
+winget = "Jellyfin.JellyfinMediaPlayer"
+choco = "jellyfin-media-player"
+brew-cask = "jellyfin-media-player"
+
+[[app]]
+id = "jellyfinserver"
+name = "Jellyfin Server"
+category = "self-hosted"
+description = { en = "Open-source media server for organizing and streaming your media library.", tr = "Medya kütüphanenizi düzenlemenizi ve yayınlamanızı sağlayan açık kaynaklı medya sunucusu." }
+homepage = "https://jellyfin.org/"
+foss = true
+telemetry = false
+privacy_source = "https://jellyfin.org/"
+[app.packages]
+winget = "Jellyfin.Server"
+choco = "jellyfin"
+flatpak = "org.jellyfin.JellyfinServer"
+
+[[app]]
+id = "kodi"
+name = "Kodi Media Center"
+category = "self-hosted"
+description = { en = "Open-source media center for playing videos, music, podcasts and other digital media.", tr = "Video, müzik, podcast ve diğer dijital medya dosyalarını oynatmaya yarayan açık kaynaklı medya merkezi." }
+homepage = "https://kodi.tv/"
+foss = true
+[app.packages]
+winget = "XBMCFoundation.Kodi"
+choco = "kodi"
+flatpak = "tv.kodi.Kodi"
+brew-cask = "kodi"
+
+[[app]]
+id = "localsend"
+name = "LocalSend"
+category = "self-hosted"
+description = { en = "Open-source, cross-platform alternative to AirDrop for sharing files between nearby devices.", tr = "Yakındaki cihazlar arasında dosya paylaşımı için AirDrop'a açık kaynaklı ve çapraz platform alternatif." }
+homepage = "https://localsend.org/"
+foss = true
+telemetry = false
+privacy_source = "https://localsend.org/privacy"
+[app.packages]
+winget = "LocalSend.LocalSend"
+choco = "localsend.install"
+flatpak = "org.localsend.localsend_app"
+brew-cask = "localsend"
+
+[[app]]
+id = "moonlight"
+name = "Moonlight/GameStream Client"
+category = "self-hosted"
+description = { en = "Client for streaming PC games to other devices over your local network.", tr = "PC oyunlarını yerel ağ üzerinden diğer cihazlara yayınlamaya yarayan istemci." }
+homepage = "https://moonlight-stream.org/"
+foss = true
+telemetry = false
+privacy_source = "https://moonlight-stream.org/privacy.html"
+[app.packages]
+winget = "MoonlightGameStreamingProject.Moonlight"
+choco = "moonlight-qt"
+flatpak = "com.moonlight_stream.Moonlight"
+brew-cask = "moonlight"
+
+[[app]]
+id = "netbird"
+name = "NetBird"
+category = "self-hosted"
+description = { en = "Open-source Tailscale alternative that can connect to a self-hosted server.", tr = "Kendi sunucunuza bağlanabilen, Tailscale'e açık kaynaklı alternatif." }
+homepage = "https://netbird.io/"
+foss = true
+telemetry = false
+privacy_source = "https://docs.netbird.io/manage/client-metrics"
+[app.packages]
+winget = "Netbird.Netbird"
+choco = "netbird"
+brew = "netbird"
+
+[[app]]
+id = "nextclouddesktop"
+name = "Nextcloud Desktop"
+category = "self-hosted"
+description = { en = "Official desktop client for the Nextcloud file sync and sharing platform.", tr = "Nextcloud dosya eşitleme ve paylaşım platformunun resmi masaüstü istemcisi." }
+homepage = "https://nextcloud.com/install/#install-clients"
+foss = true
+[app.packages]
+winget = "Nextcloud.NextcloudDesktop"
+choco = "nextcloud-client"
+
+[[app]]
+id = "plexdesktop"
+name = "Plex Desktop"
+category = "self-hosted"
+description = { en = "Windows desktop front end for Plex Media Server.", tr = "Plex Media Server için Windows masaüstü istemcisi." }
+homepage = "https://www.plex.tv"
+foss = false
+telemetry = true
+privacy_source = "https://www.plex.tv/about/privacy-legal/"
+note = { en = "Sends playback data and diagnostics/usage information to Plex; turn off optional playback data by unchecking \"Send playback data to Plex\" in your Plex account privacy settings.", tr = "Plex'e oynatma verileri ile tanılama/kullanım bilgileri gönderir; isteğe bağlı oynatma verileri Plex hesabı gizlilik ayarlarındaki \"Send playback data to Plex\" seçeneğinin işareti kaldırılarak kapatılabilir." }
+alternatives = ["jellyfinmediaplayer"]
+[app.packages]
+winget = "Plex.Plex"
+choco = "plex"
+
+[[app]]
+id = "plex"
+name = "Plex Media Server"
+category = "self-hosted"
+description = { en = "Media server software for organizing and streaming your media library in many formats.", tr = "Medya kütüphanenizi düzenlemenizi ve birçok biçimde yayınlamanızı sağlayan medya sunucusu yazılımı." }
+homepage = "https://www.plex.tv/your-media/"
+foss = false
+telemetry = true
+privacy_source = "https://www.plex.tv/about/privacy-legal/"
+note = { en = "Sends playback, server/library and diagnostics/usage data to Plex; turn off optional playback data by unchecking \"Send playback data to Plex\" in your Plex account privacy settings.", tr = "Plex'e oynatma, sunucu/kütüphane ve tanılama/kullanım verileri gönderir; isteğe bağlı oynatma verileri Plex hesabı gizlilik ayarlarındaki \"Send playback data to Plex\" seçeneğinin işareti kaldırılarak kapatılabilir." }
+alternatives = ["jellyfinserver"]
+[app.packages]
+winget = "Plex.PlexMediaServer"
+choco = "plexmediaserver"
+
+[[app]]
+id = "sunshine"
+name = "Sunshine/GameStream Server"
+category = "self-hosted"
+description = { en = "GameStream server for remotely playing PC games on Android devices with low-latency streaming.", tr = "PC oyunlarını Android cihazlarda düşük gecikmeli akışla uzaktan oynamanızı sağlayan GameStream sunucusu." }
+homepage = "https://app.lizardbyte.dev/Sunshine/"
+foss = true
+[app.packages]
+winget = "LizardByte.Sunshine"
+choco = "sunshine"
+flatpak = "dev.lizardbyte.app.Sunshine"
+
+[[app]]
+id = "syncthing"
+name = "Syncthing (CLI / Web UI)"
+category = "self-hosted"
+description = { en = "Decentralized peer-to-peer file synchronization tool that syncs files across devices without cloud servers.", tr = "Dosyaları bulut sunucusu olmadan cihazlar arasında doğrudan eşitleyen, yerel web arayüzüyle yönetilen merkezi olmayan eşler arası araç." }
+homepage = "https://syncthing.net/"
+foss = true
+telemetry = false
+privacy_source = "https://docs.syncthing.net/users/security.html"
+[app.packages]
+winget = "Syncthing.Syncthing"
+choco = "syncthing"
+brew = "syncthing"
+
+[[app]]
+id = "synctrayzor"
+name = "SyncTrayzor"
+category = "self-hosted"
+description = { en = "Windows tray utility that wraps Syncthing so it behaves like a native app for managing file synchronization.", tr = "Syncthing'i sarmalayarak yerel bir uygulama gibi çalıştıran ve dosya eşitlemeyi yönetmeyi kolaylaştıran Windows tepsi aracı." }
+homepage = "https://github.com/GermanCoding/SyncTrayzor"
+[app.packages]
+winget = "GermanCoding.SyncTrayzor"
+choco = "synctrayzor"
+
+# --- fonts and version managers (ids verified against winget, Chocolatey, Scoop and Homebrew) ---
+
+[[app]]
+id = "jetbrains-mono-nerd"
+name = "JetBrains Mono Nerd Font"
+category = "utilities"
+description = { en = "Developer font with programming ligatures, patched with Nerd Font icons for terminals.", tr = "Terminaller için Nerd Font simgeleri eklenmiş, programlama bitişik harfleri içeren geliştirici yazı tipi." }
+homepage = "https://www.nerdfonts.com/"
+foss = true
+[app.packages]
+winget = "DEVCOM.JetBrainsMonoNerdFont"
+choco = "nerd-fonts-jetbrainsmono"
+scoop = "nerd-fonts/JetBrainsMono-NF"
+brew-cask = "font-jetbrains-mono-nerd-font"
+
+[[app]]
+id = "fira-code-nerd"
+name = "Fira Code Nerd Font"
+category = "utilities"
+description = { en = "Fira Code with programming ligatures, patched with Nerd Font icons for terminals.", tr = "Terminaller için Nerd Font simgeleri eklenmiş, programlama bitişik harfli Fira Code yazı tipi." }
+homepage = "https://www.nerdfonts.com/"
+foss = true
+[app.packages]
+scoop = "nerd-fonts/FiraCode-NF"
+brew-cask = "font-fira-code-nerd-font"
+
+[[app]]
+id = "fira-code"
+name = "Fira Code"
+category = "utilities"
+description = { en = "Monospaced font with programming ligatures.", tr = "Programlama bitişik harfleri içeren eş aralıklı yazı tipi." }
+homepage = "https://github.com/tonsky/FiraCode"
+foss = true
+[app.packages]
+choco = "firacode"
+brew-cask = "font-fira-code"
+
+[[app]]
+id = "rustup"
+name = "rustup"
+category = "development"
+description = { en = "Official installer and version manager for the Rust toolchain.", tr = "Rust araç zinciri için resmî kurulum ve sürüm yöneticisi." }
+homepage = "https://rustup.rs/"
+foss = true
+[app.packages]
+winget = "Rustlang.Rustup"
+choco = "rustup.install"
+brew = "rustup"
+
+[[app]]
+id = "nvm"
+name = "nvm"
+category = "development"
+description = { en = "Node.js version manager: nvm-windows on Windows, nvm on macOS.", tr = "Node.js sürüm yöneticisi: Windows'ta nvm-windows, macOS'ta nvm." }
+homepage = "https://github.com/nvm-sh/nvm"
+foss = true
+[app.packages]
+winget = "CoreyButler.NVMforWindows"
+choco = "nvm"
+brew = "nvm"
+
+[[app]]
+id = "pyenv"
+name = "pyenv"
+category = "development"
+description = { en = "Python version manager: pyenv-win on Windows, pyenv on macOS.", tr = "Python sürüm yöneticisi: Windows'ta pyenv-win, macOS'ta pyenv." }
+homepage = "https://github.com/pyenv/pyenv"
+foss = true
+[app.packages]
+choco = "pyenv-win"
+brew = "pyenv"
+
+[[app]]
+id = "mise"
+name = "mise"
+category = "development"
+description = { en = "Polyglot version manager for Node.js, Python, Go, Rust and many other tools.", tr = "Node.js, Python, Go, Rust ve birçok araç için çok dilli sürüm yöneticisi." }
+homepage = "https://mise.jdx.dev/"
+foss = true
+[app.packages]
+winget = "jdx.mise"
+brew = "mise"
+
+[[app]]
+id = "clamav"
+name = "ClamAV"
+category = "security"
+description = { en = "Open-source antivirus engine for scanning files for malware.", tr = "Dosyalarda zararlı yazılım taramak için açık kaynaklı virüsten koruma motoru." }
+homepage = "https://www.clamav.net/"
+foss = true
+[app.packages]
+choco = "clamav"
+apt = "clamav"
+dnf = "clamav"
+pacman = "clamav"
+brew = "clamav"
+
+[[app]]
+id = "rkhunter"
+name = "rkhunter"
+category = "security"
+description = { en = "Scans the system for rootkits, backdoors and suspicious changes.", tr = "Sistemi rootkit, arka kapı ve şüpheli değişikliklere karşı tarar." }
+homepage = "https://rkhunter.sourceforge.net/"
+foss = true
+[app.packages]
+apt = "rkhunter"
+dnf = "rkhunter"
+pacman = "rkhunter"
+brew = "rkhunter"
+
+[[app]]
+id = "gamemode"
+name = "GameMode"
+category = "gaming"
+description = { en = "Feral's daemon that tunes CPU governor, I/O and process priority while a game runs.", tr = "Oyun çalışırken işlemci yöneticisini, G/Ç'yi ve işlem önceliğini ayarlayan Feral hizmeti." }
+homepage = "https://github.com/FeralInteractive/gamemode"
+foss = true
+[app.packages]
+apt = "gamemode"
+dnf = "gamemode"
+pacman = "gamemode"
+zypper = "gamemode"
+
+[[app]]
+id = "cascadia-code"
+name = "Cascadia Code"
+category = "utilities"
+description = { en = "Microsoft's monospaced font for terminals and code editors, with programming ligatures.", tr = "Microsoft'un terminal ve kod düzenleyiciler için tasarladığı, programlama bitişik harfli eş aralıklı yazı tipi." }
+homepage = "https://github.com/microsoft/cascadia-code"
+foss = true
+[app.packages]
+choco = "cascadiacode"
+brew-cask = "font-cascadia-code"
+apt = "fonts-cascadia-code"
+dnf = "cascadia-code-fonts"
+pacman = "otf-cascadia-code"
+
+[[app]]
+id = "hack-font"
+name = "Hack"
+category = "utilities"
+description = { en = "Monospaced font designed for source code.", tr = "Kaynak kod için tasarlanmış eş aralıklı yazı tipi." }
+homepage = "https://sourcefoundry.org/hack/"
+foss = true
+[app.packages]
+choco = "hackfont"
+apt = "fonts-hack"
+dnf = "source-foundry-hack-fonts"
+pacman = "ttf-hack"
+
+[[app]]
+id = "hack-nerd"
+name = "Hack Nerd Font"
+category = "utilities"
+description = { en = "Hack patched with Nerd Font icons for terminal prompts and file managers.", tr = "Terminal istemleri ve dosya yöneticileri için Nerd Font simgeleri eklenmiş Hack." }
+homepage = "https://www.nerdfonts.com/"
+foss = true
+[app.packages]
+choco = "nerd-fonts-hack"
+brew-cask = "font-hack-nerd-font"
+
+[[app]]
+id = "noto"
+name = "Noto Sans"
+category = "utilities"
+description = { en = "Google's font family that covers almost every writing system.", tr = "Neredeyse tüm yazı sistemlerini kapsayan Google yazı tipi ailesi." }
+homepage = "https://fonts.google.com/noto"
+foss = true
+[app.packages]
+choco = "noto"
+brew-cask = "font-noto-sans"
+apt = "fonts-noto-core"
+dnf = "google-noto-sans-fonts"
+pacman = "noto-fonts"
+
+[[app]]
+id = "roboto"
+name = "Roboto"
+category = "utilities"
+description = { en = "Google's sans-serif font used across Android and the web.", tr = "Android ve web genelinde kullanılan Google tırnaksız yazı tipi." }
+homepage = "https://fonts.google.com/specimen/Roboto"
+foss = true
+[app.packages]
+choco = "roboto.font"
+brew-cask = "font-roboto"
+apt = "fonts-roboto"
+dnf = "google-roboto-fonts"
+pacman = "ttf-roboto"
+
+[[app]]
+id = "inter"
+name = "Inter"
+category = "utilities"
+description = { en = "Sans-serif font designed for computer screens.", tr = "Bilgisayar ekranları için tasarlanmış tırnaksız yazı tipi." }
+homepage = "https://rsms.me/inter/"
+foss = true
+[app.packages]
+choco = "inter"
+brew-cask = "font-inter"
+apt = "fonts-inter"
+dnf = "rsms-inter-fonts"
+pacman = "inter-font"

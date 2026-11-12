@@ -1,0 +1,29 @@
+[package]
+name = "skadi-core"
+description = "Skadi core: platform detection, package managers, catalog and planning"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[dependencies]
+serde.workspace = true
+toml.workspace = true
+sys-locale.workspace = true
+serde_json = "1.0.154"
+sysinfo = { version = "0.36.1", default-features = false, features = ["disk", "system"] }
+ed25519-dalek = "2"
+getrandom = "0.3"
+wasmi = "0.46.0"
+chacha20poly1305 = "0.10"
+
+[lints]
+workspace = true
+
+[target."cfg(windows)".dependencies]
+windows-registry = "0.6.1"
+
+[dev-dependencies]
+serde_json = "1.0.154"
+wat = "1.258.3"

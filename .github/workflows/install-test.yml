@@ -1,0 +1,122 @@
+name: Install test
+
+# Installs and removes every catalog app with Skadi on fresh, disposable runners.
+# Runs weekly and on demand; for pull requests that change the catalog, only the new or changed
+# apps are tested.
+
+on:
+  schedule:
+    - cron: "0 3 * * 1"
+  pull_request:
+    paths: ["catalog/apps.toml"]
+  workflow_dispatch:
+    inputs:
+      apps:
+        description: "Space-separated app ids to test (empty = whole catalog)"
+        required: false
+        default: ""
+
+permissions:
+  contents: read
+
+concurrency:
+  group: install-test-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  # With an explicit app list there is nothing to shard: one job per OS is enough.
+  plan:
+    runs-on: ubuntu-latest
+    outputs:
+      shards: ${{ steps.plan.outputs.shards }}
+      apps: ${{ steps.plan.outputs.apps }}
+      run: ${{ steps.plan.outputs.run }}
+    steps:
+      - uses: actions/checkout@v4
+        if: github.event_name == 'pull_request'
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - id: plan
+        env:
+          APPS: ${{ inputs.apps }}
+          EVENT: ${{ github.event_name }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          if [ "$EVENT" = "pull_request" ]; then
+            git show "$BASE_SHA:catalog/apps.toml" > "$RUNNER_TEMP/base.toml"
+            APPS="$(python3 .github/scripts/changed-apps.py "$RUNNER_TEMP/base.toml" catalog/apps.toml)"
+            echo "Changed apps: ${APPS:-none}"
+            if [ -z "$APPS" ]; then
+              echo 'run=false' >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+          fi
+          echo 'run=true' >> "$GITHUB_OUTPUT"
+          echo "apps=$APPS" >> "$GITHUB_OUTPUT"
+          if [ -n "$APPS" ]; then
+            echo 'shards=[0]' >> "$GITHUB_OUTPUT"
+          else
+            echo 'shards=[0,1,2,3,4,5,6,7]' >> "$GITHUB_OUTPUT"
+          fi
+
+  install:
+    name: ${{ matrix.os }} shard ${{ matrix.shard }}
+    needs: plan
+    if: needs.plan.outputs.run == 'true'
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        shard: ${{ fromJSON(needs.plan.outputs.shards) }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 240
+    defaults:
+      run:
+        shell: bash
+    env:
+      SHARD: ${{ matrix.shard }}
+      SHARDS: 8
+      # Passed through the environment, never interpolated into a script (script injection).
+      APPS: ${{ needs.plan.outputs.apps }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Build
+        run: |
+          rustup show active-toolchain
+          cargo build --release --locked
+
+      - name: Prepare Linux
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo ./target/release/skadi bootstrap flatpak --yes
+          echo "SKADI=./target/release/skadi" >> "$GITHUB_ENV"
+          echo "SKADI_RUN=sudo -E" >> "$GITHUB_ENV"
+
+      - name: Prepare Windows
+        if: runner.os == 'Windows'
+        run: echo "SKADI=./target/release/skadi.exe" >> "$GITHUB_ENV"
+
+      # winget is not always available on Windows Server images. If Skadi cannot bootstrap it,
+      # the test continues and apps fall back to Chocolatey, which the runner provides.
+      - name: Bootstrap winget
+        if: runner.os == 'Windows'
+        continue-on-error: true
+        run: ./target/release/skadi.exe bootstrap winget --yes
+
+      - name: Prepare macOS
+        if: runner.os == 'macOS'
+        run: echo "SKADI=./target/release/skadi" >> "$GITHUB_ENV"
+
+      - name: System info
+        run: $SKADI_RUN "$SKADI" info
+
+      - name: Install and remove apps
+        run: bash .github/scripts/install-test.sh

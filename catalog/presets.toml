@@ -1,0 +1,73 @@
+# Skadi presets
+#
+# A preset is a built-in profile: a list of app ids from catalog/apps.toml and tweak ids from
+# tweaks/*.toml. Ids for other operating systems are skipped when a preset is applied, so one
+# preset can serve Windows, Linux and macOS. `cargo test` checks that every id exists.
+
+[[preset]]
+id = "developer"
+name = { en = "Developer", tr = "Geliştirici" }
+description = { en = "Version control, editors, language toolchains and terminal tools.", tr = "Sürüm kontrolü, editörler, dil araçları ve terminal araçları." }
+apps = ["git", "githubcli", "vscodium", "neovim", "lazygit", "nodejslts", "python3", "rustlang", "golang", "starship", "terminal", "powershell", "bruno"]
+vscode_extensions = ["rust-lang.rust-analyzer", "tamasfe.even-better-toml", "editorconfig.editorconfig"]
+
+[[preset]]
+id = "gamer"
+name = { en = "Gamer", tr = "Oyuncu" }
+description = { en = "Game stores, launchers, voice chat and recording.", tr = "Oyun mağazaları, başlatıcılar, sesli sohbet ve kayıt." }
+apps = ["steam", "epicgames", "gog", "heroiclauncher", "playnite", "discord", "obs-studio", "msiafterburner"]
+
+[[preset]]
+id = "office"
+name = { en = "Office", tr = "Ofis" }
+description = { en = "Office suite, email, browser, PDF tools, notes and archives.", tr = "Ofis paketi, e-posta, tarayıcı, PDF araçları, notlar ve arşivler." }
+apps = ["libreoffice", "thunderbird", "firefox", "sumatra", "okular", "pdfsam", "joplin", "7zip"]
+
+[[preset]]
+id = "privacy"
+name = { en = "Privacy", tr = "Gizlilik" }
+description = { en = "Private browsers, encrypted messaging, password manager, encryption and VPN, plus the minimal privacy tweaks.", tr = "Gizlilik odaklı tarayıcılar, şifreli mesajlaşma, parola yöneticisi, şifreleme ve VPN; ayrıca temel gizlilik ayarları." }
+apps = ["librewolf", "mullvad-browser", "tor-browser", "signal", "keepassxc", "veracrypt", "mullvadvpn", "wireguard", "simplewall"]
+tweaks = [
+    "win-telemetry", "win-consumer-features", "win-wpbt", "win-bing-search",
+    "linux-popularity-contest", "linux-ubuntu-report", "linux-ubuntu-crash-reports", "linux-fedora-abrt", "linux-gnome-reporting",
+    "mac-personalized-ads", "mac-diagnostics", "mac-siri-data-sharing",
+]
+
+[[preset]]
+id = "tweaks-minimal"
+name = { en = "Minimal tweaks", tr = "Minimal ayarlar" }
+description = { en = "Only the core telemetry and promotion switches. Safe for every system.", tr = "Yalnızca temel telemetri ve tanıtım ayarları. Her sistem için güvenli." }
+tweaks = [
+    "win-telemetry", "win-consumer-features", "win-wpbt", "win-bing-search",
+    "linux-popularity-contest", "linux-ubuntu-report", "linux-ubuntu-crash-reports", "linux-fedora-abrt", "linux-gnome-reporting",
+    "mac-personalized-ads", "mac-diagnostics", "mac-siri-data-sharing",
+]
+
+[[preset]]
+id = "tweaks-standard"
+name = { en = "Standard tweaks", tr = "Standart ayarlar" }
+description = { en = "Every tweak marked safe: privacy, bloat and quality of life.", tr = "Güvenli işaretli tüm ayarlar: gizlilik, gereksiz yazılımlar ve kullanım kolaylığı." }
+tweaks = [
+    "win-telemetry", "win-consumer-features", "win-wpbt", "win-bing-search",
+    "win-activity-history", "win-delivery-optimization", "win-device-metadata", "win-edge-debloat", "win-brave-debloat",
+    "win-end-task", "win-show-extensions",
+    "linux-popularity-contest", "linux-ubuntu-report", "linux-ubuntu-crash-reports", "linux-fedora-abrt", "linux-gnome-reporting",
+    "linux-ubuntu-news",
+    "mac-personalized-ads", "mac-diagnostics", "mac-siri-data-sharing", "mac-crash-dialog", "mac-show-extensions", "mac-no-ds-store",
+]
+
+[[preset]]
+id = "tweaks-advanced"
+name = { en = "Advanced tweaks", tr = "Gelişmiş ayarlar" }
+description = { en = "Standard plus tweaks that may turn off features some people use, and removal of built-in Windows apps (cannot be undone).", tr = "Standart ayarlara ek olarak bazı kullanıcıların ihtiyaç duyduğu özellikleri kapatabilen ayarlar ve geri alınamayan hazır Windows uygulaması kaldırma." }
+tweaks = [
+    "win-telemetry", "win-consumer-features", "win-wpbt", "win-bing-search",
+    "win-activity-history", "win-delivery-optimization", "win-device-metadata", "win-edge-debloat", "win-brave-debloat",
+    "win-end-task", "win-show-extensions",
+    "win-location", "win-ai", "win-background-apps", "win-start-recommendations", "win-services-manual",
+    "win-remove-bing-copilot", "win-remove-promo-apps",
+    "linux-popularity-contest", "linux-ubuntu-report", "linux-ubuntu-crash-reports", "linux-fedora-abrt", "linux-gnome-reporting",
+    "linux-ubuntu-news", "linux-gnome-recent-files",
+    "mac-personalized-ads", "mac-diagnostics", "mac-siri-data-sharing", "mac-crash-dialog", "mac-show-extensions", "mac-no-ds-store",
+]
