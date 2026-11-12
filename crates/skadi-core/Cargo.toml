@@ -14,7 +14,7 @@ sys-locale.workspace = true
 serde_json = "1.0.154"
 sysinfo = { version = "0.36.1", default-features = false, features = ["disk", "system"] }
 ed25519-dalek = "2"
-getrandom = "0.3"
+getrandom = "0.4"
 wasmi = "0.46.0"
 chacha20poly1305 = "0.10"
 
